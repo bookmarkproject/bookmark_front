@@ -1,4 +1,5 @@
 import 'package:bookmarkfront/utils/global_util.dart';
+import 'package:bookmarkfront/widgets/login_buttons.dart';
 import 'package:bookmarkfront/widgets/login_textfield.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -72,89 +73,42 @@ class _LoginPageState extends State<LoginPage> {
                 const SizedBox(
                   height: 30,
                 ),
-                FilledButton(
-                  onPressed: (){},
-                  style: FilledButton.styleFrom(
-                    backgroundColor: getMainColor(),
-                    fixedSize: Size(361,50),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(56), 
-                    ),
-                  ),
-                  child: const Text(
-                    "로그인",
-                    style: TextStyle(
-                      fontSize: 17,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
+                LoginButtons(
+                  callback: (){}, 
+                  backgroundColor: getMainColor(), 
+                  text: "로그인", 
+                  textColor: Colors.white, 
+                  borderSide: BorderSide.none
                 ),
                 SizedBox(
                   height: 12,
                 ),
-                FilledButton(
-                  onPressed: (){},
-                  style: FilledButton.styleFrom(
-                    backgroundColor: Color.fromRGBO(0, 0, 0, 0.04),
-                    fixedSize: Size(361,50),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(56), 
-                    ),
-                  ),
-                  child: const Text(
-                    "이메일을 잊으셨나요?",
-                    style: TextStyle(
-                      fontSize: 17,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black,
-                    ),
-                  ),
+               LoginButtons(
+                  callback: (){}, 
+                  backgroundColor: Color.fromRGBO(0, 0, 0, 0.04), 
+                  text: "이메일을 잊으셨나요?", 
+                  textColor: Colors.black, 
+                  borderSide: BorderSide.none
                 ),
                 SizedBox(
                   height: 12,
                 ),
-                FilledButton(
-                  onPressed: (){},
-                  style: FilledButton.styleFrom(
-                    backgroundColor: Color.fromRGBO(245, 245, 245, 0.5),
-                    fixedSize: Size(361,50),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(56), 
-                    ),
-                  ),
-                  child: const Text(
-                    "비밀번호를 잊으셨나요?",
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 17,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
+                LoginButtons(
+                  callback: (){}, 
+                  backgroundColor: Color.fromRGBO(245, 245, 245, 0.5), 
+                  text: "비밀번호를 잊으셨나요?", 
+                  textColor: Colors.black, 
+                  borderSide: BorderSide.none
                 ),
                 SizedBox(
                   height: 12,
                 ),
-                 FilledButton(
-                  onPressed: (){},
-                  style: FilledButton.styleFrom(
-                    backgroundColor: Colors.white,
-                    fixedSize: Size(361,50),
-                    shape: RoundedRectangleBorder(
-                      side: BorderSide(
-                        width: 0.5,
-                        color: Color.fromRGBO(0, 0, 0, 0.2)
-                      ),
-                      borderRadius: BorderRadius.circular(56), 
-                    ),
-                  ),
-                  child: const Text(
-                    "회원가입",
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 17,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
+                 LoginButtons(
+                  callback: (){}, 
+                  backgroundColor: Colors.white, 
+                  text: "회원가입", 
+                  textColor: Colors.black, 
+                  borderSide: BorderSide(color: Color.fromRGBO(0, 0, 0, 0.2), width: 0.5),
                 ),
               ],
             ),
