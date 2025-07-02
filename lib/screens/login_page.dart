@@ -84,7 +84,9 @@ class _LoginPageState extends State<LoginPage> {
                   height: 12,
                 ),
                LoginButtons(
-                  callback: (){}, 
+                  callback: (){
+                    Navigator.pushNamed(context, '/search/email');
+                  }, 
                   backgroundColor: Color.fromRGBO(0, 0, 0, 0.04), 
                   text: "이메일을 잊으셨나요?", 
                   textColor: Colors.black, 
@@ -94,7 +96,9 @@ class _LoginPageState extends State<LoginPage> {
                   height: 12,
                 ),
                 LoginButtons(
-                  callback: (){}, 
+                  callback: (){
+                    Navigator.pushNamed(context, '/search/password');
+                  }, 
                   backgroundColor: Color.fromRGBO(245, 245, 245, 0.5), 
                   text: "비밀번호를 잊으셨나요?", 
                   textColor: Colors.black, 
@@ -104,7 +108,9 @@ class _LoginPageState extends State<LoginPage> {
                   height: 12,
                 ),
                  LoginButtons(
-                  callback: (){}, 
+                  callback: (){
+                    Navigator.pushNamed(context, '/signup');
+                  }, 
                   backgroundColor: Colors.white, 
                   text: "회원가입", 
                   textColor: Colors.black, 

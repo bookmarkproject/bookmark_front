@@ -1,4 +1,7 @@
 import 'package:bookmarkfront/screens/login_page.dart';
+import 'package:bookmarkfront/screens/search_email_page.dart';
+import 'package:bookmarkfront/screens/search_password_page.dart';
+import 'package:bookmarkfront/screens/signup_page.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -19,7 +22,10 @@ class MyApp extends StatelessWidget {
         fontFamily: 'NotoSansKR',
       ),
       routes: {
-        '/': (context) => LoginPage(), 
+        '/': (context) => LoginPage(),
+        '/search/email': (context) => SearchEmailPage(), 
+        '/search/password' : (context) => SearchPasswordPage(),
+        '/signup' : (context) => SignupPage(),
       } 
     );
   }
