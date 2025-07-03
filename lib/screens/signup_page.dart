@@ -43,7 +43,7 @@ class _SignupPageState extends State<SignupPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: getSignUpAppBar(),
+      appBar: CustomAppBar(text: "회원가입"),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16.0,vertical: 20.0),
