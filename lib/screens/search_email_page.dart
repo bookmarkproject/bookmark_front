@@ -25,7 +25,7 @@ class _SearchEmailPageState extends State<SearchEmailPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              _getTitle("이름을 입력하세요.", 18.0),
+              _getTitle("이름을 입력하세요", 18.0),
               const SizedBox(
                 height: 15,
               ),
@@ -38,7 +38,7 @@ class _SearchEmailPageState extends State<SearchEmailPage> {
               const SizedBox(
                 height: 25,
               ),
-              _getTitle("휴대폰 번호를 입력하세요.", 18.0),
+              _getTitle("휴대폰 번호를 입력하세요", 18.0),
               const SizedBox(
                 height: 15.0,
               ),

@@ -2,6 +2,7 @@ import 'package:bookmarkfront/screens/login_page.dart';
 import 'package:bookmarkfront/screens/search_email_page.dart';
 import 'package:bookmarkfront/screens/search_email_result_page.dart';
 import 'package:bookmarkfront/screens/search_password_page.dart';
+import 'package:bookmarkfront/screens/search_password_result_page.dart';
 import 'package:bookmarkfront/screens/signup_page.dart';
 import 'package:flutter/material.dart';
 
@@ -27,6 +28,7 @@ class MyApp extends StatelessWidget {
         '/search/email': (context) => SearchEmailPage(), 
         '/search/email/result': (context) => SearchEmailResultPage(),
         '/search/password' : (context) => SearchPasswordPage(),
+        '/search/password/result' : (context) => SearchPasswordResultPage(),
         '/signup' : (context) => SignupPage(),
       } 
     );
