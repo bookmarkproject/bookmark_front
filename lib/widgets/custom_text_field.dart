@@ -1,29 +1,38 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
-class LoginTextfield extends StatelessWidget {
-  
-  const LoginTextfield({
+class CustomTextField extends StatelessWidget {
+  const CustomTextField({
     super.key,
     required this.hintText,
     required this.obscureText,
     required this.controller,
-    this.type
+    required this.width,
+    this.type,
+    this.maxLen,
   });
 
   final String hintText;
   final bool obscureText;
   final TextEditingController controller;
+  final double width;
+
+  final int? maxLen;
   final TextInputType? type;
+
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: 361,
-      height: 50,
+      width: width,
+      height: 47,
       child: TextField(
         keyboardType: type,
         obscureText: obscureText,
         controller: controller,
+        inputFormatters: [
+          LengthLimitingTextInputFormatter(maxLen)
+        ],
         style: TextStyle(
           fontSize: 12.0,
         ),
@@ -32,7 +41,7 @@ class LoginTextfield extends StatelessWidget {
           fillColor: Color.fromRGBO(0, 0, 0, 0.04),
           border: OutlineInputBorder(
             borderSide: BorderSide.none,
-            borderRadius: BorderRadius.circular(20),
+            borderRadius: BorderRadius.circular(16),
           ),
           hintText: hintText,
           hintStyle: TextStyle(

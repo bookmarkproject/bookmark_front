@@ -16,7 +16,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      themeMode: ThemeMode.light, // 항상 밝은 테마 사용
+      themeMode: ThemeMode.light, 
       initialRoute: '/',
       theme: ThemeData(
         fontFamily: 'NotoSansKR',
