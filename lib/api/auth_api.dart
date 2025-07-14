@@ -1,8 +1,12 @@
 import 'package:bookmarkfront/models/email_response.dart';
+import 'package:bookmarkfront/models/member.dart';
+import 'package:bookmarkfront/provider/member_provider.dart';
 import 'package:bookmarkfront/widgets/custom_snackbar.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+
+import 'package:provider/provider.dart';
 
 String base_url = "http://localhost:8081/auth";
 
@@ -46,6 +50,27 @@ Future<bool> isDuplicateNickname(BuildContext context, String nickname) async {
   }
 }
 
+
+Future<void> login(BuildContext context, Map<String,dynamic> request) async {
+  final url = Uri.parse("$base_url/login");
+  final headers = {"Content-Type": "application/json"};
+  final body = jsonEncode(request);
+
+  try {
+    final response = await http.post(url, headers: headers, body: body);
+
+    if (response.statusCode == 200) {
+      showSnack(context, "로그인에 성공했습니다.");
+      final member = Member.fromJson(jsonDecode(response.body));
+      context.read<MemberProvider>().setMember(member);
+      Navigator.pushNamed(context, "/home");
+    } else {
+      showSnack(context, errorMessage(response),isError: true);
+    }
+  } catch (e) {
+    print('알 수 없는 오류 발생: $e');
+  }
+}
 
 String errorMessage(response) {
   return jsonDecode(response.body)["message"];

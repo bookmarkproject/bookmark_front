@@ -1,3 +1,4 @@
+import 'package:bookmarkfront/api/auth_api.dart';
 import 'package:bookmarkfront/utils/global_util.dart';
 import 'package:bookmarkfront/widgets/login_buttons.dart';
 import 'package:bookmarkfront/widgets/login_textfield.dart';
@@ -74,7 +75,13 @@ class _LoginPageState extends State<LoginPage> {
                   height: 30,
                 ),
                 LoginButtons(
-                  callback: (){}, 
+                  callback: () async{
+                    final request = {
+                      "email" : emailController.text,
+                      "password" : passwordController.text
+                    };
+                    await login(context,request);
+                  }, 
                   backgroundColor: getMainColor(), 
                   text: "로그인", 
                   textColor: Colors.white, 

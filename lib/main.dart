@@ -1,3 +1,5 @@
+import 'package:bookmarkfront/provider/member_provider.dart';
+import 'package:bookmarkfront/screens/home.dart';
 import 'package:bookmarkfront/screens/login_page.dart';
 import 'package:bookmarkfront/screens/search_email_page.dart';
 import 'package:bookmarkfront/screens/search_email_result_page.dart';
@@ -5,9 +7,15 @@ import 'package:bookmarkfront/screens/search_password_page.dart';
 import 'package:bookmarkfront/screens/search_password_result_page.dart';
 import 'package:bookmarkfront/screens/signup_page.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(
+    ChangeNotifierProvider(
+      create: (_) => MemberProvider(),
+      child: MyApp()
+    )
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -30,6 +38,7 @@ class MyApp extends StatelessWidget {
         '/search/password' : (context) => SearchPasswordPage(),
         '/search/password/result' : (context) => SearchPasswordResultPage(),
         '/signup' : (context) => SignupPage(),
+        '/home' : (context) => Home(),
       } 
     );
   }
