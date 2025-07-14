@@ -1,6 +1,11 @@
+import 'package:bookmarkfront/api/auth_api.dart';
+import 'package:bookmarkfront/api/mail_api.dart';
+import 'package:bookmarkfront/models/email_response.dart';
+import 'package:bookmarkfront/utils/global_util.dart';
 import 'package:bookmarkfront/widgets/app_bars.dart';
 import 'package:bookmarkfront/widgets/custom_dropdown.dart';
 import 'package:bookmarkfront/widgets/custom_filled_button.dart';
+import 'package:bookmarkfront/widgets/custom_snackbar.dart';
 import 'package:bookmarkfront/widgets/custom_text_field.dart';
 import 'package:flutter/material.dart';
 
@@ -33,6 +38,8 @@ class _SignupPageState extends State<SignupPage> {
   List<int> dayItems = [];
 
   bool isPiChecked = false;
+
+  bool isEmailVerified = false;
 
   @override
   void initState() {
@@ -71,13 +78,16 @@ class _SignupPageState extends State<SignupPage> {
                       hintText: "이메일",
                       obscureText: false,
                       controller: emailCountroller,
+                      enabled: isEmailVerified,
                       width: 240,
                     ),
                     const SizedBox(
                       width: 20,
                     ),
                     CustomFilledButton(
-                      callback: (){}, 
+                      callback: (){
+                        sendMail(context,emailCountroller.text);
+                      }, 
                       text: "인증 요청", 
                       fontsize: 16.0,
                       width: 100,
@@ -93,13 +103,21 @@ class _SignupPageState extends State<SignupPage> {
                       hintText: "이메일 인증 코드",
                       obscureText: false,
                       controller: authNumCountroller,
+                      enabled: isEmailVerified,
                       width: 270,
                     ),
                     SizedBox(
                       width: 20,
                     ),
                     CustomFilledButton(
-                      callback: (){}, 
+                      callback: () async {
+                        EmailResponse? response =  await authNumCheck(context, emailCountroller.text, authNumCountroller.text);
+                        setState(() {
+                          if(response!=null) {
+                            isEmailVerified = response.isVerified;
+                          }
+                        });
+                      }, 
                       text: "인증", 
                       fontsize: 16.0,
                       width: 70,
@@ -260,7 +278,20 @@ class _SignupPageState extends State<SignupPage> {
                   height: 20,
                 ),
                 CustomFilledButton(
-                  callback: (){}, 
+                  callback: (){
+                    final month = monthSelected.toString().padLeft(2, '0');
+                    final day = daySelected.toString().padLeft(2,'0');
+                    final request = {
+                      "email" : emailCountroller.text,
+                      "password" : passwordCountroller.text,
+                      "name" : nameCountroller.text,
+                      "nickname" : nicknameController.text,
+                      "gender" : genderSelected,
+                      "phoneNumber" : phoneNumberController.text,
+                      "birthday" : "$yearSelected-$month-$day"
+                    };
+                    signup(context, request);
+                  }, 
                   text: "회원 가입", 
                   fontsize: 17.0,
                   width: 361,
