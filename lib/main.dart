@@ -7,6 +7,7 @@ import 'package:bookmarkfront/screens/search_email_result_page.dart';
 import 'package:bookmarkfront/screens/search_password_page.dart';
 import 'package:bookmarkfront/screens/search_password_result_page.dart';
 import 'package:bookmarkfront/screens/signup_page.dart';
+import 'package:bookmarkfront/screens/splash_page.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -36,7 +37,8 @@ class MyApp extends StatelessWidget {
         fontFamily: 'NotoSansKR',
       ),
       routes: {
-        '/': (context) => LoginPage(),
+        '/': (context) => SplashPage(),
+        '/login': (context) => LoginPage(),
         '/search/email': (context) => SearchEmailPage(), 
         '/search/email/result': (context) => SearchEmailResultPage(),
         '/search/password' : (context) => SearchPasswordPage(),

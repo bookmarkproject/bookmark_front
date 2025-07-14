@@ -51,7 +51,6 @@ Future<bool> isDuplicateNickname(BuildContext context, String nickname) async {
   }
 }
 
-
 Future<void> login(BuildContext context, Map<String,dynamic> request) async {
   final url = Uri.parse("$base_url/login");
   final headers = {"Content-Type": "application/json"};
@@ -64,7 +63,7 @@ Future<void> login(BuildContext context, Map<String,dynamic> request) async {
       showSnack(context, "로그인에 성공했습니다.");
       final member = Member.fromJson(jsonDecode(response.body));
       context.read<MemberProvider>().setMember(member);
-      context.read<AuthProvider>().saveToken(member.accessToken);
+      context.read<AuthProvider>().saveToken(jsonDecode(response.body)['accessToken']);
       Navigator.pushNamed(context, "/home");
     } else {
       showSnack(context, errorMessage(response),isError: true);

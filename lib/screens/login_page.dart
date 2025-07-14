@@ -1,4 +1,6 @@
 import 'package:bookmarkfront/api/auth_api.dart';
+import 'package:bookmarkfront/api/member_api.dart';
+import 'package:bookmarkfront/provider/auth_provider.dart';
 import 'package:bookmarkfront/utils/global_util.dart';
 import 'package:bookmarkfront/widgets/login_buttons.dart';
 import 'package:bookmarkfront/widgets/login_textfield.dart';

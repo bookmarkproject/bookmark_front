@@ -6,7 +6,6 @@ class Member {
   final String gender;
   final String role;
   final String birthday;
-  final String accessToken;
   final String? profileImage;
   
   Member({
@@ -17,7 +16,6 @@ class Member {
     required this.gender,
     required this.role,
     required this.birthday,
-    required this.accessToken,
     this.profileImage
   });
 
@@ -30,7 +28,6 @@ class Member {
       gender: json['gender'],
       role: json['role'],
       birthday: json['birthday'],
-      accessToken: json['accessToken'],
       profileImage: json['profileImage']
     );
   }

@@ -18,7 +18,7 @@ class Home extends StatelessWidget {
           child: SafeArea(
             child: Column(
               children: [
-                Text("${member!.nickname}님 환영합니다!"),
+                Text("${member!.nickname}님 환영합니다.")
               ],
             ),
           ),
