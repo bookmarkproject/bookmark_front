@@ -25,6 +25,28 @@ Future<void> signup(BuildContext context, Map<String,dynamic> request) async {
   }
 }
 
+Future<bool> isDuplicateNickname(BuildContext context, String nickname) async {
+  final url = Uri.parse("$base_url/duplication/nickname?nickname=$nickname");
+  final headers = {"Content-Type": "application/json"};
+  
+  try {
+    final response = await http.get(url, headers: headers);
+
+    if (response.statusCode == 200) {
+      showSnack(context, "사용 가능한 닉네임입니다.");
+      return false;
+    } else {
+      showSnack(context, errorMessage(response),isError: true);
+      return true;
+    }
+    
+  } catch (e) {
+    print('알 수 없는 오류 발생: $e');
+    return true;
+  }
+}
+
+
 String errorMessage(response) {
   return jsonDecode(response.body)["message"];
 }

@@ -37,14 +37,19 @@ class _SignupPageState extends State<SignupPage> {
   final List<int> monthItems = List.generate(12, (index) => index + 1);
   List<int> dayItems = [];
 
-  bool isPiChecked = false;
-
   bool isEmailVerified = false;
-
+  bool isNicknameDuplicated = true;
+  bool isPiChecked = false;
+  
   @override
   void initState() {
     super.initState();
     _updateDays();
+    nicknameController.addListener(() {
+    setState(() {
+      isNicknameDuplicated = true;
+    });
+  });
   }
 
   @override
@@ -132,6 +137,15 @@ class _SignupPageState extends State<SignupPage> {
                   obscureText: true,
                   controller: passwordCountroller,
                   width: 361,
+                ),
+                const SizedBox(
+                  height: 3,
+                ),
+                const Text(
+                  '비밀번호는 영어, 숫자, 특수문자(!@#\$%^&*())를 1개 이상 포함하여\n 8~16자로 입력 해야합니다.',
+                  style: TextStyle(
+                    fontSize: 10,
+                  ),
                 ),
                 const SizedBox(
                   height: 15,
@@ -246,7 +260,12 @@ class _SignupPageState extends State<SignupPage> {
                       width: 20,
                     ),
                     CustomFilledButton(
-                      callback: (){}, 
+                      callback: () async{
+                        bool isDuplicated = await isDuplicateNickname(context, nicknameController.text);
+                        setState(() {
+                          isNicknameDuplicated = isDuplicated;
+                        });
+                      }, 
                       text: "중복확인", 
                       fontsize: 14.0,
                       width: 90,
@@ -279,6 +298,9 @@ class _SignupPageState extends State<SignupPage> {
                 ),
                 CustomFilledButton(
                   callback: (){
+                    if(!_isValidForSingup()) {
+                      return;
+                    }
                     final month = monthSelected.toString().padLeft(2, '0');
                     final day = daySelected.toString().padLeft(2,'0');
                     final request = {
@@ -315,14 +337,43 @@ class _SignupPageState extends State<SignupPage> {
   }
 
   void _updateDays() {
-  final daysInMonth = DateTime(yearSelected!, monthSelected! + 1, 0).day;
-  dayItems = List.generate(daysInMonth, (index) => index + 1);
+    final daysInMonth = DateTime(yearSelected!, monthSelected! + 1, 0).day;
+    dayItems = List.generate(daysInMonth, (index) => index + 1);
 
-  // 현재 선택된 일이 유효하지 않으면 조정
-  if (daySelected! > daysInMonth) {
-    daySelected = daysInMonth;
+    // 현재 선택된 일이 유효하지 않으면 조정
+    if (daySelected! > daysInMonth) {
+      daySelected = daysInMonth;
+    }
   }
-}
+
+  bool _isValidForSingup() {
+    if(nameCountroller.text.isEmpty) {
+      showSnack(context,"이름을 입력해주세요.",isError: true);
+      return false;
+    } else if (!isEmailVerified) {
+      showSnack(context,"이메일 인증을 진행해주세요.",isError: true);
+      return false;
+    } else if (passwordCountroller.text.isEmpty) {
+      showSnack(context,"비밀번호를 입력해주세요.",isError: true);
+      return false;
+    } else if (passwordCountroller.text != passwordCheckCountroller.text) {
+      showSnack(context,"비밀번호와 비밀번호 확인이 같지 않습니다.",isError: true);
+      return false;
+    } else if (phoneNumberController.text.isEmpty) {
+      showSnack(context,"휴대폰 번호를 입력해주세요.",isError: true);
+      return false;
+    } else if (nicknameController.text.isEmpty) {
+      showSnack(context,"닉네임을 입력해주세요.",isError: true);
+      return false;
+    } else if (isNicknameDuplicated){
+      showSnack(context,"닉네임 중복체크를 진행해주세요.",isError: true);
+      return false;
+    } else if (!isPiChecked) {
+      showSnack(context,"개인정보 수집에 동의해주세요.",isError: true);
+      return false;
+    }
+    return true;
+  }
 }
 
 
