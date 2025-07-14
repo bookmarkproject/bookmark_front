@@ -1,3 +1,4 @@
+import 'package:bookmarkfront/provider/auth_provider.dart';
 import 'package:bookmarkfront/provider/member_provider.dart';
 import 'package:bookmarkfront/screens/home.dart';
 import 'package:bookmarkfront/screens/login_page.dart';
@@ -11,10 +12,13 @@ import 'package:provider/provider.dart';
 
 void main() {
   runApp(
-    ChangeNotifierProvider(
-      create: (_) => MemberProvider(),
-      child: MyApp()
-    )
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => AuthProvider()),
+        ChangeNotifierProvider(create: (_) => MemberProvider()),
+      ],
+      child: MyApp(),
+    ),
   );
 }
 

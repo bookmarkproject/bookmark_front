@@ -1,5 +1,6 @@
 import 'package:bookmarkfront/models/email_response.dart';
 import 'package:bookmarkfront/models/member.dart';
+import 'package:bookmarkfront/provider/auth_provider.dart';
 import 'package:bookmarkfront/provider/member_provider.dart';
 import 'package:bookmarkfront/widgets/custom_snackbar.dart';
 import 'package:flutter/material.dart';
@@ -63,6 +64,7 @@ Future<void> login(BuildContext context, Map<String,dynamic> request) async {
       showSnack(context, "로그인에 성공했습니다.");
       final member = Member.fromJson(jsonDecode(response.body));
       context.read<MemberProvider>().setMember(member);
+      context.read<AuthProvider>().saveToken(member.accessToken);
       Navigator.pushNamed(context, "/home");
     } else {
       showSnack(context, errorMessage(response),isError: true);

@@ -1,3 +1,4 @@
+import 'package:bookmarkfront/provider/auth_provider.dart';
 import 'package:bookmarkfront/provider/member_provider.dart';
 import 'package:bookmarkfront/widgets/app_bars.dart';
 import 'package:flutter/material.dart';
