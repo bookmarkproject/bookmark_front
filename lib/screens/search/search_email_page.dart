@@ -1,3 +1,5 @@
+import 'package:bookmarkfront/api/auth_api.dart';
+import 'package:bookmarkfront/utils/global_util.dart';
 import 'package:bookmarkfront/widgets/app_bars.dart';
 import 'package:bookmarkfront/widgets/custom_filled_button.dart';
 import 'package:bookmarkfront/widgets/custom_text_field.dart';
@@ -20,7 +22,7 @@ class _SearchEmailPageState extends State<SearchEmailPage> {
     return Scaffold(
       appBar: CustomAppBar(text: "이메일 찾기"),
       body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 20.0),
+        padding: getMainPadding(),
         child: SafeArea(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -54,8 +56,19 @@ class _SearchEmailPageState extends State<SearchEmailPage> {
                 height: 50,
               ),
               CustomFilledButton(
-                callback: (){
-                  Navigator.pushNamed(context, '/search/email/result');
+                callback: ()async {
+                  if(isEmptyField(context, nameCountroller, "이름")) return;
+                  if(isEmptyField(context, phoneNumberController, "휴대폰 번호")) return;
+
+                  final request = {
+                    "name" : nameCountroller.text,
+                    "phoneNumber" : phoneNumberController.text
+                  };
+
+                  final email = await findEmail(context, request);
+                  if(email!=null) {
+                    Navigator.pushNamed(context, '/search/email/result',arguments: email);
+                  } 
                 }, 
                 text: "이메일 찾기", 
                 fontsize: 17.0,

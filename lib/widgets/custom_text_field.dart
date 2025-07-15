@@ -10,6 +10,7 @@ class CustomTextField extends StatelessWidget {
     required this.width,
     this.type,
     this.maxLen,
+    this.enabled,
   });
 
   final String hintText;
@@ -20,6 +21,7 @@ class CustomTextField extends StatelessWidget {
   final int? maxLen;
   final TextInputType? type;
 
+  final bool? enabled;
 
   @override
   Widget build(BuildContext context) {
@@ -30,6 +32,7 @@ class CustomTextField extends StatelessWidget {
         keyboardType: type,
         obscureText: obscureText,
         controller: controller,
+        enabled: enabled != null ? !enabled! : true,
         inputFormatters: [
           LengthLimitingTextInputFormatter(maxLen)
         ],
