@@ -58,7 +58,7 @@ class _SignupPageState extends State<SignupPage> {
       appBar: CustomAppBar(text: "회원가입"),
       body: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0,vertical: 20.0),
+          padding: getMainPadding(),
           child: SafeArea(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -347,25 +347,19 @@ class _SignupPageState extends State<SignupPage> {
   }
 
   bool _isValidForSingup() {
-    if(nameCountroller.text.isEmpty) {
-      showSnack(context,"이름을 입력해주세요.",isError: true);
-      return false;
-    } else if (!isEmailVerified) {
+    if(isEmptyField(context, nameCountroller, "이름")) return false;
+    else if (!isEmailVerified) {
       showSnack(context,"이메일 인증을 진행해주세요.",isError: true);
       return false;
-    } else if (passwordCountroller.text.isEmpty) {
-      showSnack(context,"비밀번호를 입력해주세요.",isError: true);
-      return false;
-    } else if (passwordCountroller.text != passwordCheckCountroller.text) {
+    } 
+    else if (isEmptyField(context, passwordCheckCountroller, "비밀번호")) return false;
+    else if (passwordCountroller.text != passwordCheckCountroller.text) {
       showSnack(context,"비밀번호와 비밀번호 확인이 같지 않습니다.",isError: true);
       return false;
-    } else if (phoneNumberController.text.isEmpty) {
-      showSnack(context,"휴대폰 번호를 입력해주세요.",isError: true);
-      return false;
-    } else if (nicknameController.text.isEmpty) {
-      showSnack(context,"닉네임을 입력해주세요.",isError: true);
-      return false;
-    } else if (isNicknameDuplicated){
+    } 
+    else if (isEmptyField(context, phoneNumberController, "휴대폰 번호")) return false;
+    else if (isEmptyField(context,nicknameController, "닉네임")) return false;
+    else if (isNicknameDuplicated){
       showSnack(context,"닉네임 중복체크를 진행해주세요.",isError: true);
       return false;
     } else if (!isPiChecked) {

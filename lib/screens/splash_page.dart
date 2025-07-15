@@ -19,7 +19,7 @@ class _SplashPageState extends State<SplashPage> {
   }
 
   Future<void> _initAuth() async {
-  final authProvider = context.read<AuthProvider>();
+    final authProvider = context.read<AuthProvider>();
     await authProvider.loadToken();
 
     if (authProvider.accessToken != null) {

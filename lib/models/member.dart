@@ -34,9 +34,12 @@ class Member {
 
   Map<String, dynamic> toJson() => {
     'id': id,
+    'email' : email,
     'name': name,
     'nickname': nickname,
+    'gender' :gender,
     'role': role,
-    
+    'birthday' : birthday,
+    'profileImage' : profileImage
   };
 }

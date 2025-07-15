@@ -1,3 +1,4 @@
+import 'package:bookmarkfront/utils/global_util.dart';
 import 'package:bookmarkfront/widgets/app_bars.dart';
 import 'package:bookmarkfront/widgets/custom_filled_button.dart';
 import 'package:flutter/material.dart';
@@ -11,17 +12,15 @@ class SearchEmailResultPage extends StatefulWidget {
 
 class _SearchEmailResultPageState extends State<SearchEmailResultPage> {
   
-  String maskedEmail = "";
-  
   @override
   Widget build(BuildContext context) {
     final email = ModalRoute.of(context)!.settings.arguments as String;
-    maskedEmail = _maskEmail(email);
+    String maskedEmail = _maskEmail(email);
 
     return Scaffold(
       appBar: CustomAppBar(text: "이메일 찾기"),
       body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16.0,vertical: 20.0),
+        padding: getMainPadding(),
         child: SafeArea(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -69,6 +68,6 @@ class _SearchEmailResultPageState extends State<SearchEmailResultPage> {
     String maskedEmail = "${email.substring(0,2)}****${email.substring(atIdx)}";
     return maskedEmail;
   }
-  }
+}
 
   

@@ -1,6 +1,4 @@
 import 'package:bookmarkfront/api/auth_api.dart';
-import 'package:bookmarkfront/api/member_api.dart';
-import 'package:bookmarkfront/provider/auth_provider.dart';
 import 'package:bookmarkfront/utils/global_util.dart';
 import 'package:bookmarkfront/widgets/login_buttons.dart';
 import 'package:bookmarkfront/widgets/login_textfield.dart';
@@ -23,7 +21,7 @@ class _LoginPageState extends State<LoginPage> {
     return Scaffold(
       body: Center(
         child: Padding(
-          padding: const EdgeInsets.all(16.0),
+          padding: getMainPadding(),
           child: SafeArea(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -78,6 +76,9 @@ class _LoginPageState extends State<LoginPage> {
                 ),
                 LoginButtons(
                   callback: () async{
+                    if(isEmptyField(context,emailController,"이메일")) return;
+                    if(isEmptyField(context, passwordController, "비밀번호")) return;
+
                     final request = {
                       "email" : emailController.text,
                       "password" : passwordController.text

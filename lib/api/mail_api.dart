@@ -1,3 +1,4 @@
+import 'package:bookmarkfront/api/utils/api_basic_util.dart';
 import 'package:bookmarkfront/models/email_response.dart';
 import 'package:bookmarkfront/widgets/custom_snackbar.dart';
 import 'package:flutter/material.dart';
@@ -51,8 +52,4 @@ Future<EmailResponse?> authNumCheck(BuildContext context,String email,String aut
     print('알 수 없는 오류 발생: $e');
     return null;
   }
-}
-
-String errorMessage(response) {
-  return jsonDecode(response.body)["message"];
 }

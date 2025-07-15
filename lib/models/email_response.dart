@@ -1,6 +1,6 @@
 class EmailResponse {
   final bool isVerified;
-  final String? passwordChangeToken; // null 허용
+  final String? passwordChangeToken; 
 
   EmailResponse({
     required this.isVerified,

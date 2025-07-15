@@ -1,5 +1,6 @@
 import 'package:bookmarkfront/api/auth_api.dart';
 import 'package:bookmarkfront/provider/auth_provider.dart';
+import 'package:bookmarkfront/utils/global_util.dart';
 import 'package:bookmarkfront/widgets/app_bars.dart';
 import 'package:bookmarkfront/widgets/custom_filled_button.dart';
 import 'package:bookmarkfront/widgets/custom_snackbar.dart';
@@ -36,14 +37,14 @@ class SearchPasswordResultPage extends StatelessWidget {
                 width: 361,
               ),
               const SizedBox(
-                  height: 3,
+                height: 3,
+              ),
+              const Text(
+                '비밀번호는 영어, 숫자, 특수문자(!@#\$%^&*())를 1개 이상 포함하여\n 8~16자로 입력 해야합니다.',
+                style: TextStyle(
+                  fontSize: 10,
                 ),
-                const Text(
-                  '비밀번호는 영어, 숫자, 특수문자(!@#\$%^&*())를 1개 이상 포함하여\n 8~16자로 입력 해야합니다.',
-                  style: TextStyle(
-                    fontSize: 10,
-                  ),
-                ),
+              ),
               const SizedBox(
                 height: 15,
               ),
@@ -58,13 +59,8 @@ class SearchPasswordResultPage extends StatelessWidget {
               ),
               CustomFilledButton(
                 callback: ()async {
-                  if (passwordCountroller.text.isEmpty) {
-                    showSnack(context, "비밀번호를 입력해주세요.",isError: true);
-                    return;
-                  } else if (passwordCheckCountroller.text.isEmpty) {
-                    showSnack(context, "비밀번호 확인을 입력해주세요.",isError: true);
-                    return;
-                  } else if (passwordCountroller.text != passwordCheckCountroller.text) {
+                  if (isEmptyField(context, passwordCountroller, "비밀번호")) return;
+                  else if (passwordCountroller.text != passwordCheckCountroller.text) {
                     showSnack(context, "비밀번호와 비밀번호 확인이 다릅니다.",isError: true);
                     return;
                   }

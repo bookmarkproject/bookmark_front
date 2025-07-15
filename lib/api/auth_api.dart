@@ -1,4 +1,4 @@
-import 'package:bookmarkfront/models/email_response.dart';
+import 'package:bookmarkfront/api/utils/api_basic_util.dart';
 import 'package:bookmarkfront/models/member.dart';
 import 'package:bookmarkfront/provider/auth_provider.dart';
 import 'package:bookmarkfront/provider/member_provider.dart';
@@ -21,7 +21,7 @@ Future<void> signup(BuildContext context, Map<String,dynamic> request) async {
 
     if (response.statusCode == 201) {
       showSnack(context, "회원가입에 성공했습니다.");
-      Navigator.pushNamed(context, "/");
+      Navigator.pushNamed(context, "/login");
     } else {
       showSnack(context, errorMessage(response),isError: true);
     }
@@ -60,10 +60,10 @@ Future<void> login(BuildContext context, Map<String,dynamic> request) async {
     final response = await http.post(url, headers: headers, body: body);
 
     if (response.statusCode == 200) {
-      showSnack(context, "로그인에 성공했습니다.");
       final member = Member.fromJson(jsonDecode(response.body));
       context.read<MemberProvider>().setMember(member);
       context.read<AuthProvider>().saveToken(jsonDecode(response.body)['accessToken']);
+      showSnack(context, "로그인에 성공했습니다.");
       Navigator.pushNamed(context, "/home");
     } else {
       showSnack(context, errorMessage(response),isError: true);
@@ -113,8 +113,4 @@ Future<bool> changePassword(BuildContext context, Map<String,dynamic> request) a
     print('알 수 없는 오류 발생: $e');
     return false;
   }
-}
-
-String errorMessage(response) {
-  return jsonDecode(response.body)["message"];
 }

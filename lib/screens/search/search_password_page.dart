@@ -1,6 +1,7 @@
 import 'package:bookmarkfront/api/mail_api.dart';
 import 'package:bookmarkfront/models/email_response.dart';
 import 'package:bookmarkfront/provider/auth_provider.dart';
+import 'package:bookmarkfront/utils/global_util.dart';
 import 'package:bookmarkfront/widgets/app_bars.dart';
 import 'package:bookmarkfront/widgets/custom_filled_button.dart';
 import 'package:bookmarkfront/widgets/custom_snackbar.dart';
@@ -28,7 +29,7 @@ class _SearchPasswordPageState extends State<SearchPasswordPage> {
     return Scaffold(
       appBar: CustomAppBar(text: "비밀번호 찾기"),
       body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16.0,vertical: 20.0),
+        padding: getMainPadding(),
         child: SafeArea(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -106,10 +107,8 @@ class _SearchPasswordPageState extends State<SearchPasswordPage> {
               ),
               CustomFilledButton(
                 callback: ()async{
-                  if (nameCountroller.text.isEmpty) {
-                    showSnack(context, "이름을 입력해주세요.",isError: true);
-                    return;
-                  } else if (!isEmailVerified) {
+                  if (isEmptyField(context, nameCountroller, "이름")) return;
+                  else if (!isEmailVerified) {
                     showSnack(context, "이메일 인증을 진행해주세요.",isError: true);
                     return;
                   }
