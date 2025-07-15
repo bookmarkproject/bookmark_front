@@ -28,6 +28,7 @@ class _SplashPageState extends State<SplashPage> {
       if(isValid) {
         Navigator.pushReplacementNamed(context, '/home');
       } else {
+        Provider.of<AuthProvider>(context,listen: false).clearToken();
         Navigator.pushReplacementNamed(context, '/login');
       }
     } else {

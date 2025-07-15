@@ -11,17 +11,13 @@ class SearchEmailResultPage extends StatefulWidget {
 
 class _SearchEmailResultPageState extends State<SearchEmailResultPage> {
   
-  final String searchedEmail = "joyuri123@gmail.com";
   String maskedEmail = "";
   
   @override
-  void initState() {
-    super.initState();
-    maskedEmail = _maskEmail(searchedEmail);
-  }
-
-  @override
   Widget build(BuildContext context) {
+    final email = ModalRoute.of(context)!.settings.arguments as String;
+    maskedEmail = _maskEmail(email);
+
     return Scaffold(
       appBar: CustomAppBar(text: "이메일 찾기"),
       body: Padding(

@@ -27,12 +27,13 @@ Future<void> sendMail(BuildContext context,String email) async {
 }
 
 
-Future<EmailResponse?> authNumCheck(BuildContext context,String email,String authNum) async {
+Future<EmailResponse?> authNumCheck(BuildContext context,String email,String authNum,{String? passwordChange}) async {
   final url = Uri.parse("$base_url/check");
   final headers = {"Content-Type": "application/json"};
   final body = jsonEncode({
     "email" : email,
-    "authNum": authNum
+    "authNum": authNum,
+    "type" : passwordChange
   });
 
   try {

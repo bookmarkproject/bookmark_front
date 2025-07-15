@@ -13,7 +13,7 @@ class Home extends StatelessWidget {
   Widget build(BuildContext context) {
     final member = Provider.of<MemberProvider>(context).member;
     return Scaffold(
-      appBar: CustomAppBar(text: "Main Home"),
+      appBar: CustomAppBar(text: "Main Home",backButton : false),
       body: Center(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16.0,vertical: 20.0),

@@ -73,6 +73,48 @@ Future<void> login(BuildContext context, Map<String,dynamic> request) async {
   }
 }
 
+
+Future<String?> findEmail(BuildContext context, Map<String,dynamic> request) async {
+  final url = Uri.parse("$base_url/find/email");
+  final headers = {"Content-Type": "application/json"};
+  final body = jsonEncode(request);
+
+  try {
+    final response = await http.post(url, headers: headers, body: body);
+
+    if (response.statusCode == 200) {
+      return jsonDecode(response.body)["email"];
+    } else {
+      showSnack(context, errorMessage(response),isError: true);
+      return null;
+    }
+  } catch (e) {
+    print('알 수 없는 오류 발생: $e');
+    return null;
+  }
+}
+
+Future<bool> changePassword(BuildContext context, Map<String,dynamic> request) async {
+  final url = Uri.parse("$base_url/change/password");
+  final headers = {"Content-Type": "application/json"};
+  final body = jsonEncode(request);
+
+  try {
+    final response = await http.post(url, headers: headers, body: body);
+
+    if (response.statusCode == 204) {
+      showSnack(context, "비밀번호 변경이 완료되었습니다.");
+      return true;
+    } else {
+      showSnack(context, errorMessage(response),isError: true);
+      return false;
+    }
+  } catch (e) {
+    print('알 수 없는 오류 발생: $e');
+    return false;
+  }
+}
+
 String errorMessage(response) {
   return jsonDecode(response.body)["message"];
 }

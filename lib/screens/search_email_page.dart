@@ -1,5 +1,7 @@
+import 'package:bookmarkfront/api/auth_api.dart';
 import 'package:bookmarkfront/widgets/app_bars.dart';
 import 'package:bookmarkfront/widgets/custom_filled_button.dart';
+import 'package:bookmarkfront/widgets/custom_snackbar.dart';
 import 'package:bookmarkfront/widgets/custom_text_field.dart';
 import 'package:flutter/material.dart';
 
@@ -54,8 +56,23 @@ class _SearchEmailPageState extends State<SearchEmailPage> {
                 height: 50,
               ),
               CustomFilledButton(
-                callback: (){
-                  Navigator.pushNamed(context, '/search/email/result');
+                callback: ()async {
+                  if(nameCountroller.text.isEmpty) {
+                    showSnack(context, "이름을 입력해주세요.",isError: true);
+                    return;
+                  } else if(phoneNumberController.text.isEmpty) {
+                    showSnack(context, "휴대폰 번호를 입력해주세요.",isError: true);
+                    return;
+                  }
+
+                  final request = {
+                    "name" : nameCountroller.text,
+                    "phoneNumber" : phoneNumberController.text
+                  };
+                  final email = await findEmail(context, request);
+                  if(email!=null) {
+                    Navigator.pushNamed(context, '/search/email/result',arguments: email);
+                  } 
                 }, 
                 text: "이메일 찾기", 
                 fontsize: 17.0,
