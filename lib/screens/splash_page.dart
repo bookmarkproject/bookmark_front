@@ -21,9 +21,10 @@ class _SplashPageState extends State<SplashPage> {
   Future<void> _initAuth() async {
     final authProvider = context.read<AuthProvider>();
     await authProvider.loadToken();
-
+    await authProvider.loadRefreshToken();
+    
     if (authProvider.accessToken != null) {
-      bool isValid = await getMemberInfo(context, authProvider.accessToken!);
+      bool isValid = await getMemberInfo(context);
       print(isValid);
       if(isValid) {
         Navigator.pushReplacementNamed(context, '/home');

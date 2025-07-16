@@ -4,11 +4,13 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 class AuthProvider with ChangeNotifier {
   String? _accessToken;
   String? _changePasswordToken;
+  String? _refreshToken; 
 
   final FlutterSecureStorage _storage = FlutterSecureStorage();
 
   String? get accessToken => _accessToken;
   String? get chagePasswordToken => _changePasswordToken;
+  String? get refreshToken => _refreshToken;
 
   Future<void> loadToken() async {
     _accessToken = await _storage.read(key: 'accessToken');
@@ -41,6 +43,24 @@ class AuthProvider with ChangeNotifier {
   Future<void> clearChangePasswordToken() async {
     _changePasswordToken = null;
     await _storage.delete(key: 'changePasswordToken');
+    notifyListeners();
+  }
+
+
+  Future<void> loadRefreshToken() async {
+    _refreshToken = await _storage.read(key: 'refreshToken');
+    notifyListeners();
+  }
+
+  Future<void> saveRefreshToken(String token) async {
+    _refreshToken = token;
+    await _storage.write(key: 'refreshToken', value: token);
+    notifyListeners();
+  }
+
+  Future<void> clearRefreshToken() async {
+    _refreshToken = null;
+    await _storage.delete(key: 'refreshToken');
     notifyListeners();
   }
 }

@@ -63,6 +63,7 @@ Future<void> login(BuildContext context, Map<String,dynamic> request) async {
       final member = Member.fromJson(jsonDecode(response.body));
       context.read<MemberProvider>().setMember(member);
       context.read<AuthProvider>().saveToken(jsonDecode(response.body)['accessToken']);
+      context.read<AuthProvider>().saveRefreshToken(jsonDecode(response.body)['refreshToken']);
       showSnack(context, "로그인에 성공했습니다.");
       Navigator.pushNamed(context, "/home");
     } else {
@@ -114,3 +115,28 @@ Future<bool> changePassword(BuildContext context, Map<String,dynamic> request) a
     return false;
   }
 }
+
+Future<Map<String,String>?> refreshRequestToServer(BuildContext context, Map<String,dynamic> request) async {
+  final url = Uri.parse("$base_url/refresh/token");
+  final headers = {"Content-Type": "application/json"};
+  final body = jsonEncode(request);
+
+  try {
+    final response = await http.post(url, headers: headers, body: body);
+    if (response.statusCode == 200) {
+      final data = jsonDecode(response.body);
+      print("토큰 발급 완료 : ${data["accessToken"]}");
+      return {
+        "accessToken":data["accessToken"],
+        "refreshToken":data["refreshToken"]
+      };
+    } else {
+      return null;
+    }
+  } catch (e) {
+    print('알 수 없는 오류 발생: $e');
+    return null;
+  }
+}
+
+
