@@ -9,7 +9,7 @@ import 'dart:convert';
 
 import 'package:provider/provider.dart';
 
-String base_url = "http://localhost:8081/auth";
+String base_url = "${getHost()}/auth";
 
 Future<void> signup(BuildContext context, Map<String,dynamic> request) async {
   final url = Uri.parse("$base_url/signup");

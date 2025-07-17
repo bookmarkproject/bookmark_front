@@ -9,7 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 
-String base_url = "http://localhost:8081/member";
+String base_url = "${getHost()}/member";
 
 Future<bool> getMemberInfo(BuildContext context) async {
   try {

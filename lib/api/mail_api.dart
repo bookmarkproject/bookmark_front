@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
-String base_url = "http://localhost:8081/mail";
+String base_url = "${getHost()}/mail";
 
 Future<void> sendMail(BuildContext context,String email) async {
   final url = Uri.parse("$base_url/send");

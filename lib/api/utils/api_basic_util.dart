@@ -14,6 +14,10 @@ Map<String,String> getHeadersIncludeAuth(BuildContext context) {
   };
 }
 
+String getHost() {
+  return "http://localhost:8081";
+}
+
 Uri toPasredUrl(String url) {
   return Uri.parse(url);
 }
