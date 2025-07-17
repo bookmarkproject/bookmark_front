@@ -116,7 +116,7 @@ Future<bool> changePassword(BuildContext context, Map<String,dynamic> request) a
   }
 }
 
-Future<Map<String,String>?> refreshRequestToServer(BuildContext context, Map<String,dynamic> request) async {
+Future<Map<String,String>?> refreshRequestToServer(Map<String,dynamic> request) async {
   final url = Uri.parse("$base_url/refresh/token");
   final headers = {"Content-Type": "application/json"};
   final body = jsonEncode(request);

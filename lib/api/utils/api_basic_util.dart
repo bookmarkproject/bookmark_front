@@ -22,7 +22,7 @@ Future<void> refresh(BuildContext context) async{
   String? token = Provider.of<AuthProvider>(context,listen: false).refreshToken;
   final request = {"refreshToken":token};
   print(token);
-  final newTokens = await refreshRequestToServer(context, request);
+  final newTokens = await refreshRequestToServer(request);
   if(newTokens!=null) {
     await Provider.of<AuthProvider>(context,listen: false).saveToken(newTokens["accessToken"]!);
     await Provider.of<AuthProvider>(context,listen: false).saveRefreshToken(newTokens["refreshToken"]!);
@@ -33,7 +33,7 @@ Future<void> refresh(BuildContext context) async{
     await Provider.of<AuthProvider>(context,listen: false).clearRefreshToken();
     showSnack(context, "다시 로그인 해주세요.",isError: true);
     print("현재 저장된 토큰 : ${Provider.of<AuthProvider>(context,listen: false).accessToken}");
-    Navigator.pushNamed(context, '/login');
+    Navigator.pushReplacementNamed(context, '/login');
   }
 }
 
