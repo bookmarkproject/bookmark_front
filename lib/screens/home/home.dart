@@ -4,6 +4,7 @@ import 'package:bookmarkfront/provider/auth_provider.dart';
 import 'package:bookmarkfront/provider/member_provider.dart';
 import 'package:bookmarkfront/utils/global_util.dart';
 import 'package:bookmarkfront/widgets/app_bars.dart';
+import 'package:bookmarkfront/widgets/bottom_navigation_bar.dart';
 import 'package:bookmarkfront/widgets/custom_filled_button.dart';
 import 'package:bookmarkfront/widgets/custom_snackbar.dart';
 import 'package:flutter/material.dart';
@@ -46,6 +47,7 @@ class _HomeState extends State<Home> {
     final member = Provider.of<MemberProvider>(context).member;
     return Scaffold(
       appBar: CustomAppBar(text: "책갈피",backButton : false),
+      bottomNavigationBar: getBottomBar(context, 0),
       body: Center(
         child: Padding(
           padding: getMainPadding(),
@@ -298,14 +300,6 @@ class _HomeState extends State<Home> {
                 )
               ),
             ],
-          ),
-        ),
-        InkWell(
-          onTap: (){
-            //
-          },
-          child: Icon(
-            Icons.chevron_right,     
           ),
         ),
       ],
