@@ -1,5 +1,6 @@
 import 'package:bookmarkfront/provider/auth_provider.dart';
 import 'package:bookmarkfront/provider/member_provider.dart';
+import 'package:bookmarkfront/screens/book/book_search_page.dart';
 import 'package:bookmarkfront/screens/home/home.dart';
 import 'package:bookmarkfront/screens/auth/login_page.dart';
 import 'package:bookmarkfront/screens/search/search_email_page.dart';
@@ -45,6 +46,7 @@ class MyApp extends StatelessWidget {
         '/search/password/result' : (context) => SearchPasswordResultPage(),
         '/signup' : (context) => SignupPage(),
         '/home' : (context) => Home(),
+        '/book/search' : (context) => BookSearchPage(),
       } 
     );
   }
