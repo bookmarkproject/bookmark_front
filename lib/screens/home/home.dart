@@ -1,3 +1,5 @@
+import 'package:bookmarkfront/api/book_api.dart';
+import 'package:bookmarkfront/models/book.dart';
 import 'package:bookmarkfront/provider/auth_provider.dart';
 import 'package:bookmarkfront/provider/member_provider.dart';
 import 'package:bookmarkfront/utils/global_util.dart';
@@ -16,17 +18,28 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   
-  List<Map<String, dynamic>> books = [
-    {"url":"https://search1.kakaocdn.net/thumb/R120x174.q85/?fname=http%3A%2F%2Ft1.daumcdn.net%2Flbook%2Fimage%2F540854%3Ftimestamp%3D20250424113358","title":"오만과 편견","author":"제인 오스틴"},
-    {"url":"https://search.pstatic.net/sunny/?src=https%3A%2F%2Fcdn.crowdpic.net%2Fdetail-thumb%2Fthumb_d_E95A5836D7FAFA21B6C841753BC7CB3E.jpg&type=sc960_832","title":"오만과 편견","author":"제인 오스틴"},
-    {"url":"https://search.pstatic.net/sunny/?src=https%3A%2F%2Fcdn.crowdpic.net%2Fdetail-thumb%2Fthumb_d_E95A5836D7FAFA21B6C841753BC7CB3E.jpg&type=sc960_832","title":"오만과 편견","author":"제인 오스틴"}
-  ];
+  List<Book> bestSellers = [];
 
-  List<Map<String, dynamic>> recordingBooks = [
-    {"url":"https://search1.kakaocdn.net/thumb/R120x174.q85/?fname=http%3A%2F%2Ft1.daumcdn.net%2Flbook%2Fimage%2F540854%3Ftimestamp%3D20250424113358","title":"오만과 편견","author":"제인 오스틴","pageNow":153,"pageTotal":361,},
-    {"url":"https://search1.kakaocdn.net/thumb/R120x174.q85/?fname=http%3A%2F%2Ft1.daumcdn.net%2Flbook%2Fimage%2F540854%3Ftimestamp%3D20250424113358","title":"오만과 편견","author":"제인 오스틴","pageNow":153,"pageTotal":361,},
-    {"url":"https://search1.kakaocdn.net/thumb/R120x174.q85/?fname=http%3A%2F%2Ft1.daumcdn.net%2Flbook%2Fimage%2F540854%3Ftimestamp%3D20250424113358","title":"오만과 편견","author":"제인 오스틴","pageNow":153,"pageTotal":361,},
-  ];
+  List<Book> latestBooks = [];
+
+  List<Book> recordingBooks = [];
+
+  @override
+  void initState() {
+    super.initState();
+    _initFetchData();
+  }
+
+  void _initFetchData() async{
+    List<Book> bestSellerResponse = await getBestSellers(context);
+    setState(() {
+      bestSellers = bestSellerResponse;
+    });
+    List<Book> latestSellerResponse = await getLatest(context);
+    setState(() {
+      latestBooks = latestSellerResponse;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -44,8 +57,8 @@ class _HomeState extends State<Home> {
                   Column(
                     children: [
                       _titleAndSubTitle(
-                        "이달의 도서",
-                        "이달의 추천 도서입니다."
+                        "이달의 베스트셀러",
+                        "이달의 베스트셀러 도서입니다."
                       ),
                       SizedBox(
                         height: 20,
@@ -54,17 +67,43 @@ class _HomeState extends State<Home> {
                         height: 205,
                         child: ListView.builder(
                           scrollDirection: Axis.horizontal,  // 가로 스크롤
-                          itemCount: books.length,
+                          itemCount: bestSellers.length,
                           itemBuilder: (context, index) {
                             return Padding(
-                              padding: EdgeInsets.only(right: index == books.length - 1 ? 0 : 14),
+                              padding: EdgeInsets.only(right: index == bestSellers.length - 1 ? 0 : 14),
                               child: ClipRRect(
                                 borderRadius: BorderRadius.circular(14),
-                                child: _bookLayout(
-                                  books[index]["url"], 
-                                  books[index]["title"], 
-                                  books[index]["author"],
-                                ),
+                                child: _bookLayout(bestSellers[index]),
+                              ),
+                            );
+                          }
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(
+                    height: 30,
+                  ),
+                  Column(
+                    children: [
+                      _titleAndSubTitle(
+                        "신작 도서",
+                        "이달의 신작 도서입니다."
+                      ),
+                      SizedBox(
+                        height: 20,
+                      ),
+                      SizedBox(
+                        height: 205,
+                        child: ListView.builder(
+                          scrollDirection: Axis.horizontal,  // 가로 스크롤
+                          itemCount: latestBooks.length,
+                          itemBuilder: (context, index) {
+                            return Padding(
+                              padding: EdgeInsets.only(right: index == latestBooks.length - 1 ? 0 : 14),
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(14),
+                                child: _bookLayout(latestBooks[index]),
                               ),
                             );
                           }
@@ -139,11 +178,7 @@ class _HomeState extends State<Home> {
     return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          _bookLayout(
-            recordingBook["url"],
-            recordingBook["title"], 
-            recordingBook["author"],
-          ),
+          _bookLayout(recordingBook),
           SizedBox(
             height: 6,
           ),
@@ -199,7 +234,7 @@ class _HomeState extends State<Home> {
       );
   }
 
-  InkWell _bookLayout(url,title,author) {
+  InkWell _bookLayout(Book book) {
     return InkWell(
       onTap: (){
         
@@ -210,7 +245,7 @@ class _HomeState extends State<Home> {
           ClipRRect(
             borderRadius: BorderRadius.circular(14),
             child: Image.network(
-              url,
+              book.imageUrl,
               width: 160,
               height: 160,
               fit: BoxFit.cover,
@@ -220,7 +255,7 @@ class _HomeState extends State<Home> {
             height: 4,
           ),
           Text(
-            title,
+            book.title.length >= 8 ? "${book.title.substring(0,8)}..." : book.title,
             style: TextStyle(
               fontSize: 15.0,
               letterSpacing: 15.0 * -0.02,
@@ -229,7 +264,7 @@ class _HomeState extends State<Home> {
             ),
           ),
           Text(
-            author,
+            book.author.length >= 8 ? "${book.author.substring(0,8)}..." : book.author,
             style: TextStyle(
               fontSize: 13.0,
               letterSpacing: 15.0 * -0.02,
