@@ -266,7 +266,7 @@ class _HomeState extends State<Home> {
           ClipRRect(
             borderRadius: BorderRadius.circular(14),
             child: Image.network(
-              book.imageUrl,
+              _formatUrlPicture(book.imageUrl),
               width: 160,
               height: 160,
               fit: BoxFit.cover,
@@ -325,6 +325,10 @@ class _HomeState extends State<Home> {
     );
   }
   
+  String _formatUrlPicture(String url) {
+    return url.replaceAll("coversum", "cover500");
+  }
+
   String _calPercent(int num1,int num2) {
     return ((num1/num2)*100).toStringAsFixed(2);
   }
