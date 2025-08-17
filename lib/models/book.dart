@@ -1,13 +1,13 @@
 import 'dart:ffi';
 
 class Book {
-    final Long? id;
+    final int? id;
     final String isbn;
     final String title;
     final String contents;
     final String author;
     final double? rating;
-    final Long? page;
+    final int? page;
     final String imageUrl;
     final String publisher;
     final String publishDate;

@@ -1,4 +1,6 @@
+import 'package:bookmarkfront/api/book_record_api.dart';
 import 'package:bookmarkfront/models/book.dart';
+import 'package:bookmarkfront/models/book_record.dart';
 import 'package:bookmarkfront/utils/global_util.dart';
 import 'package:bookmarkfront/widgets/app_bars.dart';
 import 'package:bookmarkfront/widgets/custom_filled_button.dart';
@@ -80,8 +82,20 @@ class BookDetailPage extends StatelessWidget {
                   height: 30,
                 ),
                 CustomFilledButton(
-                  callback: (){
-        
+                  callback: () async{
+                    final request = {
+                      "isbn" : book.isbn,
+                      "title" : book.title,
+                      "author" : book.author,
+                      "contents" : book.contents,
+                      "imageUrl" : _formatUrlPicture(book.imageUrl),
+                      "publisher" : book.publisher,
+                      "publishDate" : book.publishDate
+                    };
+                    BookRecord? bookRecord = await saveBookRecord(context, request);
+                    if (bookRecord!=null){
+                      print(bookRecord.book.title);
+                    }
                   }, 
                   text: "기록하기", 
                   fontsize: 15.0, 
