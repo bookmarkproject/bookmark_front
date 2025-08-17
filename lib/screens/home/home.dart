@@ -1,5 +1,7 @@
 import 'package:bookmarkfront/api/book_api.dart';
+import 'package:bookmarkfront/api/book_record_api.dart';
 import 'package:bookmarkfront/models/book.dart';
+import 'package:bookmarkfront/models/book_record.dart';
 import 'package:bookmarkfront/provider/auth_provider.dart';
 import 'package:bookmarkfront/provider/member_provider.dart';
 import 'package:bookmarkfront/screens/book/book_detail_page.dart';
@@ -24,7 +26,7 @@ class _HomeState extends State<Home> {
 
   List<Book> latestBooks = [];
 
-  List<Book> recordingBooks = [];
+  List<BookRecord> recordingBooks = [];
 
   @override
   void initState() {
@@ -36,6 +38,10 @@ class _HomeState extends State<Home> {
     List<Book> bestSellerResponse = await getBestSellers(context);
     setState(() {
       bestSellers = bestSellerResponse;
+    });
+    List<BookRecord> bookRecordsResponse = await getMyBookRecord(context);
+    setState(() {
+      recordingBooks = bookRecordsResponse;
     });
     List<Book> latestSellerResponse = await getLatest(context);
     setState(() {
@@ -177,18 +183,18 @@ class _HomeState extends State<Home> {
     );
   }
 
-  Column _recordingBookLayout(recordingBook) {
+  Column _recordingBookLayout(BookRecord recordingBook) {
     return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          _bookLayout(recordingBook),
+          _bookLayout(recordingBook.book),
           SizedBox(
             height: 6,
           ),
           SizedBox(
             width: 160,
             child: LinearProgressIndicator(
-              value: recordingBook["pageNow"] / recordingBook["pageTotal"],  
+              value: recordingBook.page / recordingBook.book.page!,  
               minHeight: 12,
               backgroundColor: Colors.grey[150],
               valueColor: AlwaysStoppedAnimation<Color>(getMainColor()),
@@ -199,7 +205,7 @@ class _HomeState extends State<Home> {
             height: 3,
           ),
           Text(
-            "${recordingBook["pageNow"]} / ${recordingBook["pageTotal"]} ${recordingBook["pageNow"]}/${recordingBook["pageTotal"]}",
+            "${recordingBook.page} / ${recordingBook.book.page}  ${_calPercent(recordingBook.page, recordingBook.book.page!)}%",
             style: TextStyle(
               fontSize: 8.0,
               fontWeight: FontWeight.normal,
@@ -222,7 +228,14 @@ class _HomeState extends State<Home> {
                 width: 10,
               ),
               CustomFilledButton(
-                callback: (){}, 
+                callback: (){
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => BookDetailPage(book : recordingBook.book),
+                    )
+                  );
+                }, 
                 text: "책 정보 보기", 
                 fontsize: 9.0, 
                 width: 75,
@@ -310,5 +323,9 @@ class _HomeState extends State<Home> {
         ),
       ],
     );
+  }
+  
+  String _calPercent(int num1,int num2) {
+    return ((num1/num2)*100).toStringAsFixed(2);
   }
 }

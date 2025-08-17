@@ -17,8 +17,12 @@ Future<BookRecord?> saveBookRecord(BuildContext context, Map<String,dynamic> req
     final response = await http.post(url, headers: headers,body: body);
 
     if (response.statusCode == 200) {
+      showSnack(context, "기록되었습니다.");
       BookRecord bookRecord = BookRecord.fromJson(jsonDecode(response.body));
       return bookRecord;
+    } else if (response.statusCode == 400) {
+      showSnack(context, "기록할 수 없는 책입니다." ,isError: true);
+      return null;
     } else {
       showSnack(context, errorMessage(response),isError: true);
       return null;
@@ -26,5 +30,34 @@ Future<BookRecord?> saveBookRecord(BuildContext context, Map<String,dynamic> req
   } catch (e) {
     print('알 수 없는 오류 발생: $e');
     return null;
+  }
+}
+
+
+Future<List<BookRecord>> getMyBookRecord(BuildContext context) async {
+  
+  List<BookRecord> result = [];
+
+  final url = Uri.parse("$base_url/me");
+  final headers = getHeadersIncludeAuth(context);
+
+  print(headers);
+
+  try {
+    final response = await http.get(url, headers: headers);
+
+    if (response.statusCode == 200) {
+      final bookRecords = jsonDecode(response.body);
+      for (var bookRecord in bookRecords) {
+        result.add(BookRecord.fromJson(bookRecord));
+      }
+      return result;
+    } else {
+      showSnack(context, errorMessage(response),isError: true);
+      return [];
+    }
+  } catch (e) {
+    print('알 수 없는 오류 발생: $e');
+    return [];
   }
 }
