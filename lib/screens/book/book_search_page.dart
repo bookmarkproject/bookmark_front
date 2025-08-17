@@ -1,7 +1,9 @@
 import 'package:bookmarkfront/api/book_api.dart';
 import 'package:bookmarkfront/models/book.dart';
+import 'package:bookmarkfront/screens/book/book_detail_page.dart';
 import 'package:bookmarkfront/utils/global_util.dart';
 import 'package:bookmarkfront/widgets/app_bars.dart';
+import 'package:bookmarkfront/widgets/custom_filled_button.dart';
 import 'package:bookmarkfront/widgets/custom_text_field.dart';
 import 'package:flutter/material.dart';
 
@@ -17,6 +19,8 @@ class _BookSearchPageState extends State<BookSearchPage> {
   final queryController = TextEditingController();
   
   List<Book> searchedBooks = [];
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -80,73 +84,83 @@ class _BookSearchPageState extends State<BookSearchPage> {
     );
   }
 
-  Row _bookLayout(Book book,int index) {
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        ClipRRect(
-          borderRadius: BorderRadius.circular(6),
-          child: Image.network(
-            book.imageUrl,
-            width: 103,
-            height: 152,
-            fit: BoxFit.cover,
-          ),
-        ),
-        SizedBox(
-          width: 15,
-        ),
-        Center(
-          child: SizedBox(
-            width: 200,
-            height: 160,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  "${index+1}",
-                  style: TextStyle(
-                    fontSize: 17,
-                    fontWeight: FontWeight.bold,
-                    color: Color.fromRGBO(0, 0, 0, 0.5),
-                  ),
-                ),
-                Text(
-                  book.title.length >= 14 ? "${book.title.substring(0,14)}..." : book.title,
-                  style: TextStyle(
-                    fontSize: 15.0,
-                    letterSpacing: 15.0 * -0.02,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black,
-                  ),
-                ),
-                SizedBox(
-                  height: 5,
-                ),
-                Text(
-                  book.author.length >= 8 ? "${book.author.substring(0,8)}..." : book.author,
-                  style: TextStyle(
-                    fontSize: 12.0,
-                    letterSpacing: 12.0 * -0.02,
-                    color: Color.fromRGBO(23, 20, 46, 0.62),
-                  ),
-                ),
-                SizedBox(
-                  height: 5,
-                ),
-                Text(
-                  book.contents.length >= 70 ? "${book.contents.substring(0,70)}..." : book.contents,
-                  style: TextStyle(
-                    fontSize: 13.0,
-                    letterSpacing: 13.0 * -0.02,
-                    color: Color.fromRGBO(23, 20, 46, 0.62),
-                  ),
-                ),
-              ],
+  InkWell _bookLayout(Book book,int index) {
+    return InkWell(
+      onTap: (){
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => BookDetailPage(book : book),
+          )
+        );
+      },
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          ClipRRect(
+            borderRadius: BorderRadius.circular(6),
+            child: Image.network(
+              book.imageUrl,
+              width: 103,
+              height: 152,
+              fit: BoxFit.cover,
             ),
           ),
-        )
-      ],
+          SizedBox(
+            width: 15,
+          ),
+          Center(
+            child: SizedBox(
+              width: 200,
+              height: 160,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    "${index+1}",
+                    style: TextStyle(
+                      fontSize: 17,
+                      fontWeight: FontWeight.bold,
+                      color: Color.fromRGBO(0, 0, 0, 0.5),
+                    ),
+                  ),
+                  Text(
+                    book.title.length >= 14 ? "${book.title.substring(0,14)}..." : book.title,
+                    style: TextStyle(
+                      fontSize: 15.0,
+                      letterSpacing: 15.0 * -0.02,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black,
+                    ),
+                  ),
+                  SizedBox(
+                    height: 5,
+                  ),
+                  Text(
+                    book.author.length >= 8 ? "${book.author.substring(0,8)}..." : book.author,
+                    style: TextStyle(
+                      fontSize: 12.0,
+                      letterSpacing: 12.0 * -0.02,
+                      color: Color.fromRGBO(23, 20, 46, 0.62),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 5,
+                  ),
+                  Text(
+                    book.contents.length >= 70 ? "${book.contents.substring(0,70)}..." : book.contents,
+                    style: TextStyle(
+                      fontSize: 13.0,
+                      letterSpacing: 13.0 * -0.02,
+                      color: Color.fromRGBO(23, 20, 46, 0.62),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          )
+        ],
+      ),
     );
   }
 }

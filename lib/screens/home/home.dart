@@ -2,6 +2,7 @@ import 'package:bookmarkfront/api/book_api.dart';
 import 'package:bookmarkfront/models/book.dart';
 import 'package:bookmarkfront/provider/auth_provider.dart';
 import 'package:bookmarkfront/provider/member_provider.dart';
+import 'package:bookmarkfront/screens/book/book_detail_page.dart';
 import 'package:bookmarkfront/utils/global_util.dart';
 import 'package:bookmarkfront/widgets/app_bars.dart';
 import 'package:bookmarkfront/widgets/bottom_navigation_bar.dart';
@@ -239,7 +240,12 @@ class _HomeState extends State<Home> {
   InkWell _bookLayout(Book book) {
     return InkWell(
       onTap: (){
-        
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => BookDetailPage(book : book),
+          )
+        );
       },
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
