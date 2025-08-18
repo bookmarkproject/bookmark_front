@@ -24,7 +24,7 @@ class BookDetailPage extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                 ClipRRect(
+                ClipRRect(
                   borderRadius: BorderRadius.circular(10),
                   child: Image.network(
                     _formatUrlPicture(book.imageUrl),

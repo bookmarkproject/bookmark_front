@@ -6,6 +6,7 @@ import 'package:bookmarkfront/provider/auth_provider.dart';
 import 'package:bookmarkfront/provider/book_record_provider.dart';
 import 'package:bookmarkfront/provider/member_provider.dart';
 import 'package:bookmarkfront/screens/book/book_detail_page.dart';
+import 'package:bookmarkfront/screens/bookrecord/book_record_page.dart';
 import 'package:bookmarkfront/utils/global_util.dart';
 import 'package:bookmarkfront/widgets/app_bars.dart';
 import 'package:bookmarkfront/widgets/bottom_navigation_bar.dart';
@@ -235,7 +236,14 @@ class _HomeState extends State<Home> {
           Row(
             children: [
               CustomFilledButton(
-                callback: (){}, 
+                callback: (){
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => BookRecordPage(bookRecord: recordingBook),
+                    )
+                  );
+                }, 
                 text: "계속 읽기", 
                 fontsize: 9.0, 
                 width: 75,
