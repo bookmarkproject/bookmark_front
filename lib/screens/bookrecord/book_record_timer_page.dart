@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:bookmarkfront/models/book_record.dart';
+import 'package:bookmarkfront/screens/bookrecord/book_record_write_page.dart';
 import 'package:bookmarkfront/utils/global_util.dart';
 import 'package:bookmarkfront/widgets/app_bars.dart';
 import 'package:bookmarkfront/widgets/custom_filled_button.dart';
@@ -95,7 +96,14 @@ class _BookRecordTimerPageState extends State<BookRecordTimerPage> {
                 ),
                 _isStart ?
                   CustomFilledButton(
-                    callback: _stopTimer,
+                    callback: (){
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => BookRecordWritePage(bookRecord: widget.bookRecord, seconds: _seconds),
+                        )
+                      );
+                    },
                     text: "독서 그만 하기",
                     fontsize: 13.0, 
                     width: 360,
