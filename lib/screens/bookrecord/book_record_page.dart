@@ -1,5 +1,6 @@
 import 'package:bookmarkfront/models/book_log.dart';
 import 'package:bookmarkfront/models/book_record.dart';
+import 'package:bookmarkfront/screens/bookrecord/book_record_timer_page.dart';
 import 'package:bookmarkfront/utils/global_util.dart';
 import 'package:bookmarkfront/widgets/app_bars.dart';
 import 'package:bookmarkfront/widgets/custom_filled_button.dart';
@@ -166,7 +167,14 @@ class _BookRecordPageState extends State<BookRecordPage> {
                     height: 30,
                   ),
                   CustomFilledButton(
-                    callback: (){}, 
+                    callback: (){
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => BookRecordTimerPage(bookRecord: widget.bookRecord)
+                        ),
+                      );
+                    }, 
                     text: "계속 읽기",
                     fontColor: Colors.white, 
                     fontsize: 13.0, 
@@ -212,6 +220,7 @@ class _BookRecordPageState extends State<BookRecordPage> {
 
   InkWell _bookLogLayout(BookLog bookLog) {
     return InkWell(
+      onTap: (){},
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

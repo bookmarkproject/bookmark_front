@@ -3,6 +3,7 @@ import 'package:bookmarkfront/provider/book_record_provider.dart';
 import 'package:bookmarkfront/provider/member_provider.dart';
 import 'package:bookmarkfront/screens/book/book_search_page.dart';
 import 'package:bookmarkfront/screens/bookrecord/book_record_list_page.dart';
+import 'package:bookmarkfront/screens/bookrecord/book_record_timer_page.dart';
 import 'package:bookmarkfront/screens/home/home.dart';
 import 'package:bookmarkfront/screens/auth/login_page.dart';
 import 'package:bookmarkfront/screens/search/search_email_page.dart';
@@ -51,7 +52,7 @@ class MyApp extends StatelessWidget {
         '/home' : (context) => Home(),
         
         '/book/search' : (context) => BookSearchPage(),
-        '/book/record' : (context) => BookRecordListPage()
+        '/book/record' : (context) => BookRecordListPage(),
       } 
     );
   }
