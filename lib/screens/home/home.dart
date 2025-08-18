@@ -3,6 +3,7 @@ import 'package:bookmarkfront/api/book_record_api.dart';
 import 'package:bookmarkfront/models/book.dart';
 import 'package:bookmarkfront/models/book_record.dart';
 import 'package:bookmarkfront/provider/auth_provider.dart';
+import 'package:bookmarkfront/provider/book_record_provider.dart';
 import 'package:bookmarkfront/provider/member_provider.dart';
 import 'package:bookmarkfront/screens/book/book_detail_page.dart';
 import 'package:bookmarkfront/utils/global_util.dart';
@@ -39,10 +40,10 @@ class _HomeState extends State<Home> {
     setState(() {
       bestSellers = bestSellerResponse;
     });
+
     List<BookRecord> bookRecordsResponse = await getMyBookRecord(context);
-    setState(() {
-      recordingBooks = bookRecordsResponse;
-    });
+    Provider.of<BookRecordProvider>(context,listen: false).setBookRecords(bookRecordsResponse);
+
     List<Book> latestSellerResponse = await getLatest(context);
     setState(() {
       latestBooks = latestSellerResponse;
@@ -52,6 +53,7 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     final member = Provider.of<MemberProvider>(context).member;
+    recordingBooks = Provider.of<BookRecordProvider>(context,listen: true).bookRecords;
     return Scaffold(
       appBar: CustomAppBar(text: "책갈피",backButton : false),
       bottomNavigationBar: getBottomBar(context, 0),

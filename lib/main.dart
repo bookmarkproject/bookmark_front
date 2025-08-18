@@ -1,4 +1,5 @@
 import 'package:bookmarkfront/provider/auth_provider.dart';
+import 'package:bookmarkfront/provider/book_record_provider.dart';
 import 'package:bookmarkfront/provider/member_provider.dart';
 import 'package:bookmarkfront/screens/book/book_search_page.dart';
 import 'package:bookmarkfront/screens/home/home.dart';
@@ -18,6 +19,7 @@ void main() {
       providers: [
         ChangeNotifierProvider(create: (_) => AuthProvider()),
         ChangeNotifierProvider(create: (_) => MemberProvider()),
+        ChangeNotifierProvider(create: (_) => BookRecordProvider()),
       ],
       child: MyApp(),
     ),

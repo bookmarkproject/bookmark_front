@@ -1,9 +1,12 @@
 import 'package:bookmarkfront/api/utils/api_basic_util.dart';
 import 'package:bookmarkfront/models/book_record.dart';
+import 'package:bookmarkfront/provider/book_record_provider.dart';
 import 'package:bookmarkfront/widgets/custom_snackbar.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+
+import 'package:provider/provider.dart';
 
 
 String base_url = "${getHost()}/book/record";
@@ -19,6 +22,7 @@ Future<BookRecord?> saveBookRecord(BuildContext context, Map<String,dynamic> req
     if (response.statusCode == 200) {
       showSnack(context, "기록되었습니다.");
       BookRecord bookRecord = BookRecord.fromJson(jsonDecode(response.body));
+      Provider.of<BookRecordProvider>(context,listen: false).appendBookRecords(bookRecord);
       return bookRecord;
     } else if (response.statusCode == 400) {
       showSnack(context, "기록할 수 없는 책입니다." ,isError: true);
@@ -51,6 +55,7 @@ Future<List<BookRecord>> getMyBookRecord(BuildContext context) async {
       for (var bookRecord in bookRecords) {
         result.add(BookRecord.fromJson(bookRecord));
       }
+      Provider.of<BookRecordProvider>(context,listen: false).setBookRecords(result);
       return result;
     } else {
       showSnack(context, errorMessage(response),isError: true);
