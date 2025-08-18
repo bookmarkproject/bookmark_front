@@ -84,7 +84,14 @@ class _HomeState extends State<Home> {
                               padding: EdgeInsets.only(right: index == bestSellers.length - 1 ? 0 : 14),
                               child: ClipRRect(
                                 borderRadius: BorderRadius.circular(14),
-                                child: _bookLayout(bestSellers[index]),
+                                child: _bookLayout(bestSellers[index],(){
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => BookDetailPage(book : bestSellers[index]),
+                                    )
+                                  );
+                                }),
                               ),
                             );
                           }
@@ -114,7 +121,14 @@ class _HomeState extends State<Home> {
                               padding: EdgeInsets.only(right: index == latestBooks.length - 1 ? 0 : 14),
                               child: ClipRRect(
                                 borderRadius: BorderRadius.circular(14),
-                                child: _bookLayout(latestBooks[index]),
+                                child: _bookLayout(latestBooks[index],(){
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => BookDetailPage(book : latestBooks[index]),
+                                    )
+                                  );
+                                }),
                               ),
                             );
                           }
@@ -189,7 +203,9 @@ class _HomeState extends State<Home> {
     return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          _bookLayout(recordingBook.book),
+          _bookLayout(recordingBook.book,(){
+
+          }),
           SizedBox(
             height: 6,
           ),
@@ -252,16 +268,9 @@ class _HomeState extends State<Home> {
       );
   }
 
-  InkWell _bookLayout(Book book) {
+  InkWell _bookLayout(Book book,VoidCallback onTap) {
     return InkWell(
-      onTap: (){
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => BookDetailPage(book : book),
-          )
-        );
-      },
+      onTap: onTap,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
