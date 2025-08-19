@@ -3,6 +3,7 @@ import 'package:bookmarkfront/models/book.dart';
 import 'package:bookmarkfront/screens/book/book_detail_page.dart';
 import 'package:bookmarkfront/utils/global_util.dart';
 import 'package:bookmarkfront/widgets/app_bars.dart';
+import 'package:bookmarkfront/widgets/bottom_navigation_bar.dart';
 import 'package:bookmarkfront/widgets/custom_filled_button.dart';
 import 'package:bookmarkfront/widgets/custom_text_field.dart';
 import 'package:flutter/material.dart';
@@ -80,6 +81,9 @@ class _BookSearchPageState extends State<BookSearchPage> {
             ],
           ),
         ),
+      ),
+      bottomNavigationBar: getBottomBar(
+        context, 1
       ),
     );
   }

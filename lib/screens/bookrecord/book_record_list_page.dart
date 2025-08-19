@@ -3,6 +3,7 @@ import 'package:bookmarkfront/provider/book_record_provider.dart';
 import 'package:bookmarkfront/screens/bookrecord/book_record_page.dart';
 import 'package:bookmarkfront/utils/global_util.dart';
 import 'package:bookmarkfront/widgets/app_bars.dart';
+import 'package:bookmarkfront/widgets/bottom_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -45,6 +46,9 @@ class _BookRecordListPageState extends State<BookRecordListPage> {
             ],
           ),
         ),
+      ),
+      bottomNavigationBar: getBottomBar(
+        context, 2
       ),
     );
   }

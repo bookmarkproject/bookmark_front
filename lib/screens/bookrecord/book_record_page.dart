@@ -227,9 +227,6 @@ class _BookRecordPageState extends State<BookRecordPage> {
           ),
         ),
       ),
-      bottomNavigationBar: getBottomBar(
-        context, 2
-      ),
     );
   }
 
