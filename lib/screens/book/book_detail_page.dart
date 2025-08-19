@@ -121,7 +121,12 @@ class _BookDetailPageState extends State<BookDetailPage> {
                     };
                     BookRecord? bookRecord = await saveBookRecord(context, request);
                     if (bookRecord!=null){
-                      print(bookRecord.book.title);
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => BookRecordPage(bookRecord: bookRecord)
+                        )
+                      );
                     }
                   }, 
                   text: "기록하기", 

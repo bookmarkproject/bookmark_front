@@ -55,6 +55,7 @@ class _BookRecordWritePageState extends State<BookRecordWritePage> {
       questionCount,
       (index) => TextEditingController(),
     );
+    _updatePageEnd();
   }
 
   @override

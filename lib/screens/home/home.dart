@@ -167,7 +167,9 @@ class _HomeState extends State<Home> {
                               height: 20,
                             ),
                             CustomFilledButton(
-                              callback: (){}, 
+                              callback: (){
+                                Navigator.pushNamed(context, '/book/search');
+                              }, 
                               text: "책 검색하기", 
                               fontsize: 14.0, 
                               width: 160,
