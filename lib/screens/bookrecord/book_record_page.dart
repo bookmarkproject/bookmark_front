@@ -1,6 +1,7 @@
 import 'package:bookmarkfront/api/book_log_api.dart';
 import 'package:bookmarkfront/models/book_log.dart';
 import 'package:bookmarkfront/models/book_record.dart';
+import 'package:bookmarkfront/screens/booklog/book_log_detail_page.dart';
 import 'package:bookmarkfront/screens/bookrecord/book_record_timer_page.dart';
 import 'package:bookmarkfront/utils/global_util.dart';
 import 'package:bookmarkfront/widgets/app_bars.dart';
@@ -234,7 +235,14 @@ class _BookRecordPageState extends State<BookRecordPage> {
 
   InkWell _bookLogLayout(BookLog bookLog) {
     return InkWell(
-      onTap: (){},
+      onTap: (){
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => BookLogDetailPage(bookRecord: widget.bookRecord,bookLogId: bookLog.id,),
+          )
+        );
+      },
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
