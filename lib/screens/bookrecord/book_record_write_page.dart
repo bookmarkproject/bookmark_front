@@ -1,9 +1,14 @@
+import 'package:bookmarkfront/api/book_log_api.dart';
+import 'package:bookmarkfront/api/book_record_api.dart';
 import 'package:bookmarkfront/models/book_record.dart';
+import 'package:bookmarkfront/provider/book_record_provider.dart';
+import 'package:bookmarkfront/screens/bookrecord/book_record_page.dart';
 import 'package:bookmarkfront/utils/global_util.dart';
 import 'package:bookmarkfront/widgets/app_bars.dart';
 import 'package:bookmarkfront/widgets/custom_dropdown.dart';
 import 'package:bookmarkfront/widgets/custom_filled_button.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class BookRecordWritePage extends StatefulWidget {
   const BookRecordWritePage({super.key,required this.bookRecord,required this.seconds});
@@ -221,7 +226,28 @@ class _BookRecordWritePageState extends State<BookRecordWritePage> {
                     }),
                   ),
                   CustomFilledButton(
-                    callback: (){}, 
+                    callback: ()async{
+                      final request = {
+                        "bookRecordId" : widget.bookRecord.id,
+                        "isOver" : selectedValue == "미완독" ? false : true,
+                        "pageStart" : selectedPageStart,
+                        "pageEnd" : selectedPageEnd,
+                        "readingTime" : widget.seconds ~/ 60,
+                        "questions" : subTitles,
+                        "answers" : List.generate(questionCount, (index) => controllers[index].text),
+                      };
+                      await saveBookLog(context, request);
+                      BookRecord? bookRecord = await getRecordById(context, widget.bookRecord.id);
+                      if(bookRecord!=null) {
+                        Provider.of<BookRecordProvider>(context,listen: false).updateBookRecord(bookRecord);
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => BookRecordPage(bookRecord: bookRecord),
+                          )
+                        );
+                      }
+                    }, 
                     text: "기록하기", 
                     fontsize: 14.0, 
                     width: 360,

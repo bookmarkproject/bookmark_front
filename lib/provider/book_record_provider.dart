@@ -16,6 +16,15 @@ class BookRecordProvider with ChangeNotifier {
     notifyListeners();
   }
 
+  void updateBookRecord(BookRecord bookRecord) {
+    for(int i = 0 ; i<_bookRecords.length; i++ ){
+      if (_bookRecords[i].id == bookRecord.id){
+        _bookRecords[i] = bookRecord;
+      }
+    }
+    notifyListeners();
+  }
+
   void clear() {
     _bookRecords = [];
     notifyListeners();

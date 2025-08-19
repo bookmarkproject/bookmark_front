@@ -66,3 +66,24 @@ Future<List<BookRecord>> getMyBookRecord(BuildContext context) async {
     return [];
   }
 }
+
+Future<BookRecord?> getRecordById(BuildContext context, int id) async {
+
+  final url = Uri.parse("$base_url/$id");
+  final headers = getHeadersIncludeAuth(context);
+
+  try {
+    final response = await http.get(url, headers: headers);
+
+    if (response.statusCode == 200) {
+      BookRecord bookRecord = BookRecord.fromJson(jsonDecode(response.body));
+      return bookRecord;
+    } else {
+      showSnack(context, errorMessage(response),isError: true);
+      return null;
+    }
+  } catch (e) {
+    print('알 수 없는 오류 발생: $e');
+    return null;
+  }
+}
