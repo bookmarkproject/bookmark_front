@@ -97,7 +97,7 @@ class _BookRecordTimerPageState extends State<BookRecordTimerPage> {
                 _isStart ?
                   CustomFilledButton(
                     callback: (){
-                      Navigator.push(
+                      Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(
                           builder: (context) => BookRecordWritePage(bookRecord: widget.bookRecord, seconds: _seconds),
