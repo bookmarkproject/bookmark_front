@@ -1,3 +1,4 @@
+import 'package:bookmarkfront/api/book_log_api.dart';
 import 'package:bookmarkfront/models/book_log.dart';
 import 'package:bookmarkfront/models/book_record.dart';
 import 'package:bookmarkfront/screens/bookrecord/book_record_timer_page.dart';
@@ -18,10 +19,19 @@ class BookRecordPage extends StatefulWidget {
 
 class _BookRecordPageState extends State<BookRecordPage> {
   
-  List<BookLog> bookLogs = [
-    BookLog(id: 1, pageStart: 10, pageEnd: 31, readingTime: 35, readingDate: "2025-06-21"),
-    BookLog(id: 2, pageStart: 32, pageEnd: 89, readingTime: 75, readingDate: "2025-06-22")
-  ];
+  List<BookLog> bookLogs = [];
+
+  @override
+  void initState() {
+    _fetchBookLog();
+  }
+
+  void _fetchBookLog() async{
+    List<BookLog> response = await getBookLog(context, widget.bookRecord.id);
+    setState(() {
+      bookLogs = response;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {

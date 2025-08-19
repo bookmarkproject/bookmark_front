@@ -38,7 +38,7 @@ Future<List<BookLog>> getBookLog(BuildContext context, int id) async {
   
   List<BookLog> result = [];
 
-  final url = Uri.parse("$base_url/me/$id");
+  final url = Uri.parse("$base_url/$id");
   final headers = getHeadersIncludeAuth(context);
 
   try {
