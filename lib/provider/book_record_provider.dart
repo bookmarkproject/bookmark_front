@@ -16,6 +16,15 @@ class BookRecordProvider with ChangeNotifier {
     notifyListeners();
   }
 
+  BookRecord? getByIsbn(String isbn) {
+    for(var bookRecord in _bookRecords) {
+      if (bookRecord.book.isbn == isbn) {
+        return bookRecord;
+      }
+    }
+    return null;
+  }
+
   void updateBookRecord(BookRecord bookRecord) {
     for(int i = 0 ; i<_bookRecords.length; i++ ){
       if (_bookRecords[i].id == bookRecord.id){

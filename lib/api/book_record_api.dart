@@ -87,3 +87,25 @@ Future<BookRecord?> getRecordById(BuildContext context, int id) async {
     return null;
   }
 }
+
+
+Future<bool> isRecordingBook(BuildContext context, String isbn) async {
+
+  final url = Uri.parse("$base_url/recording?isbn=$isbn");
+  final headers = getHeadersIncludeAuth(context);
+
+  try {
+    final response = await http.get(url, headers: headers);
+
+    if (response.statusCode == 200) {
+      bool isRecording = jsonDecode(response.body);
+      return isRecording;
+    } else {
+      showSnack(context, errorMessage(response),isError: true);
+      return false;
+    }
+  } catch (e) {
+    print('알 수 없는 오류 발생: $e');
+    return false;
+  }
+}

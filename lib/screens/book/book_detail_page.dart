@@ -1,15 +1,41 @@
 import 'package:bookmarkfront/api/book_record_api.dart';
 import 'package:bookmarkfront/models/book.dart';
 import 'package:bookmarkfront/models/book_record.dart';
+import 'package:bookmarkfront/provider/book_record_provider.dart';
+import 'package:bookmarkfront/screens/bookrecord/book_record_page.dart';
 import 'package:bookmarkfront/utils/global_util.dart';
 import 'package:bookmarkfront/widgets/app_bars.dart';
 import 'package:bookmarkfront/widgets/custom_filled_button.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
-class BookDetailPage extends StatelessWidget {
+class BookDetailPage extends StatefulWidget {
   const BookDetailPage({super.key,required this.book});
 
   final Book book;
+
+  @override
+  State<BookDetailPage> createState() => _BookDetailPageState();
+}
+
+class _BookDetailPageState extends State<BookDetailPage> {
+ 
+  bool isRecording = false;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    _fetchIsRecording();
+    super.initState();
+  }
+
+  void _fetchIsRecording() async{
+    bool response = await isRecordingBook(context, widget.book.isbn);
+    setState(() {
+      isRecording = response;
+      print(isRecording);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +53,7 @@ class BookDetailPage extends StatelessWidget {
                 ClipRRect(
                   borderRadius: BorderRadius.circular(10),
                   child: Image.network(
-                    _formatUrlPicture(book.imageUrl),
+                    _formatUrlPicture(widget.book.imageUrl),
                     width: 360,
                     height: 360,
                     fit: BoxFit.cover,
@@ -37,7 +63,7 @@ class BookDetailPage extends StatelessWidget {
                   height: 15,
                 ),
                 Text(
-                  book.title,
+                  widget.book.title,
                   style: TextStyle(
                     fontSize: 22.0,
                     letterSpacing: 22.0 * -0.01,
@@ -49,7 +75,7 @@ class BookDetailPage extends StatelessWidget {
                   height: 2,
                 ),
                 Text(
-                  "${book.author} - ${book.publisher} 출판사",
+                  "${widget.book.author} - ${widget.book.publisher} 출판사",
                   style: TextStyle(
                     fontSize: 14.0,
                     letterSpacing: 12.0 * -0.02,
@@ -60,7 +86,7 @@ class BookDetailPage extends StatelessWidget {
                   height: 2,
                 ),
                 Text(
-                  "${_formatPublishDate(book.publishDate)} 출판",
+                  "${_formatPublishDate(widget.book.publishDate)} 출판",
                   style: TextStyle(
                     fontSize: 14.0,
                     letterSpacing: 12.0 * -0.02,
@@ -71,7 +97,7 @@ class BookDetailPage extends StatelessWidget {
                   height: 15,
                 ),
                 Text(
-                  book.contents,
+                  widget.book.contents,
                   style: TextStyle(
                     fontSize: 14.0,
                     letterSpacing: 12.0 * -0.02,
@@ -81,16 +107,17 @@ class BookDetailPage extends StatelessWidget {
                 SizedBox(
                   height: 30,
                 ),
+                isRecording == false ?
                 CustomFilledButton(
                   callback: () async{
                     final request = {
-                      "isbn" : book.isbn,
-                      "title" : book.title,
-                      "author" : book.author,
-                      "contents" : book.contents,
-                      "imageUrl" : _formatUrlPicture(book.imageUrl),
-                      "publisher" : book.publisher,
-                      "publishDate" : book.publishDate
+                      "isbn" : widget.book.isbn,
+                      "title" : widget.book.title,
+                      "author" : widget.book.author,
+                      "contents" : widget.book.contents,
+                      "imageUrl" : _formatUrlPicture(widget.book.imageUrl),
+                      "publisher" : widget.book.publisher,
+                      "publishDate" : widget.book.publishDate
                     };
                     BookRecord? bookRecord = await saveBookRecord(context, request);
                     if (bookRecord!=null){
@@ -100,6 +127,22 @@ class BookDetailPage extends StatelessWidget {
                   text: "기록하기", 
                   fontsize: 15.0, 
                   width: 360,
+                ) : 
+                CustomFilledButton(
+                  callback: () async{
+                    BookRecord? bookRecord = _getBookRecord(widget.book.isbn);
+                    if (bookRecord!=null) {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => BookRecordPage(bookRecord: bookRecord)
+                        )
+                      );
+                    }
+                  }, 
+                  text: "계속 읽기", 
+                  fontsize: 15.0, 
+                  width: 360,
                 )
               ],
             ),
@@ -107,6 +150,10 @@ class BookDetailPage extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  BookRecord? _getBookRecord(String isbn) {
+    return Provider.of<BookRecordProvider>(context,listen: false).getByIsbn(isbn);
   }
 
   String _formatUrlPicture(String url) {
