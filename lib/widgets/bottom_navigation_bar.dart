@@ -15,7 +15,7 @@ BottomNavigationBar getBottomBar(context,currentIndex) {
         Navigator.pushNamed(context, '/book/record');
       }
        if (index == 3) { 
-        Navigator.pushReplacementNamed(context, '/home');
+        Navigator.pushNamed(context, '/mypage');
       }
     },
     items: const [ 
