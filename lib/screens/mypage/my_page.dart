@@ -1,4 +1,5 @@
 import 'package:bookmarkfront/models/member.dart';
+import 'package:bookmarkfront/provider/auth_provider.dart';
 import 'package:bookmarkfront/provider/member_provider.dart';
 import 'package:bookmarkfront/utils/global_util.dart';
 import 'package:bookmarkfront/widgets/app_bars.dart';
@@ -143,7 +144,9 @@ class _MyPageState extends State<MyPage> {
                         children: [
                           SizedBox(height: 25),
                           _menuLayout(
-                            menu['onTap'],
+                            (){ 
+                              _handleMenuTap(menu['title'], context);
+                            },
                             menu['icon'],
                             menu['title'],
                           ),
@@ -188,5 +191,67 @@ class _MyPageState extends State<MyPage> {
         ],
       ),
     );
+  }
+
+  void _handleMenuTap(String title, BuildContext context) async{
+    switch(title) {
+      case "기록 중인 책 보기":
+        Navigator.pushNamed(context, '/book/record');
+        break;
+      case "고객 센터":
+        showModalBottomSheet(
+          context: context,
+          shape: RoundedRectangleBorder(   // 모서리 둥글게
+            borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+          ),
+          isScrollControlled: true, // 내용이 많을 때 스크롤 가능
+          builder: (context) {
+            return Padding(
+              padding: getMainPadding(),
+              child: SizedBox(
+                width: 360,
+                height: 100,
+                child: Column(
+                  mainAxisSize: MainAxisSize.min, // 내용 높이에 맞게
+                  children: [
+                    Row(
+                      children: [
+                        Icon(Icons.mail),
+                        SizedBox(
+                          width: 15,
+                        ),
+                        const Text(
+                          "Gmail : bookmarkapp2025@gmail.com",
+                          style: TextStyle(
+                            fontSize: 15.0,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 16),
+                    ElevatedButton(
+                      onPressed: () => Navigator.pop(context),
+                      child: const Text("닫기"),
+                    ),
+                  ],
+                ),
+              ),
+            );
+          }
+          );
+        break;
+      case "개인 정보 수집 및 이용":
+  
+        break;
+      case "로그아웃":
+        await Provider.of<AuthProvider>(context,listen: false).clearToken();
+        await Provider.of<AuthProvider>(context,listen: false).clearRefreshToken();
+        Navigator.pushReplacementNamed(context, '/');
+        break;
+      case "회원탈퇴":
+  
+        break;
+    }
   }
 }
