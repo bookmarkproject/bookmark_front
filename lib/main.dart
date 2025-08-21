@@ -17,6 +17,8 @@ import 'package:bookmarkfront/api/utils/dio/dio_client.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
+
 void main() {
   runApp(
     MultiProvider(
@@ -40,6 +42,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      navigatorKey: navigatorKey,
       debugShowCheckedModeBanner: false,
       themeMode: ThemeMode.light, 
       initialRoute: '/',

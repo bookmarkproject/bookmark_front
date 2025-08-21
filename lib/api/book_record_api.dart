@@ -31,12 +31,11 @@ Future<BookRecord?> saveBookRecord(BuildContext context, Map<String,dynamic> req
     print('Dio 오류 발생: ${e.response?.statusCode}');
     print("Dio 오류 메시지 : ${e.response?.data['message']}");
 
-    if (e.response?.statusCode == 401) {
-      showSnack(context, "로그인이 필요합니다.", isError: true);
-    } else if (e.response?.statusCode == 400) {
+    if (e.response?.statusCode == 400) {
       showSnack(context, "기록할 수 없는 책입니다." ,isError: true);
       return null;
     } 
+
     return null;
   } catch (e) {
     print('알 수 없는 오류 발생: $e');
@@ -66,9 +65,6 @@ Future<List<BookRecord>> getMyBookRecord(BuildContext context) async {
   } on DioException catch (e) {
     print('Dio 오류 발생: ${e.response?.statusCode}');
 
-    if (e.response?.statusCode == 401) {
-      showSnack(context, "로그인이 필요합니다.", isError: true);
-    } 
     return [];
   } catch (e) {
     print('알 수 없는 오류 발생: $e');

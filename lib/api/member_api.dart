@@ -26,12 +26,9 @@ Future<bool> getMemberInfo(BuildContext context) async {
       return false;
     } 
   } on DioException catch (e) {
-    if (e.response?.statusCode == 401) {
-      // TokenInterceptor에서 Refresh Token 재발급 처리됨
-      showSnack(context, "로그인이 필요합니다.", isError: true);
-    } else {
-      print('알 수 없는 오류 발생: $e');
-    }
+    print('Dio 오류 발생: ${e.response?.statusCode}');
+    print("Dio 오류 메시지 : ${e.response?.data['message']}");
+
     return false;
   } catch (e) {
     print('알 수 없는 오류 발생: $e');

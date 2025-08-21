@@ -30,9 +30,6 @@ Future<List<Book>> getBestSellers(BuildContext context) async {
   } on DioException catch (e) {
     print('Dio 오류 발생: ${e.response?.statusCode}');
 
-    if (e.response?.statusCode == 401) {
-      showSnack(context, "로그인이 필요합니다.", isError: true);
-    } 
     return [];
   } catch (e) {
     print('알 수 없는 오류 발생: $e');
@@ -61,9 +58,6 @@ Future<List<Book>> getLatest(BuildContext context) async {
   } on DioException catch (e) {
     print('Dio 오류 발생: ${e.response?.statusCode}');
 
-    if (e.response?.statusCode == 401) {
-      showSnack(context, "로그인이 필요합니다.", isError: true);
-    } 
     return [];
   } catch (e) {
     print('알 수 없는 오류 발생: $e');
@@ -91,9 +85,6 @@ Future<List<Book>> getBooksByQuery(BuildContext context,String query) async {
   } on DioException catch (e) {
     print('Dio 오류 발생: ${e.response?.statusCode}');
 
-    if (e.response?.statusCode == 401) {
-      showSnack(context, "로그인이 필요합니다.", isError: true);
-    } 
     return [];
   } catch (e) {
     print('알 수 없는 오류 발생: $e');

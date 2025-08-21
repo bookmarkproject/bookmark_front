@@ -1,7 +1,9 @@
 import 'dart:convert';
 
 import 'package:bookmarkfront/api/utils/api_basic_util.dart';
+import 'package:bookmarkfront/main.dart';
 import 'package:bookmarkfront/provider/auth_provider.dart';
+import 'package:bookmarkfront/widgets/custom_snackbar.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -39,7 +41,7 @@ class TokenInterceptor extends Interceptor {
             return handler.resolve(retryResponse);
           } else if (retryResponse.statusCode == 401) {
             print("응답 코드 401에 의한 로그아웃");
-            // 로그아웃 로직
+            navigatorKey.currentState?.pushNamedAndRemoveUntil('/login', (route) => false);
           } else {
             return handler.next(DioException(
               requestOptions: err.requestOptions,
@@ -64,6 +66,8 @@ class TokenInterceptor extends Interceptor {
         data: {"refreshToken": refreshToken},
       );
 
+      print("통과");
+
       if (response.statusCode == 200) {
          final data = response.data;
          await authProvider.saveToken(data['accessToken']);
@@ -73,6 +77,18 @@ class TokenInterceptor extends Interceptor {
       }
     } catch (e) {
       print("리프레쉬 토큰 실패: $e");
+      print("리프레쉬 토큰 실패로 인한 로그아웃");
+      
+      final context = navigatorKey.currentState?.overlay?.context;
+      if (context != null) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text("다시 로그인 해주세요.",style: TextStyle(color: Colors.white)),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+      navigatorKey.currentState?.pushNamedAndRemoveUntil('/login', (route) => false);
     }
   }
 }
