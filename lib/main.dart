@@ -13,7 +13,7 @@ import 'package:bookmarkfront/screens/search/search_password_page.dart';
 import 'package:bookmarkfront/screens/search/search_password_result_page.dart';
 import 'package:bookmarkfront/screens/auth/signup_page.dart';
 import 'package:bookmarkfront/screens/splash_page.dart';
-import 'package:bookmarkfront/utils/dio/dio_client.dart';
+import 'package:bookmarkfront/api/utils/dio/dio_client.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 

@@ -29,16 +29,27 @@ class TokenInterceptor extends Interceptor {
         await refreshToken();
 
         if (authProvider.accessToken != null) {
-          final retryRequest = await dio.fetch(err.requestOptions
+          err.requestOptions.validateStatus = (status) {
+            return true;
+          };
+          final retryResponse = await dio.fetch(err.requestOptions
             ..headers["Authorization"] = "Bearer ${authProvider.accessToken}");
-
-          return handler.resolve(retryRequest);
+          
+          if (retryResponse.statusCode! >= 200 && retryResponse.statusCode! <= 299) {
+            return handler.resolve(retryResponse);
+          } else if (retryResponse.statusCode == 401) {
+            print("응답 코드 401에 의한 로그아웃");
+            // 로그아웃 로직
+          } else {
+            return handler.next(DioException(
+              requestOptions: err.requestOptions,
+              response: retryResponse,
+            ));
+          }
         }
-      } catch (e) {
-        // Refresh Token도 만료 → 로그아웃 처리
-        await authProvider.clearToken();
-        await authProvider.clearRefreshToken();
-        // 예: 로그인 화면으로 이동
+      } catch (e, stack) {
+        print("❌ catch 발생: $e");
+        print(stack);
       }
     }
     return handler.next(err);

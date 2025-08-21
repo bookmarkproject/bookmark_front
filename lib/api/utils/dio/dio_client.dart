@@ -1,6 +1,6 @@
 import 'package:bookmarkfront/api/utils/api_basic_util.dart';
 import 'package:bookmarkfront/provider/auth_provider.dart';
-import 'package:bookmarkfront/utils/dio/token_interseptor.dart';
+import 'package:bookmarkfront/api/utils/dio/token_interseptor.dart';
 import 'package:dio/dio.dart';
 
 class DioClient {
