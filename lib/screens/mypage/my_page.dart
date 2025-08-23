@@ -1,3 +1,4 @@
+import 'package:bookmarkfront/api/member_api.dart';
 import 'package:bookmarkfront/models/member.dart';
 import 'package:bookmarkfront/provider/auth_provider.dart';
 import 'package:bookmarkfront/provider/member_provider.dart';
@@ -145,7 +146,7 @@ class _MyPageState extends State<MyPage> {
                           SizedBox(height: 25),
                           _menuLayout(
                             (){ 
-                              _handleMenuTap(menu['title'], context);
+                              _handleMenuTap(menu['title'], context,member!);
                             },
                             menu['icon'],
                             menu['title'],
@@ -193,7 +194,7 @@ class _MyPageState extends State<MyPage> {
     );
   }
 
-  void _handleMenuTap(String title, BuildContext context) async{
+  void _handleMenuTap(String title, BuildContext context,Member member) async{
     switch(title) {
       case "기록 중인 책 보기":
         Navigator.pushNamed(context, '/book/record');
@@ -250,7 +251,80 @@ class _MyPageState extends State<MyPage> {
         Navigator.pushReplacementNamed(context, '/');
         break;
       case "회원탈퇴":
-  
+        showModalBottomSheet(
+          context: context,
+          shape: RoundedRectangleBorder(   // 모서리 둥글게
+            borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+          ),
+          isScrollControlled: true, // 내용이 많을 때 스크롤 가능
+          builder: (context) {
+            return Padding(
+              padding: getMainPadding(),
+              child: SizedBox(
+                width: 360,
+                height: 130,
+                child: Column(
+                  mainAxisSize: MainAxisSize.min, // 내용 높이에 맞게
+                  children: [
+                    Row(
+                      children: [
+                        Icon(Icons.warning),
+                        SizedBox(
+                          width: 15,
+                        ),
+                        const Text(
+                          "회원 탈퇴시 저장된 모든 데이터가 삭제됩니다.\n회원 탈퇴를 진행하시겠습니까?",
+                          style: TextStyle(
+                            fontSize: 15.0,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 16),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        ElevatedButton(
+                          onPressed: () => Navigator.pop(context),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.grey[200],
+                            foregroundColor: Colors.black,
+                          ),
+                          child: const Text(
+                            "취소",
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                        SizedBox(
+                          width: 20,
+                        ),
+                        ElevatedButton(
+                          onPressed: ()async{
+                            await deleteMemberInfo(context, member.id);
+                          },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: getMainColor(),
+                          ),
+                          child: const Text(
+                            "확인",
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            );
+          }
+        );
         break;
     }
   }

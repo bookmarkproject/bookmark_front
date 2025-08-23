@@ -1,5 +1,7 @@
 import 'dart:convert';
+import 'dart:ffi';
 import 'package:bookmarkfront/api/utils/api_basic_util.dart';
+import 'package:bookmarkfront/main.dart';
 import 'package:bookmarkfront/models/member.dart';
 import 'package:bookmarkfront/provider/auth_provider.dart';
 import 'package:bookmarkfront/provider/member_provider.dart';
@@ -35,3 +37,22 @@ Future<bool> getMemberInfo(BuildContext context) async {
     return false;
   }
 }
+
+Future<void> deleteMemberInfo(BuildContext context,int id) async {
+  try {
+    final dioClient = Provider.of<DioClient>(context,listen: false);
+    final response = await dioClient.dio.delete("$base_url/$id");
+    
+    if (response.statusCode == 204) {
+      navigatorKey.currentState?.pushNamedAndRemoveUntil('/login', (route) => false);
+      showSnack(context, "회원탈퇴가 완료되었습니다.");
+    } 
+  } on DioException catch (e) {
+    print('Dio 오류 발생: ${e.response?.statusCode}');
+    print("Dio 오류 메시지 : ${e.response?.data['message']}");
+
+  } catch (e) {
+    print('알 수 없는 오류 발생: $e');
+  }
+}
+
