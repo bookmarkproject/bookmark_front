@@ -148,8 +148,8 @@ class _BookLogDetailPageState extends State<BookLogDetailPage> {
           child: Text(
             answer,
             style: TextStyle(
-              fontSize: 14.0,
-              letterSpacing: 14.0 * -0.02,
+              fontSize: 12.0,
+              letterSpacing: 12.0 * -0.02,
               color: Color.fromRGBO(23, 20, 46, 0.62),
               fontWeight: FontWeight.bold,
             ),

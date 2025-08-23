@@ -207,6 +207,15 @@ class _BookRecordPageState extends State<BookRecordPage> {
                   SizedBox(
                     height: 25,
                   ),
+                  bookLogs.isEmpty ? 
+                  Text(
+                    "저장된 독서 기록이 없습니다.",
+                    style: TextStyle(
+                      fontSize: 15.0,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  )
+                  :      
                   ListView.builder(
                     shrinkWrap: true,
                     physics: NeverScrollableScrollPhysics(), 

@@ -7,6 +7,7 @@ import 'package:bookmarkfront/utils/global_util.dart';
 import 'package:bookmarkfront/widgets/app_bars.dart';
 import 'package:bookmarkfront/widgets/custom_dropdown.dart';
 import 'package:bookmarkfront/widgets/custom_filled_button.dart';
+import 'package:bookmarkfront/widgets/custom_snackbar.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -237,16 +238,18 @@ class _BookRecordWritePageState extends State<BookRecordWritePage> {
                         "questions" : subTitles,
                         "answers" : List.generate(questionCount, (index) => controllers[index].text),
                       };
-                      await saveBookLog(context, request);
-                      BookRecord? bookRecord = await getRecordById(context, widget.bookRecord.id);
-                      if(bookRecord!=null) {
-                        Provider.of<BookRecordProvider>(context,listen: false).updateBookRecord(bookRecord);
-                        Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => BookRecordPage(bookRecord: bookRecord),
-                          )
-                        );
+                      if(_checkInput()) {
+                        await saveBookLog(context, request);
+                        BookRecord? bookRecord = await getRecordById(context, widget.bookRecord.id);
+                        if(bookRecord!=null) {
+                          Provider.of<BookRecordProvider>(context,listen: false).updateBookRecord(bookRecord);
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => BookRecordPage(bookRecord: bookRecord),
+                            )
+                          );
+                        }
                       }
                     }, 
                     text: "기록하기", 
@@ -262,6 +265,15 @@ class _BookRecordWritePageState extends State<BookRecordWritePage> {
     );
   }
 
+  bool _checkInput() {
+    for(var controllers in controllers) {
+      if (controllers.text.isEmpty) {
+        showSnack(context, "모든 질문에 대한 답변을 해주세요.",isError: true);
+        return false;
+      }
+    }
+    return true;
+  }
 
   Column _QuestionsLayout(title,subTitle,controller,idx) {
     return  Column(
@@ -300,6 +312,10 @@ class _BookRecordWritePageState extends State<BookRecordWritePage> {
             keyboardType: TextInputType.multiline,
             maxLines: null, 
             minLines: 1,    
+            style: const TextStyle(  
+              fontSize: 12,         
+              color: Colors.black,   
+            ),
             controller: controller,
             decoration: InputDecoration(
               border: InputBorder.none,
