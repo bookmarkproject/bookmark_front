@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:bookmarkfront/api/member_api.dart';
+import 'package:bookmarkfront/main.dart';
 import 'package:bookmarkfront/models/member.dart';
 import 'package:bookmarkfront/provider/auth_provider.dart';
 import 'package:bookmarkfront/provider/member_provider.dart';
@@ -6,6 +9,7 @@ import 'package:bookmarkfront/utils/global_util.dart';
 import 'package:bookmarkfront/widgets/app_bars.dart';
 import 'package:bookmarkfront/widgets/bottom_navigation_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 
 class MyPage extends StatefulWidget {
@@ -17,6 +21,11 @@ class MyPage extends StatefulWidget {
 
 class _MyPageState extends State<MyPage> {
   
+  File? _image;
+  String? _imageUrl;
+  final ImagePicker _picker = ImagePicker();
+  bool _isSelected = false;
+
   final List<Map<String,dynamic>> menus = [
     {
       "icon" : Icons.menu_book,
@@ -44,7 +53,31 @@ class _MyPageState extends State<MyPage> {
       "onTap" : (){},
     },
   ];
+
+  @override
+  void initState() {
+    _fetchImageUrl();
+  }
+
+  void _fetchImageUrl() async{
+    String? preSignedUrl = await getPresignedProfileImageUrl(context);
+    setState(() {
+      _imageUrl = preSignedUrl;
+    });
+  }
   
+  Future<void> _pickImage(ImageSource source) async {
+    Navigator.pop(context);
+    final pickedFile = await _picker.pickImage(source: source);
+    if (pickedFile != null) {
+      setState(() {
+        _image = File(pickedFile.path);
+        _isSelected = true;
+      });
+      await _showConfirmDialog(context);
+    } 
+  }
+
   @override
   Widget build(BuildContext context) {
     Member? member = Provider.of<MemberProvider>(context,listen: true).member;
@@ -61,29 +94,48 @@ class _MyPageState extends State<MyPage> {
                 ),
                 Stack(
                   children: [
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(40),
-                      child: Image.network(
-                        '',
-                        width: 80,
-                        height: 80,
-                        fit: BoxFit.cover,
-                        errorBuilder: (context, error, stackTrace) {
-                          return Container(
-                            width: 80,
-                            height: 80,
-                            color: Colors.grey[300],
-                            child: const Icon(Icons.person, size: 60, color: Colors.white),
-                          );
-                        },
-                      ),
-                    ),
+                    _imageLayout(member),
                     Positioned(
                       bottom: 3, 
                       right: 6,  
                       child: GestureDetector(
                         onTap: () {
-                          
+                          showModalBottomSheet(
+                            context: context,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+                            ),
+                            builder: (BuildContext context) {
+                              return SafeArea(
+                                child: Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    ListTile(
+                                      leading: Icon(Icons.photo_library),
+                                      title: Text('갤러리에서 선택'),
+                                      onTap: () async{
+                                        await _pickImage(ImageSource.gallery);
+
+                                      },
+                                    ),
+                                    ListTile(
+                                      leading: Icon(Icons.camera_alt),
+                                      title: Text('카메라 촬영'),
+                                      onTap: () {
+                                        _pickImage(ImageSource.camera);
+
+                                      },
+                                    ),
+                                    ListTile(
+                                      leading: Icon(Icons.close),
+                                      title: Text('취소'),
+                                      onTap: () => Navigator.pop(context),
+                                    ),
+                                  ],
+                                ),
+                              );
+                            },
+                          );
                         },
                         child: Container(
                           padding: const EdgeInsets.all(4),
@@ -194,6 +246,86 @@ class _MyPageState extends State<MyPage> {
     );
   }
 
+  Future<bool?> _showConfirmDialog(BuildContext context) {
+    return showDialog<bool>(
+      context: context,
+      barrierDismissible: false, // false로 설정하면 모달 밖 터치로는 닫히지 않음
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text(
+            '저장하시겠습니까?',
+            style: TextStyle(
+              fontSize: 14.0,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('취소'),
+              onPressed: () {
+                setState(() {
+                  _isSelected = false;
+                  _image = null;
+                });
+                Navigator.of(context).pop(false);
+              },
+            ),
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: getMainColor(), 
+                foregroundColor: Colors.white,
+              ), 
+              child: const Text(
+                '확인',
+                style: TextStyle(
+                  color: Colors.white,
+                ),
+              ),
+              onPressed: () async{
+                await uploadProfileImage(context,_image!);
+                String? key = Provider.of<MemberProvider>(context,listen: false).member!.profileImage;
+                await getPresignedProfileImageUrl(context);
+                Navigator.of(context).pop(true);
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  ClipRRect _imageLayout(Member? member) {
+    if (!_isSelected){
+      return ClipRRect(
+        borderRadius: BorderRadius.circular(40),
+        child: Image.network(
+          _imageUrl ?? '',
+          width: 80,
+          height: 80,
+          fit: BoxFit.cover,
+          errorBuilder: (context, error, stackTrace) {
+            return Container(
+              width: 80,
+              height: 80,
+              color: Colors.grey[300],
+              child: const Icon(Icons.person, size: 60, color: Colors.white),
+            );
+          },
+        ),
+      );
+    } else {
+      return ClipRRect(
+        borderRadius: BorderRadius.circular(40),
+        child: Image.file(
+          _image!,
+          width: 80,
+          height: 80,
+          fit: BoxFit.cover,
+        ),
+      );
+    }
+  }
+
   void _handleMenuTap(String title, BuildContext context,Member member) async{
     switch(title) {
       case "기록 중인 책 보기":
@@ -248,7 +380,7 @@ class _MyPageState extends State<MyPage> {
       case "로그아웃":
         await Provider.of<AuthProvider>(context,listen: false).clearToken();
         await Provider.of<AuthProvider>(context,listen: false).clearRefreshToken();
-        Navigator.pushReplacementNamed(context, '/');
+        navigatorKey.currentState?.pushNamedAndRemoveUntil('/login', (route) => false);
         break;
       case "회원탈퇴":
         showModalBottomSheet(

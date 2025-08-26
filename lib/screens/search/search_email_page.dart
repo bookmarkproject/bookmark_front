@@ -67,7 +67,7 @@ class _SearchEmailPageState extends State<SearchEmailPage> {
 
                   final email = await findEmail(context, request);
                   if(email!=null) {
-                    Navigator.pushNamed(context, '/search/email/result',arguments: email);
+                    Navigator.pushReplacementNamed(context, '/search/email/result',arguments: email);
                   } 
                 }, 
                 text: "이메일 찾기", 

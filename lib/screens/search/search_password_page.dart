@@ -116,7 +116,7 @@ class _SearchPasswordPageState extends State<SearchPasswordPage> {
                   final authProvider = context.read<AuthProvider>();
                   await authProvider.loadChangePasswordToken();
                   showSnack(context, "새 비밀번호를 입력해주세요.");
-                  Navigator.pushNamed(context, '/search/password/result',arguments: authProvider.chagePasswordToken);
+                  Navigator.pushReplacementNamed(context, '/search/password/result',arguments: authProvider.chagePasswordToken);
                 }, 
                 text: "비밀번호 찾기", 
                 fontsize: 17.0,

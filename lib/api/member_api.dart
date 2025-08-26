@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:ffi';
+import 'dart:io';
 import 'package:bookmarkfront/api/utils/api_basic_util.dart';
 import 'package:bookmarkfront/main.dart';
 import 'package:bookmarkfront/models/member.dart';
@@ -55,4 +56,57 @@ Future<void> deleteMemberInfo(BuildContext context,int id) async {
     print('알 수 없는 오류 발생: $e');
   }
 }
+
+
+Future<void> uploadProfileImage(BuildContext context,File image) async {
+  try {
+    final dioClient = Provider.of<DioClient>(context,listen: false);
+    
+    FormData formData = FormData.fromMap({
+      "file": await MultipartFile.fromFile(
+        image.path, 
+        filename: image.path.split('/').last
+      ),
+    });
+
+    final response = await dioClient.dio.post(
+      "$base_url/profile/upload",
+      data: formData,
+    );
+
+    if (response.statusCode == 200) {
+      showSnack(context, "저장되었습니다.");
+      await getMemberInfo(context);
+    } 
+  } on DioException catch (e) {
+    print('Dio 오류 발생: ${e.response?.statusCode}');
+    print("Dio 오류 메시지 : ${e.response?.data['message']}");
+
+  } catch (e) {
+    print('알 수 없는 오류 발생: $e');
+  }
+}
+
+
+Future<String?> getPresignedProfileImageUrl(BuildContext context) async {
+  try {
+    final dioClient = Provider.of<DioClient>(context,listen: false);
+  
+    final response = await dioClient.dio.get("$base_url/profile");
+
+    if (response.statusCode == 200) {
+      print("presignedUrl : ${response.data}");
+      return response.data;
+    } 
+  } on DioException catch (e) {
+    print('Dio 오류 발생: ${e.response?.statusCode}');
+    print("Dio 오류 메시지 : ${e.response?.data['message']}");
+    return null;
+  } catch (e) {
+    print('알 수 없는 오류 발생: $e');
+    return null;
+  }
+  return null;
+}
+
 

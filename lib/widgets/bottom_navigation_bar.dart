@@ -9,13 +9,13 @@ BottomNavigationBar getBottomBar(context,currentIndex) {
         Navigator.pushReplacementNamed(context, '/home');
       }
       if (index == 1) { 
-        Navigator.pushNamed(context, '/book/search');
+        Navigator.pushReplacementNamed(context, '/book/search');
       }
       if (index == 2) { 
-        Navigator.pushNamed(context, '/book/record');
+        Navigator.pushReplacementNamed(context, '/book/record');
       }
        if (index == 3) { 
-        Navigator.pushNamed(context, '/mypage');
+        Navigator.pushReplacementNamed(context, '/mypage');
       }
     },
     items: const [ 

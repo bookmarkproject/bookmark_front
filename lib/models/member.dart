@@ -42,4 +42,16 @@ class Member {
     'birthday' : birthday,
     'profileImage' : profileImage
   };
+
+  void printMember() {
+    print('--- Member Info ---');
+    print('ID: $id');
+    print('Email: $email');
+    print('Name: $name');
+    print('Nickname: $nickname');
+    print('Gender: $gender');
+    print('Role: $role');
+    print('Birthday: $birthday');
+    print('Profile Image: ${profileImage ?? 'No image'}');
+  }
 }

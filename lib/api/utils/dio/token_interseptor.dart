@@ -17,7 +17,7 @@ class TokenInterceptor extends Interceptor {
   @override
   void onRequest(RequestOptions options, RequestInterceptorHandler handler) async {
     final accessToken = authProvider.accessToken;
-
+    print("엑세스 토큰 : $accessToken");
     options.headers["Authorization"] = "Bearer $accessToken";
   
     return handler.next(options);
