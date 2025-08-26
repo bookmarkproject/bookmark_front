@@ -21,9 +21,9 @@ class _SearchEmailPageState extends State<SearchEmailPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppBar(text: "이메일 찾기"),
-      body: Padding(
-        padding: getMainPadding(),
-        child: SafeArea(
+      body: SafeArea(
+        child: Padding(
+          padding: getMainPadding(),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -59,12 +59,12 @@ class _SearchEmailPageState extends State<SearchEmailPage> {
                 callback: ()async {
                   if(isEmptyField(context, nameCountroller, "이름")) return;
                   if(isEmptyField(context, phoneNumberController, "휴대폰 번호")) return;
-
+          
                   final request = {
                     "name" : nameCountroller.text,
                     "phoneNumber" : phoneNumberController.text
                   };
-
+          
                   final email = await findEmail(context, request);
                   if(email!=null) {
                     Navigator.pushReplacementNamed(context, '/search/email/result',arguments: email);

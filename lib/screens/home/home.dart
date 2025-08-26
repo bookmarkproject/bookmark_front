@@ -58,11 +58,11 @@ class _HomeState extends State<Home> {
     return Scaffold(
       appBar: CustomAppBar(text: "책갈피",backButton : false),
       bottomNavigationBar: getBottomBar(context, 0),
-      body: Center(
+      body: SafeArea(
         child: Padding(
           padding: getMainPadding(),
-          child: SafeArea(
-            child: SingleChildScrollView(
+          child: SingleChildScrollView(
+            child: Center(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -149,35 +149,38 @@ class _HomeState extends State<Home> {
                       SizedBox(
                         height: 20,
                       ),
+                      recordingBooks.isEmpty ? 
+                      Column(
+                        children: [
+                          SizedBox(
+                            height: 30,
+                          ),
+                          Text(
+                            "현재 기록 중인 책이 없습니다.",
+                            style: TextStyle(
+                              fontSize: 20.0,
+                            ),
+                          ),
+                          SizedBox(
+                            height: 20,
+                          ),
+                          CustomFilledButton(
+                            callback: (){
+                              Navigator.pushNamed(context, '/book/search');
+                            }, 
+                            text: "책 검색하기", 
+                            fontsize: 14.0, 
+                            width: 160,
+                          ),
+                          SizedBox(
+                            height: 20,
+                          ),
+                        ],
+                      )
+                      :
                       SizedBox(
                         height: 305,
-                        child: recordingBooks.isEmpty ? 
-                        Column(
-                          children: [
-                            SizedBox(
-                              height: 30,
-                            ),
-                            Text(
-                              "현재 기록 중인 책이 없습니다.",
-                              style: TextStyle(
-                                fontSize: 20.0,
-                              ),
-                            ),
-                            SizedBox(
-                              height: 20,
-                            ),
-                            CustomFilledButton(
-                              callback: (){
-                                Navigator.pushNamed(context, '/book/search');
-                              }, 
-                              text: "책 검색하기", 
-                              fontsize: 14.0, 
-                              width: 160,
-                            )
-                          ],
-                        )
-                        :
-                        ListView.builder(
+                        child: ListView.builder(
                           scrollDirection: Axis.horizontal,  // 가로 스크롤
                           itemCount: recordingBooks.length,
                           itemBuilder: (context, index) {

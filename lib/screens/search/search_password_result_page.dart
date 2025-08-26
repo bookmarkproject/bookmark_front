@@ -20,9 +20,9 @@ class SearchPasswordResultPage extends StatelessWidget {
    
     return Scaffold(
       appBar: CustomAppBar(text: "비밀번호 찾기"),
-      body : Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16.0,vertical: 20.0),
-        child: SafeArea(
+      body : SafeArea(
+        child: Padding(
+          padding: getMainPadding(),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -64,12 +64,12 @@ class SearchPasswordResultPage extends StatelessWidget {
                     showSnack(context, "비밀번호와 비밀번호 확인이 다릅니다.",isError: true);
                     return;
                   }
-
+                  
                   final request = {
                     "password" : passwordCountroller.text,
                     "token" : "Bearer $changePasswordToken"
                   };
-
+                  
                   bool isChanged = await changePassword(context, request);
                   if(isChanged) {
                     Provider.of<AuthProvider>(context,listen: false).clearChangePasswordToken();

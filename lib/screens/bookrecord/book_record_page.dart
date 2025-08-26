@@ -40,11 +40,11 @@ class _BookRecordPageState extends State<BookRecordPage> {
       appBar: CustomAppBar(
         text: "독서 기록",
       ),
-      body: SingleChildScrollView(
-        child: SafeArea(
-          child: Center(
-            child: Padding(
-              padding: getMainPadding(),
+      body: SafeArea(
+        child: Padding(
+          padding: getMainPadding(),
+          child: SingleChildScrollView(
+            child: Center(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [

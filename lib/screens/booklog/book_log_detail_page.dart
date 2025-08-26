@@ -43,11 +43,11 @@ class _BookLogDetailPageState extends State<BookLogDetailPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppBar(text: "독서 기록 로그"),
-      body: SingleChildScrollView(
-        child: Center(
-          child: Padding(
-            padding: getMainPadding(),
-            child: SafeArea(
+      body: SafeArea(
+        child: Padding(
+          padding: getMainPadding(),
+          child: SingleChildScrollView(
+            child: Center(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [

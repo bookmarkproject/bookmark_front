@@ -84,9 +84,9 @@ class _MyPageState extends State<MyPage> {
     return Scaffold(
       appBar: CustomAppBar(text: "마이 페이지"),
       body: SafeArea(
-        child: Center(
-          child: Padding(
-            padding: getMainPadding(),
+        child: Padding(
+          padding: getMainPadding(),
+          child: Center(
             child: Column(
               children: [
                 SizedBox(
@@ -115,7 +115,7 @@ class _MyPageState extends State<MyPage> {
                                       title: Text('갤러리에서 선택'),
                                       onTap: () async{
                                         await _pickImage(ImageSource.gallery);
-
+            
                                       },
                                     ),
                                     ListTile(
@@ -123,7 +123,7 @@ class _MyPageState extends State<MyPage> {
                                       title: Text('카메라 촬영'),
                                       onTap: () {
                                         _pickImage(ImageSource.camera);
-
+            
                                       },
                                     ),
                                     ListTile(

@@ -74,9 +74,9 @@ class _BookRecordTimerPageState extends State<BookRecordTimerPage> {
         text: "독서 하기",
       ),
       body: SafeArea(
-        child: Center(
-          child: Padding(
-            padding: getMainPadding(),
+        child: Padding(
+          padding: getMainPadding(),
+          child: Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [

@@ -28,9 +28,9 @@ class _SearchPasswordPageState extends State<SearchPasswordPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppBar(text: "비밀번호 찾기"),
-      body: Padding(
-        padding: getMainPadding(),
-        child: SafeArea(
+      body: SafeArea(
+        child: Padding(
+          padding: getMainPadding(),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -112,7 +112,7 @@ class _SearchPasswordPageState extends State<SearchPasswordPage> {
                     showSnack(context, "이메일 인증을 진행해주세요.",isError: true);
                     return;
                   }
-
+                  
                   final authProvider = context.read<AuthProvider>();
                   await authProvider.loadChangePasswordToken();
                   showSnack(context, "새 비밀번호를 입력해주세요.");

@@ -66,10 +66,10 @@ class _BookRecordWritePageState extends State<BookRecordWritePage> {
         backButton: false,
         text: "독서 기록하기",
       ),
-      body: SingleChildScrollView(
+      body: SafeArea(
         child: Padding(
           padding: getMainPadding(),
-          child: SafeArea(
+          child: SingleChildScrollView(
             child: Center(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,

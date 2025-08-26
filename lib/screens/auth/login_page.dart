@@ -19,10 +19,10 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
+      body: SafeArea(
         child: Padding(
           padding: getMainPadding(),
-          child: SafeArea(
+          child: Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -78,7 +78,7 @@ class _LoginPageState extends State<LoginPage> {
                   callback: () async{
                     if(isEmptyField(context,emailController,"이메일")) return;
                     if(isEmptyField(context, passwordController, "비밀번호")) return;
-
+            
                     final request = {
                       "email" : emailController.text,
                       "password" : passwordController.text

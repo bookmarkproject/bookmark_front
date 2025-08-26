@@ -29,56 +29,58 @@ class _BookSearchPageState extends State<BookSearchPage> {
       appBar: CustomAppBar(
         text: "도서 검색"
       ),
-      body: Center(
+      body: SafeArea(
         child: Padding(
           padding: getMainPadding(),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  CustomTextField(
-                    hintText: "책 검색", 
-                    obscureText: false, 
-                    controller: queryController, 
-                    width: 315,
-                  ),
-                  SizedBox(
-                    width: 10,
-                  ),
-                  InkWell(
-                    onTap: () async{
-                      final response = await getBooksByQuery(context, queryController.text);
-                      setState(() {
-                        searchedBooks = response; 
-                      });
-                    },
-                    child: Icon(
-                      Icons.search,
-                      size: 35,
+          child: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    CustomTextField(
+                      hintText: "책 검색", 
+                      obscureText: false, 
+                      controller: queryController, 
+                      width: 315,
                     ),
-                  ),
-                ],
-              ),
-              SizedBox(
-                height: 25,
-              ),
-              Expanded(
-                child: ListView.builder(
-                  itemCount: searchedBooks.length,
-                  itemBuilder: (context, index) {
-                    return Padding(
-                      padding: EdgeInsets.only(bottom: index == searchedBooks.length - 1 ? 0 : 25),
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(14),
-                        child: _bookLayout(searchedBooks[index],index),
+                    SizedBox(
+                      width: 10,
+                    ),
+                    InkWell(
+                      onTap: () async{
+                        final response = await getBooksByQuery(context, queryController.text);
+                        setState(() {
+                          searchedBooks = response; 
+                        });
+                      },
+                      child: Icon(
+                        Icons.search,
+                        size: 35,
                       ),
-                    );
-                  }
+                    ),
+                  ],
                 ),
-              ),
-            ],
+                SizedBox(
+                  height: 25,
+                ),
+                Expanded(
+                  child: ListView.builder(
+                    itemCount: searchedBooks.length,
+                    itemBuilder: (context, index) {
+                      return Padding(
+                        padding: EdgeInsets.only(bottom: index == searchedBooks.length - 1 ? 0 : 25),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(14),
+                          child: _bookLayout(searchedBooks[index],index),
+                        ),
+                      );
+                    }
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),

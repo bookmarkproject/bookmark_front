@@ -4,6 +4,7 @@ import 'package:bookmarkfront/screens/bookrecord/book_record_page.dart';
 import 'package:bookmarkfront/utils/global_util.dart';
 import 'package:bookmarkfront/widgets/app_bars.dart';
 import 'package:bookmarkfront/widgets/bottom_navigation_bar.dart';
+import 'package:bookmarkfront/widgets/custom_filled_button.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -25,10 +26,40 @@ class _BookRecordListPageState extends State<BookRecordListPage> {
       appBar: CustomAppBar(
         text: "기록 중인 책"
       ),
-      body: Center(
+      body: SafeArea(
         child: Padding(
           padding: getMainPadding(),
-          child: Column(
+          child: 
+          recordingBooks.isEmpty ?
+          Column(
+            children: [
+              SizedBox(
+                height: 30,
+              ),
+              Text(
+                "현재 기록 중인 책이 없습니다.",
+                style: TextStyle(
+                  fontSize: 20.0,
+                ),
+              ),
+              SizedBox(
+                height: 20,
+              ),
+              CustomFilledButton(
+                callback: (){
+                  Navigator.pushNamed(context, '/book/search');
+                }, 
+                text: "책 검색하기", 
+                fontsize: 14.0, 
+                width: 160,
+              ),
+              SizedBox(
+                height: 20,
+              ),
+            ],
+          )
+          :
+          Column(
             children: [
               Expanded(
                 child: ListView.builder(
