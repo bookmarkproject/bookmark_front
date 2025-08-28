@@ -1,6 +1,4 @@
-import 'dart:ffi';
 
-import 'package:bookmarkfront/models/book.dart';
 
 class BookLogQuestion {
     final int id;

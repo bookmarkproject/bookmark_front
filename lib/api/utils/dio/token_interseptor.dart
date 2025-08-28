@@ -1,12 +1,8 @@
-import 'dart:convert';
-
 import 'package:bookmarkfront/api/utils/api_basic_util.dart';
 import 'package:bookmarkfront/main.dart';
 import 'package:bookmarkfront/provider/auth_provider.dart';
-import 'package:bookmarkfront/widgets/custom_snackbar.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 class TokenInterceptor extends Interceptor {
   final Dio dio;

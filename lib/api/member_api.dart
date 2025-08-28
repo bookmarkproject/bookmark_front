@@ -1,17 +1,13 @@
-import 'dart:convert';
-import 'dart:ffi';
 import 'dart:io';
+
 import 'package:bookmarkfront/api/utils/api_basic_util.dart';
+import 'package:bookmarkfront/api/utils/dio/dio_client.dart';
 import 'package:bookmarkfront/main.dart';
 import 'package:bookmarkfront/models/member.dart';
-import 'package:bookmarkfront/provider/auth_provider.dart';
 import 'package:bookmarkfront/provider/member_provider.dart';
-import 'package:bookmarkfront/api/utils/dio/dio_client.dart';
 import 'package:bookmarkfront/widgets/custom_snackbar.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-
-import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 
 String base_url = "${getHost()}/member";
