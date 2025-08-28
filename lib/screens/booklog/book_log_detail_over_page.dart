@@ -32,6 +32,7 @@ class _BookLogDetailOverPageState extends State<BookLogDetailOverPage> {
 
   @override
   void initState() {
+    super.initState();
     _fetchBookLogQuestion();
   }
 

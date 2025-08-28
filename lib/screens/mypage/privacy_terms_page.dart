@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
 
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-
 class PrivacyTermsPage extends StatelessWidget {
   
   const PrivacyTermsPage({super.key});
@@ -56,7 +53,6 @@ class _PolicyView extends StatelessWidget {
   final String policyText;
 
   const _PolicyView({
-    super.key,
     required this.title,
     required this.companyName,
     required this.contactEmail,
@@ -98,7 +94,6 @@ class _Header extends StatelessWidget {
   final String updated;
 
   const _Header({
-    super.key,
     required this.companyName,
     required this.contactEmail,
     required this.updated,

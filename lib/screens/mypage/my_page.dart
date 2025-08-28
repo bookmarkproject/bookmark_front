@@ -59,6 +59,7 @@ class _MyPageState extends State<MyPage> {
 
   @override
   void initState() {
+    super.initState();
     _fetchImageUrl();
   }
 
@@ -288,7 +289,6 @@ class _MyPageState extends State<MyPage> {
               ),
               onPressed: () async{
                 await uploadProfileImage(context,_image!);
-                String? key = Provider.of<MemberProvider>(context,listen: false).member!.profileImage;
                 await getPresignedProfileImageUrl(context);
                 Navigator.of(context).pop(true);
               },
