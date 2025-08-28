@@ -21,6 +21,7 @@ class BookRecordPage extends StatefulWidget {
 class _BookRecordPageState extends State<BookRecordPage> {
   
   List<BookLog> bookLogs = [];
+  bool _isLoading = true;
 
   @override
   void initState() {
@@ -31,6 +32,7 @@ class _BookRecordPageState extends State<BookRecordPage> {
     List<BookLog> response = await getBookLog(context, widget.bookRecord.id);
     setState(() {
       bookLogs = response;
+      _isLoading = false;
     });
   }
 
@@ -45,7 +47,8 @@ class _BookRecordPageState extends State<BookRecordPage> {
           padding: getMainPadding(),
           child: SingleChildScrollView(
             child: Center(
-              child: Column(
+              child: _isLoading ? Center(child: CircularProgressIndicator()):
+              Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   ClipRRect(

@@ -26,6 +26,8 @@ class _BookLogDetailPageState extends State<BookLogDetailPage> {
     "배운 점 또는 적용할 점",
   ];
 
+  bool _isLoading = true;
+
   @override
   void initState() {
     _fetchBookLogQuestion();
@@ -36,6 +38,7 @@ class _BookLogDetailPageState extends State<BookLogDetailPage> {
     setState(() {
       bookLogQuestions = response;
       print(bookLogQuestions[0].question);
+      _isLoading = false;
     });
   }
   
@@ -48,7 +51,8 @@ class _BookLogDetailPageState extends State<BookLogDetailPage> {
           padding: getMainPadding(),
           child: SingleChildScrollView(
             child: Center(
-              child: Column(
+              child: _isLoading ? Center(child: CircularProgressIndicator()) :
+              Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   ClipRRect(

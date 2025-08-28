@@ -30,6 +30,8 @@ class _HomeState extends State<Home> {
 
   List<BookRecord> recordingBooks = [];
 
+  bool _isLodaing = true;
+
   @override
   void initState() {
     super.initState();
@@ -48,6 +50,7 @@ class _HomeState extends State<Home> {
     List<Book> latestSellerResponse = await getLatest(context);
     setState(() {
       latestBooks = latestSellerResponse;
+      _isLodaing = false;
     });
   }
 
@@ -63,7 +66,9 @@ class _HomeState extends State<Home> {
           padding: getMainPadding(),
           child: SingleChildScrollView(
             child: Center(
-              child: Column(
+              child: 
+              _isLodaing ? Center(child: CircularProgressIndicator()) :
+              Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Column(

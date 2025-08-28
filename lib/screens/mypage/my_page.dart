@@ -54,6 +54,8 @@ class _MyPageState extends State<MyPage> {
     },
   ];
 
+  bool _isLoading = true;
+
   @override
   void initState() {
     _fetchImageUrl();
@@ -63,6 +65,7 @@ class _MyPageState extends State<MyPage> {
     String? preSignedUrl = await getPresignedProfileImageUrl(context);
     setState(() {
       _imageUrl = preSignedUrl;
+      _isLoading = false;
     });
   }
   
@@ -87,7 +90,8 @@ class _MyPageState extends State<MyPage> {
         child: Padding(
           padding: getMainPadding(),
           child: Center(
-            child: Column(
+            child: _isLoading ? Center(child: CircularProgressIndicator()) :
+            Column(
               children: [
                 SizedBox(
                   height: 40,

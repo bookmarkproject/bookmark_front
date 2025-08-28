@@ -21,6 +21,7 @@ class BookDetailPage extends StatefulWidget {
 class _BookDetailPageState extends State<BookDetailPage> {
  
   bool isRecording = false;
+  bool _isLoading = true;
 
   @override
   void initState() {
@@ -34,6 +35,7 @@ class _BookDetailPageState extends State<BookDetailPage> {
     setState(() {
       isRecording = response;
       print(isRecording);
+      _isLoading = false;
     });
   }
 
@@ -48,7 +50,8 @@ class _BookDetailPageState extends State<BookDetailPage> {
           padding: getMainPadding(),
           child: SingleChildScrollView(
             child: Center(
-              child: Column(
+              child: _isLoading ? Center(child: CircularProgressIndicator()) :
+              Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   ClipRRect(
