@@ -5,6 +5,7 @@ import 'package:bookmarkfront/main.dart';
 import 'package:bookmarkfront/models/member.dart';
 import 'package:bookmarkfront/provider/auth_provider.dart';
 import 'package:bookmarkfront/provider/member_provider.dart';
+import 'package:bookmarkfront/screens/mypage/privacy_terms_page.dart';
 import 'package:bookmarkfront/utils/global_util.dart';
 import 'package:bookmarkfront/widgets/app_bars.dart';
 import 'package:bookmarkfront/widgets/bottom_navigation_bar.dart';
@@ -379,7 +380,12 @@ class _MyPageState extends State<MyPage> {
           );
         break;
       case "개인 정보 수집 및 이용":
-  
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => PrivacyTermsPage()
+          ),
+        );
         break;
       case "로그아웃":
         await Provider.of<AuthProvider>(context,listen: false).clearToken();
