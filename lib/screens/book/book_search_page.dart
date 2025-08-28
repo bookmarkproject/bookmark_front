@@ -21,8 +21,6 @@ class _BookSearchPageState extends State<BookSearchPage> {
   
   List<Book> searchedBooks = [];
 
-
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(

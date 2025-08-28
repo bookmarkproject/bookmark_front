@@ -60,7 +60,7 @@ class _HomeState extends State<Home> {
     recordingBooks = Provider.of<BookRecordProvider>(context,listen: true).bookRecords;
     return Scaffold(
       appBar: CustomAppBar(text: "책갈피",backButton : false),
-      bottomNavigationBar: getBottomBar(context, 0),
+      bottomNavigationBar: _isLodaing ? null : getBottomBar(context, 0),
       body: SafeArea(
         child: Padding(
           padding: getMainPadding(),

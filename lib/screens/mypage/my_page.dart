@@ -218,7 +218,7 @@ class _MyPageState extends State<MyPage> {
           ),
         ),
       ),
-      bottomNavigationBar: getBottomBar(context, 3),
+      bottomNavigationBar: _isLoading ? null :getBottomBar(context, 3),
     );
   }
 
