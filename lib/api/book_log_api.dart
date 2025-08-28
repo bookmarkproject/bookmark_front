@@ -32,6 +32,25 @@ Future<void> saveBookLog(BuildContext context, Map<String,dynamic> request) asyn
     }
 }
 
+
+Future<void> saveBookLogOver(BuildContext context, Map<String,dynamic> request) async {
+  
+  final dioClient = Provider.of<DioClient>(context,listen: false);
+
+  try {
+    final response = await dioClient.dio.post("$base_url/over",data: request);
+    if(response.statusCode == 200){
+      showSnack(context, "기록되었습니다.");
+    } 
+  } on DioException catch (e) {
+      print('Dio 오류 발생: ${e.response?.statusCode}');
+      print("Dio 오류 메시지 : ${e.response?.data['message']}");
+
+    } catch (e) {
+      print('알 수 없는 오류 발생: $e');
+    }
+}
+
 Future<List<BookLog>> getBookLog(BuildContext context, int id) async {
   
   List<BookLog> result = [];

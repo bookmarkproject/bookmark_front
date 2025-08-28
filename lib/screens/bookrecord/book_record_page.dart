@@ -1,7 +1,9 @@
 import 'package:bookmarkfront/api/book_log_api.dart';
 import 'package:bookmarkfront/models/book_log.dart';
 import 'package:bookmarkfront/models/book_record.dart';
+import 'package:bookmarkfront/screens/booklog/book_log_detail_over_page.dart';
 import 'package:bookmarkfront/screens/booklog/book_log_detail_page.dart';
+import 'package:bookmarkfront/screens/bookrecord/book_record_over_wirte_page.dart';
 import 'package:bookmarkfront/screens/bookrecord/book_record_timer_page.dart';
 import 'package:bookmarkfront/utils/global_util.dart';
 import 'package:bookmarkfront/widgets/app_bars.dart';
@@ -21,6 +23,8 @@ class BookRecordPage extends StatefulWidget {
 class _BookRecordPageState extends State<BookRecordPage> {
   
   List<BookLog> bookLogs = [];
+  List<BookLog> bookLogsIsOver = [];
+
   bool _isLoading = true;
 
   @override
@@ -29,9 +33,22 @@ class _BookRecordPageState extends State<BookRecordPage> {
   }
 
   void _fetchBookLog() async{
-    List<BookLog> response = await getBookLog(context, widget.bookRecord.id);
+    List<BookLog> responses = await getBookLog(context, widget.bookRecord.id);
+    List<BookLog> tempLogNormal = [];
+    List<BookLog> tempLogIsOver = [];
+    for(var response in responses) {
+      if (response.logType=="일반") {
+        tempLogNormal.add(response);
+      } else if (response.logType=="완독") {
+        tempLogIsOver.add(response);
+      }
+    }
+    
     setState(() {
-      bookLogs = response;
+      bookLogs = tempLogNormal;
+      bookLogsIsOver = tempLogIsOver;
+      print(bookLogs.length);
+      print(bookLogsIsOver.length);
       _isLoading = false;
     });
   }
@@ -181,6 +198,7 @@ class _BookRecordPageState extends State<BookRecordPage> {
                   SizedBox(
                     height: 30,
                   ),
+                  widget.bookRecord.status == "독서중" ?
                   CustomFilledButton(
                     callback: (){
                       Navigator.pushReplacement(
@@ -194,7 +212,29 @@ class _BookRecordPageState extends State<BookRecordPage> {
                     fontColor: Colors.white, 
                     fontsize: 13.0, 
                     width: 360,
+                  ) : SizedBox.shrink(),
+                  SizedBox(
+                    height: 15,
                   ),
+                  widget.bookRecord.status == "완독" ?
+                  CustomFilledButton(
+                    callback: (){
+                     Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => 
+                            bookLogsIsOver.isEmpty ? 
+                            BookRecordOverWirtePage(bookRecord: widget.bookRecord) 
+                            : BookLogDetailOverPage(bookRecord: widget.bookRecord,bookLogId: bookLogsIsOver[0].id) 
+                        ),
+                      );
+                    }, 
+                    text: "완독 감상평",
+                    backgroundColor: Colors.grey[300],
+                    fontColor: Colors.black, 
+                    fontsize: 13.0, 
+                    width: 360,
+                  ) : SizedBox.shrink(),
                   SizedBox(
                     height: 30,
                   ),

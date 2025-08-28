@@ -8,6 +8,7 @@ class BookLog {
     final int pageEnd;
     final int readingTime;
     final String readingDate;
+    final String logType;
     
   BookLog({
     required this.id,
@@ -15,6 +16,7 @@ class BookLog {
     required this.pageEnd,
     required this.readingTime,
     required this.readingDate,
+    required this.logType,
   });
 
   factory BookLog.fromJson(Map<String, dynamic> json) {
@@ -24,6 +26,7 @@ class BookLog {
       pageEnd: json['pageEnd'],
       readingTime: json['readingTime'],
       readingDate: json['readingDate'],
+      logType: json['logType'],
     );
   }
 }

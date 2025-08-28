@@ -224,6 +224,7 @@ class _BookRecordWritePageState extends State<BookRecordWritePage> {
                           "readingTime" : widget.seconds ~/ 60,
                           "questions" : subTitles,
                           "answers" : List.generate(questionCount, (index) => controllers[index].text),
+                          "logType" : "일반",
                         };
                         if(_checkInput()) {
                           await saveBookLog(context, request);
