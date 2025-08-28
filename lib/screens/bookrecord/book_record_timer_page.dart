@@ -70,7 +70,6 @@ class _BookRecordTimerPageState extends State<BookRecordTimerPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppBar(
-        backButton: false,
         text: "독서 하기",
       ),
       body: SafeArea(

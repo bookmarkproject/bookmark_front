@@ -201,7 +201,7 @@ class _BookRecordPageState extends State<BookRecordPage> {
                   widget.bookRecord.status == "독서중" ?
                   CustomFilledButton(
                     callback: (){
-                      Navigator.pushReplacement(
+                      Navigator.push(
                         context,
                         MaterialPageRoute(
                           builder: (context) => BookRecordTimerPage(bookRecord: widget.bookRecord)

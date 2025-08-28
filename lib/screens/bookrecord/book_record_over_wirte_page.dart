@@ -55,7 +55,6 @@ class _BookRecordOverWirtePageState extends State<BookRecordOverWirtePage> {
   Widget build(BuildContext context) {  
     return Scaffold(
       appBar: CustomAppBar(
-        backButton: false,
         text: "완독 감상평 작성",
       ),
       body: GestureDetector(

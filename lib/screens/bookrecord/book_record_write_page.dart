@@ -174,7 +174,7 @@ class _BookRecordWritePageState extends State<BookRecordWritePage> {
                               });
                             }
                           ),
-                          Text("까지 읽었습니다.", style: TextStyle(fontSize: 14)),
+                          Text("까지 읽었어요.", style: TextStyle(fontSize: 14)),
                         ],
                       ),
                     )

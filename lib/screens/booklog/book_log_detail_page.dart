@@ -45,7 +45,7 @@ class _BookLogDetailPageState extends State<BookLogDetailPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(text: "독서 기록 로그"),
+      appBar: CustomAppBar(text: "지난 독서 기록"),
       body: SafeArea(
         child: Padding(
           padding: getMainPadding(),
