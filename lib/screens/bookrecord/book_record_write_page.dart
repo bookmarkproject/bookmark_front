@@ -66,197 +66,185 @@ class _BookRecordWritePageState extends State<BookRecordWritePage> {
         backButton: false,
         text: "독서 기록하기",
       ),
-      body: SafeArea(
-        child: Padding(
-          padding: getMainPadding(),
-          child: SingleChildScrollView(
-            child: Center(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(10),
-                    child: Image.network(
-                      widget.bookRecord.book.imageUrl,
+      body: GestureDetector(
+        onTap: () {
+          FocusScope.of(context).unfocus(); 
+        },
+        child: SafeArea(
+          child: Padding(
+            padding: getMainPadding(),
+            child: SingleChildScrollView(
+              child: Center(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(10),
+                      child: Image.network(
+                        widget.bookRecord.book.imageUrl,
+                        width: 360,
+                        height: 360,
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                    SizedBox(
+                      height: 15,
+                    ),
+                    Text(
+                      widget.bookRecord.book.title,
+                      style: TextStyle(
+                        fontSize: 20.0,
+                        letterSpacing: 22.0 * -0.01,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black,
+                      ),
+                    ),
+                    SizedBox(
+                      height: 2,
+                    ),
+                    Text(
+                      "${widget.bookRecord.book.author} - ${widget.bookRecord.book.publisher} 출판사",
+                      style: TextStyle(
+                        fontSize: 14.0,
+                        letterSpacing: 12.0 * -0.02,
+                        color: Color.fromRGBO(23, 20, 46, 0.62),
+                      ),
+                    ),
+                    SizedBox(
+                      height: 30,
+                    ),
+                    Text(
+                      "독서 진행",
+                      style: TextStyle(
+                        fontSize: 22.0,
+                        letterSpacing: 22.0 * -0.02,
+                        color: Colors.black,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    RadioListTile<String>(
+                      value: "미완독",
+                      groupValue: selectedValue,
+                      title: Text(
+                        "아직 완독하지 못했어요.",
+                        style: TextStyle(
+                          fontSize: 14.0,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black,
+                        ),
+                      ),
+                      onChanged: (value) {
+                        setState(() {
+                          selectedValue = value;
+                        });
+                      },
+                      contentPadding: EdgeInsets.zero,      
+                      dense: true,                          
+                      visualDensity: VisualDensity(horizontal: -3.0), 
+                    ),
+                    selectedValue=="미완독" ?
+                    Padding(
+                      padding: const EdgeInsets.only(left: 12), 
+                      child: Wrap(
+                        spacing: 5, 
+                        runSpacing: 5, 
+                        crossAxisAlignment: WrapCrossAlignment.center,
+                        children: [
+                          CustomDropdown<int>(
+                            width: 70,
+                            selectedValue: selectedPageStart,
+                            items: pageStartItems,
+                            itemToString: (v)=>'$v',
+                            onChanged: (val) {
+                              setState(() {
+                                selectedPageStart = val!;
+                                _updatePageEnd();
+                              });
+                            }
+                          ),
+                          Text("페이지 부터", style: TextStyle(fontSize: 14)),
+                          CustomDropdown<int>(
+                            width: 70,
+                            selectedValue: selectedPageEnd,
+                            items: pageEndItems,
+                            itemToString: (v)=>'$v',
+                            onChanged: (val) {
+                              setState(() {
+                                selectedPageEnd = val!;
+                              });
+                            }
+                          ),
+                          Text("까지 읽었습니다.", style: TextStyle(fontSize: 14)),
+                        ],
+                      ),
+                    )
+                    : SizedBox.shrink(),
+                    RadioListTile<String>(
+                      value: "완독",
+                      groupValue: selectedValue,
+                      title: Text(
+                        "완독했어요!",
+                        style: TextStyle(
+                          fontSize: 14.0,
+                          color: Colors.black,
+                          fontWeight: FontWeight.bold,
+                        ), 
+                      ),
+                      onChanged: (value) {
+                        setState(() {
+                          selectedValue = value;
+                        });
+                      },
+                      contentPadding: EdgeInsets.zero,      
+                      dense: true,                          
+                      visualDensity: VisualDensity(horizontal: -3.0), 
+                    ),
+                    SizedBox(
+                      height: 30,
+                    ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children:
+                        List.generate(questionCount, (i) {
+                        return _QuestionsLayout(
+                          titles[i],
+                          subTitles[i],
+                          controllers[i],
+                          i, 
+                        );
+                      }),
+                    ),
+                    CustomFilledButton(
+                      callback: ()async{
+                        final request = {
+                          "bookRecordId" : widget.bookRecord.id,
+                          "isOver" : selectedValue == "미완독" ? false : true,
+                          "pageStart" : selectedPageStart,
+                          "pageEnd" : selectedPageEnd,
+                          "readingTime" : widget.seconds ~/ 60,
+                          "questions" : subTitles,
+                          "answers" : List.generate(questionCount, (index) => controllers[index].text),
+                        };
+                        if(_checkInput()) {
+                          await saveBookLog(context, request);
+                          BookRecord? bookRecord = await getRecordById(context, widget.bookRecord.id);
+                          if(bookRecord!=null) {
+                            Provider.of<BookRecordProvider>(context,listen: false).updateBookRecord(bookRecord);
+                            Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => BookRecordPage(bookRecord: bookRecord),
+                              )
+                            );
+                          }
+                        }
+                      }, 
+                      text: "기록하기", 
+                      fontsize: 14.0, 
                       width: 360,
-                      height: 360,
-                      fit: BoxFit.cover,
                     ),
-                  ),
-                  SizedBox(
-                    height: 15,
-                  ),
-                  Text(
-                    widget.bookRecord.book.title,
-                    style: TextStyle(
-                      fontSize: 20.0,
-                      letterSpacing: 22.0 * -0.01,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black,
-                    ),
-                  ),
-                  SizedBox(
-                    height: 2,
-                  ),
-                  Text(
-                    "${widget.bookRecord.book.author} - ${widget.bookRecord.book.publisher} 출판사",
-                    style: TextStyle(
-                      fontSize: 14.0,
-                      letterSpacing: 12.0 * -0.02,
-                      color: Color.fromRGBO(23, 20, 46, 0.62),
-                    ),
-                  ),
-                  SizedBox(
-                    height: 30,
-                  ),
-                  Text(
-                    "독서 진행",
-                    style: TextStyle(
-                      fontSize: 22.0,
-                      letterSpacing: 22.0 * -0.02,
-                      color: Colors.black,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  RadioListTile<String>(
-                    value: "미완독",
-                    groupValue: selectedValue,
-                    title: Text(
-                      "아직 완독하지 못했어요.",
-                      style: TextStyle(
-                        fontSize: 14.0,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black,
-                      ),
-                    ),
-                    onChanged: (value) {
-                      setState(() {
-                        selectedValue = value;
-                      });
-                    },
-                    contentPadding: EdgeInsets.zero,      
-                    dense: true,                          
-                    visualDensity: VisualDensity(horizontal: -3.0), 
-                  ),
-                  selectedValue=="미완독" ?
-                  Row(
-                    children: [
-                      SizedBox(
-                        width: 10,
-                      ),
-                      CustomDropdown<int>(
-                        width: 70,
-                        selectedValue: selectedPageStart,
-                        items: pageStartItems,
-                        itemToString: (v)=>'$v',
-                        onChanged: (val) {
-                          setState(() {
-                            selectedPageStart = val!;
-                            _updatePageEnd();
-                          });
-                        }
-                      ),
-                      SizedBox(
-                        width: 10,
-                      ),
-                      Text(
-                        "페이지 부터",
-                        style: TextStyle(
-                          fontSize: 14.0,
-                          fontWeight: FontWeight.normal,
-                        ),
-                      ),
-                      SizedBox(
-                        width: 10,
-                      ),
-                      CustomDropdown<int>(
-                        width: 70,
-                        selectedValue: selectedPageEnd,
-                        items: pageEndItems,
-                        itemToString: (v)=>'$v',
-                        onChanged: (val) {
-                          setState(() {
-                            selectedPageEnd = val!;
-                          });
-                        }
-                      ),
-                      SizedBox(
-                        width: 10,
-                      ),
-                      Text(
-                        "까지 읽었습니다.",
-                        style: TextStyle(
-                          fontSize: 14.0,
-                          fontWeight: FontWeight.normal,
-                        ),
-                      ),
-                    ],
-                  ) : SizedBox.shrink(),
-                  RadioListTile<String>(
-                    value: "완독",
-                    groupValue: selectedValue,
-                    title: Text(
-                      "완독했어요!",
-                      style: TextStyle(
-                        fontSize: 14.0,
-                        color: Colors.black,
-                        fontWeight: FontWeight.bold,
-                      ), 
-                    ),
-                    onChanged: (value) {
-                      setState(() {
-                        selectedValue = value;
-                      });
-                    },
-                    contentPadding: EdgeInsets.zero,      
-                    dense: true,                          
-                    visualDensity: VisualDensity(horizontal: -3.0), 
-                  ),
-                  SizedBox(
-                    height: 30,
-                  ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children:
-                      List.generate(questionCount, (i) {
-                      return _QuestionsLayout(
-                        titles[i],
-                        subTitles[i],
-                        controllers[i],
-                        i, 
-                      );
-                    }),
-                  ),
-                  CustomFilledButton(
-                    callback: ()async{
-                      final request = {
-                        "bookRecordId" : widget.bookRecord.id,
-                        "isOver" : selectedValue == "미완독" ? false : true,
-                        "pageStart" : selectedPageStart,
-                        "pageEnd" : selectedPageEnd,
-                        "readingTime" : widget.seconds ~/ 60,
-                        "questions" : subTitles,
-                        "answers" : List.generate(questionCount, (index) => controllers[index].text),
-                      };
-                      if(_checkInput()) {
-                        await saveBookLog(context, request);
-                        BookRecord? bookRecord = await getRecordById(context, widget.bookRecord.id);
-                        if(bookRecord!=null) {
-                          Provider.of<BookRecordProvider>(context,listen: false).updateBookRecord(bookRecord);
-                          Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => BookRecordPage(bookRecord: bookRecord),
-                            )
-                          );
-                        }
-                      }
-                    }, 
-                    text: "기록하기", 
-                    fontsize: 14.0, 
-                    width: 360,
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           ),

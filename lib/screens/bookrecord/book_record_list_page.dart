@@ -31,50 +31,54 @@ class _BookRecordListPageState extends State<BookRecordListPage> {
           padding: getMainPadding(),
           child: 
           recordingBooks.isEmpty ?
-          Column(
-            children: [
-              SizedBox(
-                height: 30,
-              ),
-              Text(
-                "현재 기록 중인 책이 없습니다.",
-                style: TextStyle(
-                  fontSize: 20.0,
+          Center(
+            child: Column(
+              children: [
+                SizedBox(
+                  height: 30,
                 ),
-              ),
-              SizedBox(
-                height: 20,
-              ),
-              CustomFilledButton(
-                callback: (){
-                  Navigator.pushNamed(context, '/book/search');
-                }, 
-                text: "책 검색하기", 
-                fontsize: 14.0, 
-                width: 160,
-              ),
-              SizedBox(
-                height: 20,
-              ),
-            ],
+                Text(
+                  "현재 기록 중인 책이 없습니다.",
+                  style: TextStyle(
+                    fontSize: 20.0,
+                  ),
+                ),
+                SizedBox(
+                  height: 20,
+                ),
+                CustomFilledButton(
+                  callback: (){
+                    Navigator.pushNamed(context, '/book/search');
+                  }, 
+                  text: "책 검색하기", 
+                  fontsize: 14.0, 
+                  width: 160,
+                ),
+                SizedBox(
+                  height: 20,
+                ),
+              ],
+            ),
           )
           :
-          Column(
-            children: [
-              Expanded(
-                child: ListView.builder(
-                  itemCount: recordingBooks.length,
-                  itemBuilder: (context, index) {
-                    return Padding(
-                      padding: EdgeInsets.only(bottom: index == recordingBooks.length - 1 ? 0 : 20),
-                      child: ClipRRect(
-                        child: _layout(recordingBooks[index]),
-                      ),
-                    );
-                  }
+          Center(
+            child: Column(
+              children: [
+                Expanded(
+                  child: ListView.builder(
+                    itemCount: recordingBooks.length,
+                    itemBuilder: (context, index) {
+                      return Padding(
+                        padding: EdgeInsets.only(bottom: index == recordingBooks.length - 1 ? 0 : 20),
+                        child: ClipRRect(
+                          child: _layout(recordingBooks[index]),
+                        ),
+                      );
+                    }
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),
@@ -108,26 +112,28 @@ class _BookRecordListPageState extends State<BookRecordListPage> {
           SizedBox(
             width: 10,
           ),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                bookrecord.book.title.length >= 22 ? "${bookrecord.book.title.substring(0,22)}..." : bookrecord.book.title,
-                style: TextStyle(
-                  fontSize: 15.0,
-                  color: Colors.black,
-                  fontWeight: FontWeight.bold,
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  bookrecord.book.title.length >= 20 ? "${bookrecord.book.title.substring(0,20)}..." : bookrecord.book.title,
+                  style: TextStyle(
+                    fontSize: 15.0,
+                    color: Colors.black,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
-              ),
-              Text(
-                bookrecord.book.author.length >= 22 ? "${bookrecord.book.author.substring(0,22)}..." : bookrecord.book.author,
-                style: TextStyle(
-                  fontSize: 13.0,
-                  color: Color.fromRGBO(23, 20, 46, 0.62),
-                  fontWeight: FontWeight.w600,
-                ),
-              )
-            ],
+                Text(
+                  bookrecord.book.author.length >= 20 ? "${bookrecord.book.author.substring(0,20)}..." : bookrecord.book.author,
+                  style: TextStyle(
+                    fontSize: 13.0,
+                    color: Color.fromRGBO(23, 20, 46, 0.62),
+                    fontWeight: FontWeight.w600,
+                  ),
+                )
+              ],
+            ),
           ),
         ],
       ),

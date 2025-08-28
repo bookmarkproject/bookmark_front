@@ -39,17 +39,19 @@ class _BookSearchPageState extends State<BookSearchPage> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    CustomTextField(
-                      hintText: "책 검색", 
-                      obscureText: false, 
-                      controller: queryController, 
-                      width: 315,
+                    Expanded(
+                      child: CustomTextField(
+                        hintText: "책 검색", 
+                        obscureText: false, 
+                        controller: queryController, 
+                      ),
                     ),
                     SizedBox(
                       width: 10,
                     ),
                     InkWell(
                       onTap: () async{
+                        FocusScope.of(context).unfocus();
                         final response = await getBooksByQuery(context, queryController.text);
                         setState(() {
                           searchedBooks = response; 
@@ -100,7 +102,7 @@ class _BookSearchPageState extends State<BookSearchPage> {
           )
         );
       },
-      child: Row(
+      child : Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           ClipRRect(
@@ -112,61 +114,55 @@ class _BookSearchPageState extends State<BookSearchPage> {
               fit: BoxFit.cover,
             ),
           ),
-          SizedBox(
-            width: 15,
-          ),
-          Center(
-            child: SizedBox(
-              width: 200,
-              height: 160,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    "${index+1}",
-                    style: TextStyle(
-                      fontSize: 17,
-                      fontWeight: FontWeight.bold,
-                      color: Color.fromRGBO(0, 0, 0, 0.5),
-                    ),
+          SizedBox(width: 15),
+          Expanded(  
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  "${index+1}",
+                  style: TextStyle(
+                    fontSize: 17,
+                    fontWeight: FontWeight.bold,
+                    color: Color.fromRGBO(0, 0, 0, 0.5),
                   ),
-                  Text(
-                    book.title.length >= 14 ? "${book.title.substring(0,14)}..." : book.title,
-                    style: TextStyle(
-                      fontSize: 15.0,
-                      letterSpacing: 15.0 * -0.02,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black,
-                    ),
+                ),
+                SizedBox(height: 5),
+                Text(
+                  book.title,
+                  style: TextStyle(
+                    fontSize: 15.0,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black,
                   ),
-                  SizedBox(
-                    height: 5,
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                ),
+                SizedBox(height: 5),
+                Text(
+                  book.author,
+                  style: TextStyle(
+                    fontSize: 12.0,
+                    color: Color.fromRGBO(23, 20, 46, 0.62),
                   ),
-                  Text(
-                    book.author.length >= 8 ? "${book.author.substring(0,8)}..." : book.author,
-                    style: TextStyle(
-                      fontSize: 12.0,
-                      letterSpacing: 12.0 * -0.02,
-                      color: Color.fromRGBO(23, 20, 46, 0.62),
-                    ),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                ),
+                SizedBox(height: 5),
+                Text(
+                  book.contents,
+                  style: TextStyle(
+                    fontSize: 13.0,
+                    color: Color.fromRGBO(23, 20, 46, 0.62),
                   ),
-                  SizedBox(
-                    height: 5,
-                  ),
-                  Text(
-                    book.contents.length >= 70 ? "${book.contents.substring(0,70)}..." : book.contents,
-                    style: TextStyle(
-                      fontSize: 13.0,
-                      letterSpacing: 13.0 * -0.02,
-                      color: Color.fromRGBO(23, 20, 46, 0.62),
-                    ),
-                  ),
-                ],
-              ),
+                  maxLines: 3,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ],
             ),
-          )
+          ),
         ],
-      ),
+      )
     );
   }
 }

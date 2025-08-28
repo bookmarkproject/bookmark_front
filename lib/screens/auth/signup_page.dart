@@ -80,12 +80,13 @@ class _SignupPageState extends State<SignupPage> {
                   ),
                   Row(
                     children: [
-                      CustomTextField(
-                        hintText: "이메일",
-                        obscureText: false,
-                        controller: emailCountroller,
-                        enabled: isEmailVerified,
-                        width: 240,
+                      Expanded(
+                        child: CustomTextField(
+                          hintText: "이메일",
+                          obscureText: false,
+                          controller: emailCountroller,
+                          enabled: isEmailVerified,
+                        ),
                       ),
                       const SizedBox(
                         width: 20,
@@ -105,12 +106,13 @@ class _SignupPageState extends State<SignupPage> {
                   ),
                   Row(
                     children: [
-                      CustomTextField(
-                        hintText: "이메일 인증 코드",
-                        obscureText: false,
-                        controller: authNumCountroller,
-                        enabled: isEmailVerified,
-                        width: 270,
+                      Expanded(
+                        child: CustomTextField(
+                          hintText: "이메일 인증 코드",
+                          obscureText: false,
+                          controller: authNumCountroller,
+                          enabled: isEmailVerified,
+                        ),
                       ),
                       SizedBox(
                         width: 20,
@@ -199,46 +201,49 @@ class _SignupPageState extends State<SignupPage> {
                   ),
                   Row(
                     children: [
-                      CustomDropdown<int>(
-                        width: 110,
-                        selectedValue: yearSelected,
-                        items: yearItems,
-                        itemToString: (v)=>'$v년',
-                        onChanged: (val) {
-                          setState(() {
-                            yearSelected = val!;
-                            _updateDays();
-                          });
-                        }
+                      Expanded(
+                        child: CustomDropdown<int>(
+                          selectedValue: yearSelected,
+                          items: yearItems,
+                          itemToString: (v)=>'$v년',
+                          onChanged: (val) {
+                            setState(() {
+                              yearSelected = val!;
+                              _updateDays();
+                            });
+                          }
+                        ),
                       ),
                       const SizedBox(
                         width: 15,
                       ),
-                      CustomDropdown<int>(
-                        width: 110,
-                        selectedValue: monthSelected,
-                        items: monthItems,
-                        itemToString: (v)=>'$v월',
-                        onChanged: (val) {
-                          setState(() {
-                            monthSelected = val!;
-                            _updateDays();
-                          });
-                        }
+                      Expanded(
+                        child: CustomDropdown<int>(
+                          selectedValue: monthSelected,
+                          items: monthItems,
+                          itemToString: (v)=>'$v월',
+                          onChanged: (val) {
+                            setState(() {
+                              monthSelected = val!;
+                              _updateDays();
+                            });
+                          }
+                        ),
                       ),
                       const SizedBox(
                         width: 15,
                       ),
-                      CustomDropdown<int>(
-                        width: 110,
-                        selectedValue: daySelected,
-                        items: dayItems,
-                        itemToString: (v)=>'$v일',
-                        onChanged: (val) {
-                          setState(() {
-                            daySelected = val!;
-                          });
-                        }
+                      Expanded(
+                        child: CustomDropdown<int>(
+                          selectedValue: daySelected,
+                          items: dayItems,
+                          itemToString: (v)=>'$v일',
+                          onChanged: (val) {
+                            setState(() {
+                              daySelected = val!;
+                            });
+                          }
+                        ),
                       ),
                     ],
                   ),
@@ -251,11 +256,12 @@ class _SignupPageState extends State<SignupPage> {
                   ),
                   Row(
                     children: [
-                      CustomTextField(
-                        hintText: "닉네임을 입력하세요.",
-                        obscureText: false,
-                        controller: nicknameController,
-                        width: 250,
+                      Expanded(
+                        child: CustomTextField(
+                          hintText: "닉네임을 입력하세요.",
+                          obscureText: false,
+                          controller: nicknameController,
+                        ),
                       ),
                       const SizedBox(
                         width: 20,
