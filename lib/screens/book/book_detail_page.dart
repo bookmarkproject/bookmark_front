@@ -34,7 +34,6 @@ class _BookDetailPageState extends State<BookDetailPage> {
     bool response = await isRecordingBook(context, widget.book.isbn);
     setState(() {
       isRecording = response;
-      print(isRecording);
       _isLoading = false;
     });
   }

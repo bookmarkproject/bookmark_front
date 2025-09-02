@@ -47,8 +47,6 @@ class _BookRecordPageState extends State<BookRecordPage> {
     setState(() {
       bookLogs = tempLogNormal;
       bookLogsIsOver = tempLogIsOver;
-      print(bookLogs.length);
-      print(bookLogsIsOver.length);
       _isLoading = false;
     });
   }

@@ -15,7 +15,7 @@ Map<String,String> getHeadersIncludeAuth(BuildContext context) {
 }
 
 String getHost() {
-  return "http://localhost:8081";
+  return "https://bookmarkapp.store";
 }
 
 Uri toPasredUrl(String url) {
@@ -25,18 +25,15 @@ Uri toPasredUrl(String url) {
 Future<void> refresh(BuildContext context) async{
   String? token = Provider.of<AuthProvider>(context,listen: false).refreshToken;
   final request = {"refreshToken":token};
-  print(token);
   final newTokens = await refreshRequestToServer(request);
   if(newTokens!=null) {
     await Provider.of<AuthProvider>(context,listen: false).saveToken(newTokens["accessToken"]!);
     await Provider.of<AuthProvider>(context,listen: false).saveRefreshToken(newTokens["refreshToken"]!);
-    print("새로운 토큰 저장소에 저장 완료");
   }
   else {
     await Provider.of<AuthProvider>(context,listen: false).clearToken();
     await Provider.of<AuthProvider>(context,listen: false).clearRefreshToken();
     showSnack(context, "다시 로그인 해주세요.",isError: true);
-    print("현재 저장된 토큰 : ${Provider.of<AuthProvider>(context,listen: false).accessToken}");
     Navigator.pushReplacementNamed(context, '/login');
   }
 }

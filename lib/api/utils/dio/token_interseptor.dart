@@ -13,7 +13,6 @@ class TokenInterceptor extends Interceptor {
   @override
   void onRequest(RequestOptions options, RequestInterceptorHandler handler) async {
     final accessToken = authProvider.accessToken;
-    print("엑세스 토큰 : $accessToken");
     options.headers["Authorization"] = "Bearer $accessToken";
   
     return handler.next(options);
@@ -36,7 +35,6 @@ class TokenInterceptor extends Interceptor {
           if (retryResponse.statusCode! >= 200 && retryResponse.statusCode! <= 299) {
             return handler.resolve(retryResponse);
           } else if (retryResponse.statusCode == 401) {
-            print("응답 코드 401에 의한 로그아웃");
             navigatorKey.currentState?.pushNamedAndRemoveUntil('/login', (route) => false);
           } else {
             return handler.next(DioException(
@@ -46,8 +44,7 @@ class TokenInterceptor extends Interceptor {
           }
         }
       } catch (e, stack) {
-        print("❌ catch 발생: $e");
-        print(stack);
+
       }
     }
     return handler.next(err);
@@ -62,19 +59,12 @@ class TokenInterceptor extends Interceptor {
         data: {"refreshToken": refreshToken},
       );
 
-      print("통과");
-
       if (response.statusCode == 200) {
          final data = response.data;
          await authProvider.saveToken(data['accessToken']);
-         print("엑세스 토큰 업데이트 : ${data['accessToken']}");
          await authProvider.saveRefreshToken(data['refreshToken']);
-         print("리프레쉬 토큰 업데이트 : ${data['refreshToken']}");
       }
-    } catch (e) {
-      print("리프레쉬 토큰 실패: $e");
-      print("리프레쉬 토큰 실패로 인한 로그아웃");
-      
+    } catch (e) {      
       final context = navigatorKey.currentState?.overlay?.context;
       if (context != null) {
         ScaffoldMessenger.of(context).showSnackBar(

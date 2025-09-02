@@ -48,6 +48,13 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         fontFamily: 'NotoSansKR',
       ),
+      builder: (context, child) {
+      final mediaQueryData = MediaQuery.of(context);
+      return MediaQuery(
+        data: mediaQueryData.copyWith(textScaler: TextScaler.linear(1.0)),
+        child: child!,
+        );
+      },
       routes: {
         '/': (context) => SplashPage(),
         '/login': (context) => LoginPage(),

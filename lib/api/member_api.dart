@@ -91,7 +91,6 @@ Future<String?> getPresignedProfileImageUrl(BuildContext context) async {
     final response = await dioClient.dio.get("$base_url/profile");
 
     if (response.statusCode == 200) {
-      print("presignedUrl : ${response.data}");
       return response.data;
     } 
   } on DioException catch (e) {

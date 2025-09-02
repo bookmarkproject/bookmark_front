@@ -40,7 +40,6 @@ class _BookLogDetailOverPageState extends State<BookLogDetailOverPage> {
     List<BookLogQuestion> response = await getBookLogQuestion(context, widget.bookLogId);
     setState(() {
       bookLogQuestions = response;
-      print(bookLogQuestions[0].question);
       _isLoading = false;
     });
   }

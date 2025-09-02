@@ -8,7 +8,6 @@ class MemberProvider with ChangeNotifier {
 
   void setMember(Member member) {
     _member = member;
-    _member!.printMember();
     notifyListeners();
   }
 

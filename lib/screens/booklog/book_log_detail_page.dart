@@ -38,7 +38,6 @@ class _BookLogDetailPageState extends State<BookLogDetailPage> {
     List<BookLogQuestion> response = await getBookLogQuestion(context, widget.bookLogId);
     setState(() {
       bookLogQuestions = response;
-      print(bookLogQuestions[0].question);
       _isLoading = false;
     });
   }
