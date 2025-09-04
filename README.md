@@ -10,7 +10,7 @@
 <br>
 
 ### 1. 프로젝트 기간
- **2025.07.02 ~ 2024.09.04**
+ **2025.07.02 ~ 2025.09.04**
 
 <br>
 
@@ -33,6 +33,7 @@
  
 ### Tools
 - GitHub
+- Figma
 
 
 <br>
@@ -148,165 +149,81 @@
 <br>
 
 ## 📂 디렉토리 구조 및 패키지 역할
-### 백엔드 디렉토리
+### 디렉토리 구조
 ```
-root
- ┣ myhomework
- ┃ ┣ complexKey
- ┃ ┃ ┣ MemberComplexKey.java
- ┃ ┃ ┣ ProblemPlagiarizeListPK.java
- ┃ ┃ ┗ ProblemSimilarityListPK.java
- ┃ ┣ controller
- ┃ ┃ ┣ MemberApiController.java
- ┃ ┃ ┣ MemberController.java
- ┃ ┃ ┣ ProblemApiController.java
- ┃ ┃ ┣ ProblemPlagiarizeListController.java
- ┃ ┃ ┣ ProblemSimilarityListController.java
- ┃ ┃ ┗ UserBalanceApiController.java
- ┃ ┣ dto
- ┃ ┃ ┣ DealForm.java
- ┃ ┃ ┣ FileForm.java
- ┃ ┃ ┣ MemberForm.java
- ┃ ┃ ┣ ProblemForm.java
- ┃ ┃ ┣ ProblemPlagiarizeListForm.java
- ┃ ┃ ┣ ProblemSimilarListForm.java
- ┃ ┃ ┗ UserBalanceForm.java
- ┃ ┣ entity
- ┃ ┃ ┣ Member.java
- ┃ ┃ ┣ Problem.java
- ┃ ┃ ┣ ProblemPlagiarizeList.java
- ┃ ┃ ┣ ProblemSimilarList.java
- ┃ ┃ ┗ UserBalance.java
- ┃ ┣ repository
- ┃ ┃ ┣ MemberRepository.java
- ┃ ┃ ┣ ProblemPlagiarizeListRepository.java
- ┃ ┃ ┣ ProblemRepository.java
- ┃ ┃ ┣ ProblemSimilarityListRepository.java
- ┃ ┃ ┗ UserBalanceRepository.java
- ┃ ┣ service
- ┃ ┃ ┣ MemberService.java
- ┃ ┃ ┣ ProblemPlagiarizeListService.java
- ┃ ┃ ┣ ProblemService.java
- ┃ ┃ ┣ ProblemSimilarityService.java
- ┃ ┃ ┗ UserBalanceService.java
- ┃ ┣ .DS_Store
- ┃ ┗ MyhomeworkApplication.java
- ┗ .DS_Store
+.
+├── api  
+│   ├── auth_api.dart
+│   ├── book_api.dart
+│   ├── book_log_api.dart
+│   ├── book_log_question_api.dart
+│   ├── book_record_api.dart
+│   ├── mail_api.dart
+│   ├── member_api.dart
+│   └── utils
+│       ├── api_basic_util.dart
+│       └── dio
+│           ├── dio_client.dart
+│           └── token_interseptor.dart
+├── main.dart
+├── models
+│   ├── book_log_question.dart
+│   ├── book_log.dart
+│   ├── book_record.dart
+│   ├── book.dart
+│   ├── email_response.dart
+│   └── member.dart
+├── provider
+│   ├── auth_provider.dart
+│   ├── book_record_provider.dart
+│   └── member_provider.dart
+├── screens
+│   ├── auth
+│   │   ├── login_page.dart
+│   │   └── signup_page.dart
+│   ├── book
+│   │   ├── book_detail_page.dart
+│   │   └── book_search_page.dart
+│   ├── booklog
+│   │   ├── book_log_detail_over_page.dart
+│   │   └── book_log_detail_page.dart
+│   ├── bookrecord
+│   │   ├── book_record_list_page.dart
+│   │   ├── book_record_over_wirte_page.dart
+│   │   ├── book_record_page.dart
+│   │   ├── book_record_timer_page.dart
+│   │   └── book_record_write_page.dart
+│   ├── home
+│   │   └── home.dart
+│   ├── mypage
+│   │   ├── my_page.dart
+│   │   └── privacy_terms_page.dart
+│   ├── search
+│   │   ├── search_email_page.dart
+│   │   ├── search_email_result_page.dart
+│   │   ├── search_password_page.dart
+│   │   └── search_password_result_page.dart
+│   └── splash_page.dart
+├── utils
+│   └── global_util.dart
+└── widgets
+    ├── app_bars.dart
+    ├── bottom_navigation_bar.dart
+    ├── custom_dropdown.dart
+    ├── custom_filled_button.dart
+    ├── custom_snackbar.dart
+    ├── custom_text_field.dart
+    ├── login_buttons.dart
+    └── login_textfield.dart
+```
+1. api : SpringBoot 서버와 RestAPI 통신을 하는 역할을 수행하는 패키지
+2. models : 책, 기록, 사용자와 같이 객체를 class로 관리하는 역할을 수행하는 패키지
+3. provider : 일부 model을 전역적으로 사용하고, 상태가 바뀔때 곧바로 반영하기 위한 Provider 역할을 수행하는 패키지
+4. screens : 앱의 화면을 그리는 역할을 담당하는 패키지
+5. utils : MainColor, MainPadding 과 같이 자주 사용하는 값들을 가져오기 위한 패키지
+6. widgets : AppBar, Button과 같이 자주 쓰이는 Widget들을 가져오기 위한 패키지 
+7. main.dart : 메인 실행 파일 
  
-```
-1. complexKey : 속성이 2개 이상으로 이루어진 복수키를 관리하기 위한 패키지
-2. controller : client로부터 RestAPI요청을 받는 역할을 하는 패키지
-3. dto : Reqeust의 형태를 정의하는 패키지
-4. entity : JPA에서 데이터베이스의 테이블을 생성하는 역할을 하는 패키지
-5. repository : JPA에서 DB와 서버의 연결을 위한 패키지
-6. service : 본 서버 프로그램에서 핵심 로직을 처리하는 패키지  
-
-### 프론트엔드 디렉토리 
-```
-src
- ┣ api
- ┃ ┣ GetAPI.js
- ┃ ┗ PostAPI.js
- ┣ asset
- ┃ ┣ components
- ┃ ┃ ┣ BackButton.js
- ┃ ┃ ┣ background.css
- ┃ ┃ ┣ CategorySelector.js
- ┃ ┃ ┣ ConfirmCancelButton.js
- ┃ ┃ ┣ DetailButton.js
- ┃ ┃ ┣ HeaderBar.js
- ┃ ┃ ┣ index.js
- ┃ ┃ ┣ NextCancelButton.js
- ┃ ┃ ┣ OptionBoxes.js
- ┃ ┃ ┣ PlagiarismModal.js
- ┃ ┃ ┣ PreviewGrid.js
- ┃ ┃ ┣ ProblemPreview.css
- ┃ ┃ ┣ ProblemPreview.js
- ┃ ┃ ┣ SearchButton.js
- ┃ ┃ ┣ SignOutButton.js
- ┃ ┃ ┣ UploadProblemButton.js
- ┃ ┃ ┗ UserName.js
- ┃ ┗ image
- ┃ ┃ ┣ answer_7.PNG
- ┃ ┃ ┣ background_image.PNG
- ┃ ┃ ┣ back_button.png
- ┃ ┃ ┣ intro_image.jpg
- ┃ ┃ ┣ pro_1.PNG
- ┃ ┃ ┣ pro_10.PNG
- ┃ ┃ ┣ pro_11.PNG
- ┃ ┃ ┣ pro_12.PNG
- ┃ ┃ ┣ pro_13.PNG
- ┃ ┃ ┣ pro_14.PNG
- ┃ ┃ ┣ pro_15.PNG
- ┃ ┃ ┣ pro_16.PNG
- ┃ ┃ ┣ pro_17.PNG
- ┃ ┃ ┣ pro_18.PNG
- ┃ ┃ ┣ pro_19.PNG
- ┃ ┃ ┣ pro_2.PNG
- ┃ ┃ ┣ pro_20.PNG
- ┃ ┃ ┣ pro_3.PNG
- ┃ ┃ ┣ pro_4.PNG
- ┃ ┃ ┣ pro_5.PNG
- ┃ ┃ ┣ pro_6.PNG
- ┃ ┃ ┣ pro_7.PNG
- ┃ ┃ ┣ pro_8.PNG
- ┃ ┃ ┣ pro_9.PNG
- ┃ ┃ ┣ search_button.png
- ┃ ┃ ┗ solution_7.PNG
- ┣ page
- ┃ ┣ boughtpage
- ┃ ┃ ┣ BoughtPage.css
- ┃ ┃ ┗ BoughtPage.js
- ┃ ┣ explorepage
- ┃ ┃ ┣ ExploreArticle.css
- ┃ ┃ ┣ ExploreArticle.js
- ┃ ┃ ┣ ExploreHeader.js
- ┃ ┃ ┗ ExplorePage.js
- ┃ ┣ intropage
- ┃ ┃ ┗ IntroPage.js
- ┃ ┣ mainpage
- ┃ ┃ ┣ MainArticle.js
- ┃ ┃ ┣ MainHeader.js
- ┃ ┃ ┗ MainPage.js
- ┃ ┣ mypage
- ┃ ┃ ┗ MyPage.js
- ┃ ┣ problempage
- ┃ ┃ ┣ ProblemDetail.css
- ┃ ┃ ┣ ProblemDetail.js
- ┃ ┃ ┣ ProblemHeader.js
- ┃ ┃ ┗ ProblemPage.js
- ┃ ┗ uploadpage
- ┃ ┃ ┣ UploadArticle.js
- ┃ ┃ ┣ UploadConfirm.css
- ┃ ┃ ┣ UploadConfirm.js
- ┃ ┃ ┣ UploadForm.css
- ┃ ┃ ┣ UploadForm.js
- ┃ ┃ ┣ UploadHeader.js
- ┃ ┃ ┣ UploadPage.js
- ┃ ┃ ┗ UploadWaiting.js
- ┣ store
- ┃ ┣ dataSlice.js
- ┃ ┗ store.js
- ┣ App.css
- ┣ App.js
- ┣ App.test.js
- ┣ index.css
- ┣ index.js
- ┣ logo.svg
- ┣ reportWebVitals.js
- ┣ setupProxy.js
- ┗ setupTests.js
- ```
- 1. api : api 처리 관련 디렉토리
- 2. asset : 이미지, 폰트, 컴포넌트와 같은 정적파일 및 컴포넌트 파일들로 구성된 디렉토리
- 3. page : 각각의 page를 구성하는 파일들로 구성된 디렉토리
- 4. store : redux와 관련된 변수들의 상태 관리를 하는 디렉토리
- 
-<br>
-
-## 📑 API 구조
-본 프로젝트의 API 구조는 [여기](https://github.com/ProblemTradeService/PTD/blob/readme/API_README.md)서 확인할 수 있습니다.
-
 <br>
 
 ## ✅ 기술적 이슈 및 해결 과정
@@ -342,12 +259,7 @@ src
 
 <br>
 
-## 📰 관련 논문
-본 프로젝트와 관련된 논문은 [여기](readmeAsset/논문.pdf) 서 확인할 수 있습니다. <br>
-
-<br>
-
-## 👬 프로젝트 팀원 및 역할
+## 👬 개인 프로젝트 역할
 1. 🐶이세영 [@LSe-Yeong](https://github.com/LSe-Yeong)
     - SpringBoot를 이용한 API 서버 구축
         - Member 등록, 조회와 관련된 API 구현
@@ -356,7 +268,6 @@ src
         - 수학 문제 이미지 데이터 저장 및 처리 기능 구현
         - 수학 문제, Member 관련 Entity 설계     
     - MySQL RDBMS를 Backend 서버와 연동
-2. 🐰최명재 [@DdingJae418](https://github.com/DdingJae418)
-3. 🐱정은서 [@Eunseo23](https://github.com/Eunseo23)
+
     
 
