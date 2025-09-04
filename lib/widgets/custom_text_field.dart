@@ -7,7 +7,7 @@ class CustomTextField extends StatelessWidget {
     required this.hintText,
     required this.obscureText,
     required this.controller,
-    required this.width,
+    this.width,
     this.type,
     this.maxLen,
     this.enabled,
@@ -16,7 +16,7 @@ class CustomTextField extends StatelessWidget {
   final String hintText;
   final bool obscureText;
   final TextEditingController controller;
-  final double width;
+  final double? width;
 
   final int? maxLen;
   final TextInputType? type;

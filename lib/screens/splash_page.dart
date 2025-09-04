@@ -25,7 +25,6 @@ class _SplashPageState extends State<SplashPage> {
     
     if (authProvider.accessToken != null) {
       bool isValid = await getMemberInfo(context);
-      print(isValid);
       if(isValid) {
         Navigator.pushReplacementNamed(context, '/home');
       } else {

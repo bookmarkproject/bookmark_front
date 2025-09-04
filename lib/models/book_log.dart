@@ -1,0 +1,30 @@
+
+
+class BookLog {
+    final int id;
+    final int pageStart;
+    final int pageEnd;
+    final int readingTime;
+    final String readingDate;
+    final String logType;
+    
+  BookLog({
+    required this.id,
+    required this.pageStart,
+    required this.pageEnd,
+    required this.readingTime,
+    required this.readingDate,
+    required this.logType,
+  });
+
+  factory BookLog.fromJson(Map<String, dynamic> json) {
+    return BookLog(
+      id: json['id'],
+      pageStart:  json['pageStart'],
+      pageEnd: json['pageEnd'],
+      readingTime: json['readingTime'],
+      readingDate: json['readingDate'],
+      logType: json['logType'],
+    );
+  }
+}

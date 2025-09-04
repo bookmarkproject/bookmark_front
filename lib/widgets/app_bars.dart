@@ -1,3 +1,4 @@
+import 'package:bookmarkfront/utils/global_util.dart';
 import 'package:flutter/material.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
@@ -14,11 +15,16 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   Widget build(BuildContext context) {
     return AppBar(
       automaticallyImplyLeading: backButton ?? true,
+      backgroundColor: getMainColor(),
+       iconTheme: const IconThemeData(
+        color: Colors.white, 
+      ),
       title: Text(
         text,
         style: TextStyle(
           fontSize: 17,
           fontWeight: FontWeight.bold,
+          color: Colors.white,
         ),
       ),
     ); 

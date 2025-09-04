@@ -5,7 +5,7 @@ class CustomDropdown<T> extends StatelessWidget {
   final List<T> items;
   final String Function(T) itemToString;
   final ValueChanged<T?> onChanged;
-  final double width;
+  final double? width;
 
   const CustomDropdown({
     super.key,
@@ -13,7 +13,7 @@ class CustomDropdown<T> extends StatelessWidget {
     required this.items,
     required this.itemToString,
     required this.onChanged,
-    required this.width,
+    this.width,
   });
 
   @override

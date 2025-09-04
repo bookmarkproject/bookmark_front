@@ -1,4 +1,5 @@
 import 'package:bookmarkfront/api/utils/api_basic_util.dart';
+import 'package:bookmarkfront/main.dart';
 import 'package:bookmarkfront/models/member.dart';
 import 'package:bookmarkfront/provider/auth_provider.dart';
 import 'package:bookmarkfront/provider/member_provider.dart';
@@ -21,7 +22,7 @@ Future<void> signup(BuildContext context, Map<String,dynamic> request) async {
 
     if (response.statusCode == 201) {
       showSnack(context, "회원가입에 성공했습니다.");
-      Navigator.pushNamed(context, "/login");
+      Navigator.pushReplacementNamed(context, "/login");
     } else {
       showSnack(context, errorMessage(response),isError: true);
     }
@@ -65,7 +66,7 @@ Future<void> login(BuildContext context, Map<String,dynamic> request) async {
       context.read<AuthProvider>().saveToken(jsonDecode(response.body)['accessToken']);
       context.read<AuthProvider>().saveRefreshToken(jsonDecode(response.body)['refreshToken']);
       showSnack(context, "로그인에 성공했습니다.");
-      Navigator.pushNamed(context, "/home");
+      navigatorKey.currentState?.pushNamedAndRemoveUntil('/home', (route) => false);
     } else {
       showSnack(context, errorMessage(response),isError: true);
     }

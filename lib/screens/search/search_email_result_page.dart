@@ -19,9 +19,9 @@ class _SearchEmailResultPageState extends State<SearchEmailResultPage> {
 
     return Scaffold(
       appBar: CustomAppBar(text: "이메일 찾기"),
-      body: Padding(
-        padding: getMainPadding(),
-        child: SafeArea(
+      body: SafeArea(
+        child: Padding(
+          padding: getMainPadding(),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [

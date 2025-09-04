@@ -56,269 +56,277 @@ class _SignupPageState extends State<SignupPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppBar(text: "회원가입"),
-      body: SingleChildScrollView(
+      body: SafeArea(
         child: Padding(
           padding: getMainPadding(),
-          child: SafeArea(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                _getTitle("계정 만들기", 22.0),
-                const SizedBox(
-                  height: 15,
-                ),
-                CustomTextField(
-                  hintText: "이름",
-                  obscureText: false,
-                  controller: nameCountroller,
-                  width: 361,
-                ),
-                const SizedBox(
-                  height: 15,
-                ),
-                Row(
-                  children: [
-                    CustomTextField(
-                      hintText: "이메일",
-                      obscureText: false,
-                      controller: emailCountroller,
-                      enabled: isEmailVerified,
-                      width: 240,
-                    ),
-                    const SizedBox(
-                      width: 20,
-                    ),
-                    CustomFilledButton(
-                      callback: (){
-                        sendMail(context,emailCountroller.text);
-                      }, 
-                      text: "인증 요청", 
-                      fontsize: 16.0,
-                      width: 100,
-                    ),
-                  ],
-                ),
-                const SizedBox(
-                  height: 15,
-                ),
-                Row(
-                  children: [
-                    CustomTextField(
-                      hintText: "이메일 인증 코드",
-                      obscureText: false,
-                      controller: authNumCountroller,
-                      enabled: isEmailVerified,
-                      width: 270,
-                    ),
-                    SizedBox(
-                      width: 20,
-                    ),
-                    CustomFilledButton(
-                      callback: () async {
-                        EmailResponse? response =  await authNumCheck(context, emailCountroller.text, authNumCountroller.text);
-                        setState(() {
-                          if(response!=null) {
-                            isEmailVerified = response.isVerified;
-                          }
-                        });
-                      }, 
-                      text: "인증", 
-                      fontsize: 16.0,
-                      width: 70,
-                    ),
-                  ],
-                ),
-                const SizedBox(
-                  height: 15,
-                ),
-                CustomTextField(
-                  hintText: "비밀번호",
-                  obscureText: true,
-                  controller: passwordCountroller,
-                  width: 361,
-                ),
-                const SizedBox(
-                  height: 3,
-                ),
-                const Text(
-                  '비밀번호는 영어, 숫자, 특수문자(!@#\$%^&*())를 1개 이상 포함하여\n 8~16자로 입력 해야합니다.',
-                  style: TextStyle(
-                    fontSize: 10,
+          child: SingleChildScrollView(
+            child: Center(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  _getTitle("계정 만들기", 22.0),
+                  const SizedBox(
+                    height: 15,
                   ),
-                ),
-                const SizedBox(
-                  height: 15,
-                ),
-                CustomTextField(
-                  hintText: "비밀번호 확인",
-                  obscureText: true,
-                  controller: passwordCheckCountroller,
-                  width: 361,
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-                _getTitle("성별", 18.0),
-                const SizedBox(
-                  height: 15.0,
-                ),
-                CustomDropdown<String>(
-                  width: 360,
-                  selectedValue: genderSelected,
-                  items: genderItems,
-                  itemToString: (v)=>v,
-                  onChanged: (val) {
-                    setState(() {
-                      genderSelected = val;
-                    });
-                  }
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-                _getTitle("휴대폰 번호", 18.0),
-                const SizedBox(
-                  height: 15,
-                ),
-                CustomTextField(
-                  hintText: "010xxxxxxxx",
-                  obscureText: false,
-                  controller: phoneNumberController,
-                  type: TextInputType.phone,
-                  maxLen: 11,
-                  width: 361,
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-                _getTitle("생년월일", 18.0),
-                const SizedBox(
-                  height: 15,
-                ),
-                Row(
-                  children: [
-                    CustomDropdown<int>(
-                      width: 110,
-                      selectedValue: yearSelected,
-                      items: yearItems,
-                      itemToString: (v)=>'$v년',
-                      onChanged: (val) {
-                        setState(() {
-                          yearSelected = val!;
-                          _updateDays();
-                        });
-                      }
-                    ),
-                    const SizedBox(
-                      width: 15,
-                    ),
-                    CustomDropdown<int>(
-                      width: 110,
-                      selectedValue: monthSelected,
-                      items: monthItems,
-                      itemToString: (v)=>'$v월',
-                      onChanged: (val) {
-                        setState(() {
-                          monthSelected = val!;
-                          _updateDays();
-                        });
-                      }
-                    ),
-                    const SizedBox(
-                      width: 15,
-                    ),
-                    CustomDropdown<int>(
-                      width: 110,
-                      selectedValue: daySelected,
-                      items: dayItems,
-                      itemToString: (v)=>'$v일',
-                      onChanged: (val) {
-                        setState(() {
-                          daySelected = val!;
-                        });
-                      }
-                    ),
-                  ],
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-                _getTitle("닉네임", 18.0),
-                const SizedBox(
-                  height: 15,
-                ),
-                Row(
-                  children: [
-                    CustomTextField(
-                      hintText: "닉네임을 입력하세요.",
-                      obscureText: false,
-                      controller: nicknameController,
-                      width: 250,
-                    ),
-                    const SizedBox(
-                      width: 20,
-                    ),
-                    CustomFilledButton(
-                      callback: () async{
-                        bool isDuplicated = await isDuplicateNickname(context, nicknameController.text);
-                        setState(() {
-                          isNicknameDuplicated = isDuplicated;
-                        });
-                      }, 
-                      text: "중복확인", 
-                      fontsize: 14.0,
-                      width: 90,
-                    ),
-                  ],
-                ),
-                const SizedBox(
-                  height: 5,
-                ),
-                Row(
-                  children: [
-                    Checkbox(
-                      value: isPiChecked, 
-                      onChanged: (bool? value){
-                        setState(() {
-                          isPiChecked = value!;
-                        });
-                      },
-                    ),
-                    Text(
-                      "개인정보 수집에 동의합니다.",
-                      style: TextStyle(
-                        fontSize: 14.0,
+                  CustomTextField(
+                    hintText: "이름",
+                    obscureText: false,
+                    controller: nameCountroller,
+                    width: 361,
+                  ),
+                  const SizedBox(
+                    height: 15,
+                  ),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: CustomTextField(
+                          hintText: "이메일",
+                          obscureText: false,
+                          controller: emailCountroller,
+                          enabled: isEmailVerified,
+                        ),
                       ),
+                      const SizedBox(
+                        width: 20,
+                      ),
+                      CustomFilledButton(
+                        callback: (){
+                          sendMail(context,emailCountroller.text);
+                        }, 
+                        text: "인증 요청", 
+                        fontsize: 16.0,
+                        width: 100,
+                      ),
+                    ],
+                  ),
+                  const SizedBox(
+                    height: 15,
+                  ),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: CustomTextField(
+                          hintText: "이메일 인증 코드",
+                          obscureText: false,
+                          controller: authNumCountroller,
+                          enabled: isEmailVerified,
+                        ),
+                      ),
+                      SizedBox(
+                        width: 20,
+                      ),
+                      CustomFilledButton(
+                        callback: () async {
+                          EmailResponse? response =  await authNumCheck(context, emailCountroller.text, authNumCountroller.text);
+                          setState(() {
+                            if(response!=null) {
+                              isEmailVerified = response.isVerified;
+                            }
+                          });
+                        }, 
+                        text: "인증", 
+                        fontsize: 16.0,
+                        width: 70,
+                      ),
+                    ],
+                  ),
+                  const SizedBox(
+                    height: 15,
+                  ),
+                  CustomTextField(
+                    hintText: "비밀번호",
+                    obscureText: true,
+                    controller: passwordCountroller,
+                    width: 361,
+                  ),
+                  const SizedBox(
+                    height: 3,
+                  ),
+                  const Text(
+                    '비밀번호는 영어, 숫자, 특수문자(!@#\$%^&*())를 1개 이상 포함하여\n 8~16자로 입력 해야합니다.',
+                    style: TextStyle(
+                      fontSize: 10,
                     ),
-                  ],
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-                CustomFilledButton(
-                  callback: (){
-                    if(!_isValidForSingup()) {
-                      return;
+                  ),
+                  const SizedBox(
+                    height: 15,
+                  ),
+                  CustomTextField(
+                    hintText: "비밀번호 확인",
+                    obscureText: true,
+                    controller: passwordCheckCountroller,
+                    width: 361,
+                  ),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  _getTitle("성별", 18.0),
+                  const SizedBox(
+                    height: 15.0,
+                  ),
+                  CustomDropdown<String>(
+                    width: 360,
+                    selectedValue: genderSelected,
+                    items: genderItems,
+                    itemToString: (v)=>v,
+                    onChanged: (val) {
+                      setState(() {
+                        genderSelected = val;
+                      });
                     }
-                    final month = monthSelected.toString().padLeft(2, '0');
-                    final day = daySelected.toString().padLeft(2,'0');
-                    final request = {
-                      "email" : emailCountroller.text,
-                      "password" : passwordCountroller.text,
-                      "name" : nameCountroller.text,
-                      "nickname" : nicknameController.text,
-                      "gender" : genderSelected,
-                      "phoneNumber" : phoneNumberController.text,
-                      "birthday" : "$yearSelected-$month-$day"
-                    };
-                    signup(context, request);
-                  }, 
-                  text: "회원 가입", 
-                  fontsize: 17.0,
-                  width: 361,
-                ),
-              ],
+                  ),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  _getTitle("휴대폰 번호", 18.0),
+                  const SizedBox(
+                    height: 15,
+                  ),
+                  CustomTextField(
+                    hintText: "010xxxxxxxx",
+                    obscureText: false,
+                    controller: phoneNumberController,
+                    type: TextInputType.phone,
+                    maxLen: 11,
+                    width: 361,
+                  ),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  _getTitle("생년월일", 18.0),
+                  const SizedBox(
+                    height: 15,
+                  ),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: CustomDropdown<int>(
+                          selectedValue: yearSelected,
+                          items: yearItems,
+                          itemToString: (v)=>'$v년',
+                          onChanged: (val) {
+                            setState(() {
+                              yearSelected = val!;
+                              _updateDays();
+                            });
+                          }
+                        ),
+                      ),
+                      const SizedBox(
+                        width: 15,
+                      ),
+                      Expanded(
+                        child: CustomDropdown<int>(
+                          selectedValue: monthSelected,
+                          items: monthItems,
+                          itemToString: (v)=>'$v월',
+                          onChanged: (val) {
+                            setState(() {
+                              monthSelected = val!;
+                              _updateDays();
+                            });
+                          }
+                        ),
+                      ),
+                      const SizedBox(
+                        width: 15,
+                      ),
+                      Expanded(
+                        child: CustomDropdown<int>(
+                          selectedValue: daySelected,
+                          items: dayItems,
+                          itemToString: (v)=>'$v일',
+                          onChanged: (val) {
+                            setState(() {
+                              daySelected = val!;
+                            });
+                          }
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  _getTitle("닉네임", 18.0),
+                  const SizedBox(
+                    height: 15,
+                  ),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: CustomTextField(
+                          hintText: "닉네임을 입력하세요.",
+                          obscureText: false,
+                          controller: nicknameController,
+                        ),
+                      ),
+                      const SizedBox(
+                        width: 20,
+                      ),
+                      CustomFilledButton(
+                        callback: () async{
+                          bool isDuplicated = await isDuplicateNickname(context, nicknameController.text);
+                          setState(() {
+                            isNicknameDuplicated = isDuplicated;
+                          });
+                        }, 
+                        text: "중복확인", 
+                        fontsize: 14.0,
+                        width: 90,
+                      ),
+                    ],
+                  ),
+                  const SizedBox(
+                    height: 5,
+                  ),
+                  Row(
+                    children: [
+                      Checkbox(
+                        value: isPiChecked, 
+                        onChanged: (bool? value){
+                          setState(() {
+                            isPiChecked = value!;
+                          });
+                        },
+                      ),
+                      Text(
+                        "개인정보 수집에 동의합니다.",
+                        style: TextStyle(
+                          fontSize: 14.0,
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  CustomFilledButton(
+                    callback: (){
+                      if(!_isValidForSingup()) {
+                        return;
+                      }
+                      final month = monthSelected.toString().padLeft(2, '0');
+                      final day = daySelected.toString().padLeft(2,'0');
+                      final request = {
+                        "email" : emailCountroller.text,
+                        "password" : passwordCountroller.text,
+                        "name" : nameCountroller.text,
+                        "nickname" : nicknameController.text,
+                        "gender" : genderSelected,
+                        "phoneNumber" : phoneNumberController.text,
+                        "birthday" : "$yearSelected-$month-$day"
+                      };
+                      signup(context, request);
+                    }, 
+                    text: "회원 가입", 
+                    fontsize: 17.0,
+                    width: 361,
+                  ),
+                ],
+              ),
             ),
           ),
         ),

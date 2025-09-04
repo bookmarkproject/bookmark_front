@@ -20,67 +20,69 @@ class SearchPasswordResultPage extends StatelessWidget {
    
     return Scaffold(
       appBar: CustomAppBar(text: "비밀번호 찾기"),
-      body : Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16.0,vertical: 20.0),
-        child: SafeArea(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              _getTitle("새 비밀번호 입력", 18.0),
-              const SizedBox(
-                height: 30,
-              ),
-              CustomTextField(
-                hintText: "새 비밀번호", 
-                obscureText: true, 
-                controller: passwordCountroller,
-                width: 361,
-              ),
-              const SizedBox(
-                height: 3,
-              ),
-              const Text(
-                '비밀번호는 영어, 숫자, 특수문자(!@#\$%^&*())를 1개 이상 포함하여\n 8~16자로 입력 해야합니다.',
-                style: TextStyle(
-                  fontSize: 10,
+      body : SafeArea(
+        child: Padding(
+          padding: getMainPadding(),
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                _getTitle("새 비밀번호 입력", 18.0),
+                const SizedBox(
+                  height: 30,
                 ),
-              ),
-              const SizedBox(
-                height: 15,
-              ),
-              CustomTextField(
-                hintText: "새 비밀번호 확인", 
-                obscureText: true, 
-                controller: passwordCheckCountroller,
-                width: 361,
-              ),
-              const SizedBox(
-                height: 40,
-              ),
-              CustomFilledButton(
-                callback: ()async {
-                  if (isEmptyField(context, passwordCountroller, "비밀번호")) return;
-                  else if (passwordCountroller.text != passwordCheckCountroller.text) {
-                    showSnack(context, "비밀번호와 비밀번호 확인이 다릅니다.",isError: true);
-                    return;
-                  }
-
-                  final request = {
-                    "password" : passwordCountroller.text,
-                    "token" : "Bearer $changePasswordToken"
-                  };
-
-                  bool isChanged = await changePassword(context, request);
-                  if(isChanged) {
-                    Provider.of<AuthProvider>(context,listen: false).clearChangePasswordToken();
-                    Navigator.pushNamed(context, '/login');
-                  }
-                }, 
-                text: "비밀번호 변경", 
-                fontsize: 17.0,
-                width: 361,
-              ),
-            ],
+                CustomTextField(
+                  hintText: "새 비밀번호", 
+                  obscureText: true, 
+                  controller: passwordCountroller,
+                  width: 361,
+                ),
+                const SizedBox(
+                  height: 3,
+                ),
+                const Text(
+                  '비밀번호는 영어, 숫자, 특수문자(!@#\$%^&*())를 1개 이상 포함하여\n 8~16자로 입력 해야합니다.',
+                  style: TextStyle(
+                    fontSize: 10,
+                  ),
+                ),
+                const SizedBox(
+                  height: 15,
+                ),
+                CustomTextField(
+                  hintText: "새 비밀번호 확인", 
+                  obscureText: true, 
+                  controller: passwordCheckCountroller,
+                  width: 361,
+                ),
+                const SizedBox(
+                  height: 40,
+                ),
+                CustomFilledButton(
+                  callback: ()async {
+                    if (isEmptyField(context, passwordCountroller, "비밀번호")) return;
+                    else if (passwordCountroller.text != passwordCheckCountroller.text) {
+                      showSnack(context, "비밀번호와 비밀번호 확인이 다릅니다.",isError: true);
+                      return;
+                    }
+                    
+                    final request = {
+                      "password" : passwordCountroller.text,
+                      "token" : "Bearer $changePasswordToken"
+                    };
+                    
+                    bool isChanged = await changePassword(context, request);
+                    if(isChanged) {
+                      Provider.of<AuthProvider>(context,listen: false).clearChangePasswordToken();
+                      Navigator.pushNamed(context, '/login');
+                    }
+                  }, 
+                  text: "비밀번호 변경", 
+                  fontsize: 17.0,
+                  width: 361,
+                ),
+              ],
+            ),
           ),
         ),
       ),
