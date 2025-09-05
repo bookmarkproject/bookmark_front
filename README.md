@@ -34,7 +34,7 @@
 ### Tools
 - GitHub
 - Figma
-
+- Xcode ios emulator
 
 <br>
 
@@ -226,48 +226,104 @@
  
 <br>
 
-## ✅ 기술적 이슈 및 해결 과정
-1. 수학 문제 표절도 판별 프롬프트를 어떤식으로 구성할지?
-    - 역할 부여, 정의 명시, 정보 제외, 단계적 분류 총 4가지 단계를 설정하여 프롬프트를 구성하였다.
-    - 특히 정의 명시에서 문제의 정보, 풀이과정의 맥락 등 표절의 기준을 명확하게 부여하여 성능을 높였다.
-    - 다음은 본 프로젝트의 프롬프트 구성이다.
-    <img src="readmeAsset/프롬프트.png">
+## ✅ 기술 적용
+1. dio를 활용한 RestAPI 통신 구현 및 RefreshToken 기능 구현
+    ```
+    Future<List<BookRecord>> getMyBookRecord(BuildContext context) async {
+  
+        List<BookRecord> result = [];
+
+        final dioClient = Provider.of<DioClient>(context,listen: false);
+        
+        try {
+            final response = await dioClient.dio.get("$base_url/me");
+
+            if (response.statusCode == 200) {
+            final bookRecords = response.data;
+            for (var bookRecord in bookRecords) {
+                result.add(BookRecord.fromJson(bookRecord));
+            }
+            Provider.of<BookRecordProvider>(context,listen: false).setBookRecords(result);
+            return result;
+            } 
+            return [];
+        } on DioException catch (e) {
+            print('Dio 오류 발생: ${e.response?.statusCode}');
+
+            return [];
+        } catch (e) {
+            print('알 수 없는 오류 발생: $e');
+            return [];
+        }
+    }
+    ```
+- 위 코드는 dio 패키지를 이용해 현재 내 독서 기록 목록을 가져오는 RestAPI 통신 코드
+- 200과 같은 정상적인 처리가 되었을 때만 데이터를 받아 처리해주고, 예외가 발생한다면 예외 로그를 발생시키고 빈 리스트를 반환하도록 구현함. 
+
+    <br>
+
+    ```
+    @override
+    void onError(DioException err, ErrorInterceptorHandler handler) async {
+        if (err.response?.statusCode == 401) {
+        try {
+            await authProvider.clearToken();
+            await refreshToken();
+
+            if (authProvider.accessToken != null) {
+            err.requestOptions.validateStatus = (status) {
+                return true;
+            };
+            final retryResponse = await dio.fetch(err.requestOptions
+                ..headers["Authorization"] = "Bearer ${authProvider.accessToken}");
+            
+            if (retryResponse.statusCode! >= 200 && retryResponse.statusCode! <= 299) {
+                return handler.resolve(retryResponse);
+            } else if (retryResponse.statusCode == 401) {
+                navigatorKey.currentState?.pushNamedAndRemoveUntil('/login', (route) => false);
+            } else {
+                return handler.next(DioException(
+                requestOptions: err.requestOptions,
+                response: retryResponse,
+                ));
+            }
+            }
+        } catch (e) {
+            print(e);
+        }
+        }
+        return handler.next(err);
+    }
+    ```
+- 위 코드는 dio를 통해 요청을 보낼 때 401 (인증 관련)이라는 응답 상태를 반환받으면 토큰을 재발급 하여주는 코드이다.
+- 재발급 했을 때는 200 ~ 299 코드가 온다면 원래 보냈던 요청을 다시 보내고, 다시 401이 온다면 리프레쉬 토큰도 유효하지 않은 상황이므로 예외를 발생시키도록 구현 
 
 <br>
-      
-2. 사진 데이터 처리를 어떻게 할지?
-    - 문제 업로드 시 사진은 MultipartFile의 형태로 받는다.
-    - 이후 File 클래스의 형태로 바꿔준 뒤 LLM 모델에게 전송한다.
-    - 표절도 측정 이후 사진 데이터를 프로젝트 패키지의 image 디렉토리에 저장한다.
-    - 이후 사진을 조회할 때는 image 디렉토리에서 파일을 찾아 Byte의 형태로 반환한다.
+
+2. JWT 토큰 관리
+- FlutterSecureStorage를 통해 안전하게 관리 (각 플랫폼에서 제공하는 OS 레벨의 보안 저장소를 활용)
+  1. Android
+      - AES로 데이터를 암호화해서 저장하고, 암호화 키는 Keystore(Hardware-backed, 보안 칩에 저장) 안에 보관
+  2. ios
+      - ios Keychain을 사용, Keychain은 iOS 자체에서 제공하는 보안 저장소로, 기기 PIN/Face ID/Touch ID와 연동되어 보호됨.
 
 <br>
 
-3. FastAPI 서버와 SpringBoot 서버간 통신은 어떻게 할지?
-    - RestTemplate 클래스를 이용하여 해결함
+3. 에뮬레이터가 아닌 실제 기기에서 테스트
+<p align="center">
+    <img src="readmeAsset/iphone.PNG" width="200">
+    <img src="readmeAsset/iphone2.PNG" width="200">
+</p>
 
-<br>
-
-4. 수학 문제에 대한 DB 스키마를 어떻게 나타낼 것인지?
-    - 수학 문제는 문제 자체에 대한 정보, 문제들간의 유사도 정도, 문제들간의 표절도 정도 등이 있다.
-    - 한 테이블에 다 담게 된다면 튜플의 개수가 매우 많아지므로 테이블을 분해하는 정규화 과정을 진행하였다.
-    - 그 결과 다음 3개의 테이블로 분해하였다. 
-        - 기본적인 문제에 대한 정보를 담는 테이블
-        - 서로간의 표절도에 대한 정보를 담는 테이블
-        - 서로간의 유사도에 대한 정보를 담는 테이블
-
+- ios 기기는 Xcode를 활용하여 유선 연결로 실행
+- Android 기기는 apk 배포를 통해 실행 
 
 <br>
 
 ## 👬 개인 프로젝트 역할
 1. 🐶이세영 [@LSe-Yeong](https://github.com/LSe-Yeong)
-    - SpringBoot를 이용한 API 서버 구축
-        - Member 등록, 조회와 관련된 API 구현
-        - Member 계좌 처리와 관련된 API 구현
-        - 수학 문제 업로드 및 id,카테고리 별로 조회 하는 API 구현
-        - 수학 문제 이미지 데이터 저장 및 처리 기능 구현
-        - 수학 문제, Member 관련 Entity 설계     
-    - MySQL RDBMS를 Backend 서버와 연동
-
+    - 전반적인 앱 화면 구현
+    - dio 패키지를 활용한 RestAPI 통신 구현
+    - Provider를 통해 상태 관리 기능 구현
     
 
