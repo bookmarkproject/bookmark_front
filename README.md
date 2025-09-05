@@ -227,7 +227,7 @@
 <br>
 
 ## ✅ 기술 적용
-1. dio를 활용한 RestAPI 통신 구현 및 RefreshToken 기능 구현
+1. dio를 활용한 RestAPI 통신 구현 
     ```
     Future<List<BookRecord>> getMyBookRecord(BuildContext context) async {
   
@@ -260,8 +260,10 @@
 - 위 코드는 dio 패키지를 이용해 현재 내 독서 기록 목록을 가져오는 RestAPI 통신 코드
 - 200과 같은 정상적인 처리가 되었을 때만 데이터를 받아 처리해주고, 예외가 발생한다면 예외 로그를 발생시키고 빈 리스트를 반환하도록 구현함. 
 
-    <br>
+<br>
 
+2. dio를 활용한 RefreshToken 구현
+    
     ```
     @override
     void onError(DioException err, ErrorInterceptorHandler handler) async {
@@ -300,7 +302,7 @@
 
 <br>
 
-2. JWT 토큰 관리
+3. JWT 토큰 관리
 - FlutterSecureStorage를 통해 안전하게 관리 (각 플랫폼에서 제공하는 OS 레벨의 보안 저장소를 활용)
   1. Android
       - AES로 데이터를 암호화해서 저장하고, 암호화 키는 Keystore(Hardware-backed, 보안 칩에 저장) 안에 보관
@@ -309,7 +311,7 @@
 
 <br>
 
-3. 에뮬레이터가 아닌 실제 기기에서 테스트
+4. 에뮬레이터가 아닌 실제 기기에서 테스트
 <p align="center">
     <img src="readmeAsset/iphone.PNG" width="200">
     <img src="readmeAsset/iphone2.PNG" width="200">
