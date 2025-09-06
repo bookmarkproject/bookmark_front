@@ -6,6 +6,7 @@
 - 많은 사람들이 책을 읽고도 기록하지 않아 금방 잊어버리는 경우가 많기 때문에 이를 해결하고자 함. 
 - 독서 경험을 ‘나만의 기록’으로 남길 수 있는 공간이 있으면 좋을 것 같음.
 
+위 프로젝트의 백엔드 서버 작업물은 [백엔드 서버 작업물](https://github.com/bookmarkproject/bookmark_back)에서 확인 가능합니다.
 
 <br>
 
@@ -17,12 +18,10 @@
 ### 2. 포함 내용
 1. 프로젝트 소개
 2. 사용 기술 스택
-3. 서비스 구조,화면,기능
+3. 서비스 화면 및 기능
 4. 디렉토리 구조 및 패키지 역할
-5. API 구조
-6. 기술적 이슈 및 해결 과정
-7. 관련 논문
-8. 프로젝트 팀원 및 역할
+5. 기술 적용
+6. 개인 프로젝트 역할
    
 <br>
 
@@ -34,6 +33,7 @@
 ### Tools
 - GitHub
 - Figma
+- Notion
 - Xcode ios emulator
 
 <br>
@@ -228,7 +228,7 @@
 
 ## ✅ 기술 적용
 1. dio를 활용한 RestAPI 통신 구현 
-    ```
+    ```dart
     Future<List<BookRecord>> getMyBookRecord(BuildContext context) async {
   
         List<BookRecord> result = [];
@@ -264,7 +264,7 @@
 
 2. dio를 활용한 RefreshToken 구현
     
-    ```
+    ```dart
     @override
     void onError(DioException err, ErrorInterceptorHandler handler) async {
         if (err.response?.statusCode == 401) {
