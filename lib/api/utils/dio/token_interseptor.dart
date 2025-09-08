@@ -43,8 +43,8 @@ class TokenInterceptor extends Interceptor {
             ));
           }
         }
-      } catch (e, stack) {
-
+      } catch (e) {
+        print(e);
       }
     }
     return handler.next(err);
